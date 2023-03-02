@@ -1,14 +1,16 @@
 import React from 'react'
 import HeaderFront from './shared/HeaderFront'
 import FooterFront from './shared/FooterFront'
+import IMCCalculator from './IMCCalculator'
 
 const HomeFront = () => {
   return (
     <div>
 
-<>
+
 <HeaderFront/>
-</>
+
+
 
 
 

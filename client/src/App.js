@@ -6,7 +6,9 @@ import HeaderFront from "./components/frontoffice/shared/HeaderFront";
 import HomeFront from "./components/frontoffice/HomeFront";
 import FooterFront from "./components/frontoffice/shared/FooterFront";
 import About from "./components/frontoffice/shared/About";
+import Contact from "./components/frontoffice/contact/Contact";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
 
 
 function App() {
@@ -16,8 +18,10 @@ function App() {
     <BrowserRouter>
     <div>
       <Routes>
-           <Route path="/" element={<HomeFront />} />
+           <Route path="/" element={<Home />} />
            <Route path="/about" element={<About/>} />
+           <Route path="/contact" element={<Contact/>} />
+
         {/* Add more routes for other components */}
       </Routes>
         

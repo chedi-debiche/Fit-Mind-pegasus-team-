@@ -1,8 +1,13 @@
+import SideNav from './sharedBack/SideNav'
+import Header from './sharedBack/Header'
+import Footer from './sharedBack/Footer'
 import React from 'react'
 
 const Home = () => {
   return (
     <div>
+      <Header/>
+      <SideNav/>
     <div className="content-wrapper">
   {/* Content Header (Page header) */}
   <div className="content-header">
@@ -573,6 +578,7 @@ const Home = () => {
   </section>
   {/* /.content */}
 </div>
+<Footer/>
 
     </div>
   )

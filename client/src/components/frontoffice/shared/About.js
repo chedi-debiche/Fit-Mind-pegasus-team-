@@ -1,6 +1,7 @@
 import React from 'react'
 import HeaderFront from './HeaderFront'
 import FooterFront from './FooterFront'
+import IMCCalculator from '../IMCCalculator'
 
 const About = () => {
   return (
@@ -14,13 +15,16 @@ const About = () => {
         <div className="row">
           <div className="col-xl-12">
             <div className="hero-cap hero-cap2 pt-70">
-              <h2>About Me</h2>
+              <h2>About Us</h2>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <IMCCalculator/>
+
   {/* Hero End */}
   {/*? Team */}
   <section className="team-area pt-80">
@@ -176,8 +180,8 @@ const About = () => {
             </div>
             <div className="features-caption">
               <h3>Email</h3>
-              <p>jacson767@gmail.com</p>
-              <p>contact56@zacsion.com</p>
+              <p>pegasus-sport@gmail.com</p>
+              <p>fit-mind@pegasus.tn</p>
             </div>
           </div>
         </div>
