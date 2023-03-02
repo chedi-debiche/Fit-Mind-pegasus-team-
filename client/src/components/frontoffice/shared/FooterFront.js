@@ -16,12 +16,12 @@ const FooterFront = () => {
               <div className="single-footer-caption mb-50 text-center">
                 {/* logo */}
                 <div className="footer-logo wow fadeInUp" data-wow-duration="1s" data-wow-delay=".2s">
-                  <a href="index.html"><img src="assets/img/logo/logo2_footer.png" alt /></a>
+                  <a href="index.html"><img src="assets/img/logo/logo2.png" alt="logo2" style={{width: 300, height: 200}} /></a>
                 </div>
                 {/* Menu */}
                 {/* Header Start */}
                 <div className="header-area main-header2 wow fadeInUp" data-wow-duration="2s" data-wow-delay=".4s">
-                  <div className="main-header main-header2">
+                  <div className="main-header main-header2" style={{marginLeft:'0'}}>
                     <div className="menu-wrapper menu-wrapper2">
                       {/* Main-menu */}
                       <div className="main-menu main-menu2 text-center">
@@ -29,9 +29,9 @@ const FooterFront = () => {
                           <ul>
                             <li><a href="index.html">Home</a></li>
                             <li><a href="about.html">About</a></li>
-                            <li><a href="courses.html">Courses</a></li>
-                            <li><a href="pricing.html">Pricing</a></li>
-                            <li><a href="gallery.html">Gallery</a></li>
+                            <li><a href="courses.html">Gyms</a></li>
+                            <li><a href="pricing.html">Coaches</a></li>
+                            <li><a href="gallery.html">Products</a></li>
                             <li><a href="contact.html">Contact</a></li>
                           </ul>
                         </nav>
@@ -55,9 +55,9 @@ const FooterFront = () => {
           <div className="row d-flex align-items-center">
             <div className="col-lg-12">
               <div className="footer-copy-right text-center">
-                <p>{/* Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. */}
-                  Copyright © All rights reserved | This template is made with <i className="fa fa-heart" aria-hidden="true" /> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                  {/* Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. */}</p>
+                <p>
+                  Copyright © All rights reserved | PEGASUS TEAM <i className="fa fa-heart" aria-hidden="true" />  <a href="https://colorlib.com" target="_blank"></a>
+                 </p>
               </div>
             </div>
           </div>

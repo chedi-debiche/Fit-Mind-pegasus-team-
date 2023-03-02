@@ -1,9 +1,14 @@
 import React from 'react'
+import HeaderFront from './shared/HeaderFront'
+import FooterFront from './shared/FooterFront'
 
 const HomeFront = () => {
   return (
     <div>
 
+<>
+<HeaderFront/>
+</>
 
 
 
@@ -486,9 +491,11 @@ const HomeFront = () => {
     </div>
   </section>
 </main>
-
+<FooterFront/>
       
     </div>
+
+    
   )
 }
 

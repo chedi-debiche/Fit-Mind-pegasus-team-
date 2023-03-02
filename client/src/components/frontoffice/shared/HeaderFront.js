@@ -1,4 +1,7 @@
 
+import { Link } from 'react-router-dom';
+
+
 const HeaderFront = () => {
   return (
 
@@ -46,27 +49,29 @@ const HeaderFront = () => {
             </div>
             {/* Main-menu */}
             <div className="main-menu f-right d-none d-lg-block">
-              <nav>
-                <ul id="navigation">
-                  <li><a href="index.html">Home</a></li>
-                  <li><a href="about.html">About</a></li>
-                  <li><a href="courses.html">Courses</a></li>
-                  <li><a href="pricing.html">Pricing</a></li>
-                  <li><a href="gallery.html">Gallery</a></li>
-                  <li><a href="blog.html">Blog</a>
-                    <ul className="submenu">
-                      <li><a href="blog.html">Blog</a></li>
-                      <li><a href="blog_details.html">Blog Details</a></li>
-                      <li><a href="elements.html">Elements</a></li>
-                    </ul>
-                  </li>
-                  <li><a href="contact.html">Contact</a></li>
-                </ul>
-              </nav>
-            </div>          
+  <nav>
+    <ul id="navigation">
+      <li><Link to="/">Home</Link></li>
+      <li><Link to="/about">About</Link></li>
+      <li><Link to="/gyms">Gyms</Link></li>
+      <li><Link to="/coaches">Coaches</Link></li>
+      <li><Link to="/products">Products</Link></li>
+      <li>
+        <Link to="/blog">Blog</Link>
+        <ul className="submenu">
+          <li><Link to="/blog">Blog</Link></li>
+          <li><Link to="/blog_details">Blog Details</Link></li>
+          <li><Link to="/elements">Elements</Link></li>
+        </ul>
+      </li>
+      <li><Link to="/contact">Contact</Link></li>
+    </ul>
+  </nav>
+</div>
+     
             {/* Header-btn */}
             <div className="header-btns d-none d-lg-block f-right">
-              <a href="contact.html" className="btn">Contact me</a>
+              <a href="contact.html" className="btn">Sign up</a>
             </div>
             {/* Mobile Menu */}
             <div className="col-12">
