@@ -21,7 +21,7 @@ const HeaderFront = () => {
 </body>
 
   {/* ? Preloader Start */}
-  <div id="preloader-active">
+  {/* <div id="preloader-active">
     <div className="preloader d-flex align-items-center justify-content-center">
       <div className="preloader-inner position-relative">
         <div className="preloader-circle" />
@@ -30,7 +30,7 @@ const HeaderFront = () => {
         </div>
       </div>
     </div>
-  </div>
+  </div> */}
   {/* Preloader Start */}
   <header>
     {/* Header Start */}
@@ -56,6 +56,7 @@ const HeaderFront = () => {
       <li><Link to="/gyms">Gyms</Link></li>
       <li><Link to="/coaches">Coaches</Link></li>
       <li><Link to="/products">Products</Link></li>
+
       <li>
         <Link to="/blog">Blog</Link>
         <ul className="submenu">
@@ -65,14 +66,18 @@ const HeaderFront = () => {
         </ul>
       </li>
       <li><Link to="/contact">Contact</Link></li>
+      <li>
+        <Link to="/blog">Start the adventure</Link>
+        <ul className="submenu">
+          <li><Link to="/signup">Sign up </Link></li>
+          <li><Link to="/signin">Sign in</Link></li>
+        </ul>
+      </li>
     </ul>
   </nav>
 </div>
      
-            {/* Header-btn */}
-            <div className="header-btns d-none d-lg-block f-right">
-              <a href="contact.html" className="btn">Sign up</a>
-            </div>
+           
             {/* Mobile Menu */}
             <div className="col-12">
               <div className="mobile_menu d-block d-lg-none" />
