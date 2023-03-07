@@ -12,6 +12,7 @@ import Login from "./components/frontoffice/authentification/Login/index"
 import Signup from "./components/frontoffice/authentification/Signup/index";
 import ForgotPassword from "./components/frontoffice/authentification/ForgotPassword/index";
 import PasswordReset from "./components/frontoffice/authentification/PasswordReset/index"
+import Captcha from "./components/frontoffice/authentification/Captcha/index";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
            <Route path="/contact" element={<Contact/>} />
            <Route path="/signin" element={<Login/>} />
            <Route path="/signup" element={<Signup/>} />
+           {/* <Route path="/Captcha" element={<Captcha/>} /> */}
            <Route path="/forgot-password" element={<ForgotPassword />} />
 			<Route path="/password-reset/:id/:token" element={<PasswordReset />} />
 

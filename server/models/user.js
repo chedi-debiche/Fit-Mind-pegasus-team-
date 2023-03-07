@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema({
 	verified: { type: Boolean, default: false },
 	// adress : {type : String, required : true},
 	phone : {type : String , required : true},
+	profile: { type: String }
 
 });
 
@@ -30,6 +31,16 @@ const User = mongoose.model("user", userSchema);
 
 const validate = (data) => {
 	const schema = Joi.object({
+
+	
+		// profile: Joi.string()
+		// .empty()
+		// .required()
+		// .messages({
+		//   'any.required': 'votre image est requis',
+		//   'string.empty': 'votre image ne doit pas être vide',
+		// }),
+	
 	  firstName: Joi.string()
 		.empty()
 		.required()
