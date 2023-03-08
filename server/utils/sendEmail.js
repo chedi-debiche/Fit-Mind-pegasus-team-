@@ -1,14 +1,8 @@
 require('dotenv').config()
 
-
  const nodemailer = require("nodemailer");
-
-DB = process.env.HOST;
  
-
-
-
-
+DB = process.env.HOST;
 
 module.exports = async (email, subject, text) => {
 	try {
