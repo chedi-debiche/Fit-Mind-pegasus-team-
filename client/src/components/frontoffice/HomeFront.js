@@ -8,7 +8,7 @@ const HomeFront = () => {
     <div>
 
 
-<HeaderFront/>
+{/* <HeaderFront/> */}
 
 
 

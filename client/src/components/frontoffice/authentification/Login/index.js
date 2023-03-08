@@ -63,9 +63,13 @@ const Login = () => {
 							<p style={{ padding: "0 15px" }}>Forgot Password ?</p>
 						</Link>
 						{error && <div className={styles.error_msg}>{error}</div>}
+
+						<Link to="/signedin">
 						<button type="submit" className={styles.green_btn}>
 							Sing In
 						</button>
+						</Link>
+						
 					</form>
 				</div>
 				<div className={styles.right}>

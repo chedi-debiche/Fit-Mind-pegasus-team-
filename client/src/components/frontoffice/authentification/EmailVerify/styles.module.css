@@ -5,14 +5,14 @@
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	background-color: aliceblue;
+	background-color: rgb(255, 255, 255);
 }
 
 .green_btn {
 	border: none;
 	outline: none;
 	padding: 12px 0;
-	background-color: #5b1717;
+	background-color: #830f0f;
 	border-radius: 20px;
 	width: 180px;
 	font-weight: bold;

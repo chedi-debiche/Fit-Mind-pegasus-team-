@@ -13,7 +13,7 @@ const SITE_KEY = '6LfG7dckAAAAAKKcQVqZ5mS2jKb5DHWf4hVZwCx2';
 
 const Signup = () => {
   const [data, setData] = useState({
-	//profile:"",
+	// profile:"",
     firstName: "",
     lastName: "",
     email: "",

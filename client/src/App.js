@@ -11,8 +11,11 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Login from "./components/frontoffice/authentification/Login/index"
 import Signup from "./components/frontoffice/authentification/Signup/index";
 import ForgotPassword from "./components/frontoffice/authentification/ForgotPassword/index";
-import PasswordReset from "./components/frontoffice/authentification/PasswordReset/index"
+import PasswordReset from "./components/frontoffice/authentification/PasswordReset/index";
+import Signedin from "./components/frontoffice/shared/signedin";
 import Captcha from "./components/frontoffice/authentification/Captcha/index";
+import HeaderSignedInClient from "./components/frontoffice/shared/HeaderSignedInClient";
+import EmailVerify from "./components/frontoffice/authentification/EmailVerify/index";
 
 
 function App() {
@@ -27,9 +30,16 @@ function App() {
            <Route path="/contact" element={<Contact/>} />
            <Route path="/signin" element={<Login/>} />
            <Route path="/signup" element={<Signup/>} />
+
+
+           <Route path="/signedin" element={<Signedin/>} />
+           <Route path="/test" element={<HeaderSignedInClient/>} />
+
+
            {/* <Route path="/Captcha" element={<Captcha/>} /> */}
-           <Route path="/forgot-password" element={<ForgotPassword />} />
-			<Route path="/password-reset/:id/:token" element={<PasswordReset />} />
+          <Route path="/users/:id/verify/:token" element={<EmailVerify />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+		      <Route path="/password-reset/:id/:token" element={<PasswordReset />} />
 
 
 
