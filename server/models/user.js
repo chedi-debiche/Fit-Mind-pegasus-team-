@@ -16,7 +16,8 @@ const userSchema = new mongoose.Schema({
 	verified: { type: Boolean, default: false },
 	// adress : {type : String, required : true},
 	phone : {type : String , required : true},
-	profile: { type: String }
+	profile: { type: String }, //picturee
+
 
 });
 
