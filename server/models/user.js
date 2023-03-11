@@ -2,24 +2,55 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const Joi = require("joi");
 const passwordComplexity = require("joi-password-complexity");
+const { string } = require("joi");
+const { type } = require("os");
 require('dotenv').config();
 const secretKey = 'my-secret-key';
 
 
 
-
 const userSchema = new mongoose.Schema({
+	profile: { type: String },
 	firstName: { type: String, required: true },
 	lastName: { type: String, required: true },
 	email: { type: String, required: true },
 	password: { type: String, required: true },
 	verified: { type: Boolean, default: false },
-	// adress : {type : String, required : true},
 	phone : {type : String , required : true},
-	profile: { type: String }, //picturee
-
-
+	userType :{
+		type :String,
+		enum : ['User', 'Coach'],
+		default : 'User'
+	},
+	experience :{
+		type : Number,
+		required: function() {
+			return this.userType === 'Coach';
+		},
+	},
+	gender: {
+		type: String,
+		enum: ['man', 'woman'],
+		required: function() {
+			return this.userType === 'Coach';
+		},
+	},
+	certificate: {
+		title: {
+			type: String,
+			required: function() {
+				return this.userType === 'Coach';
+			},
+		},
+		date: {
+			type: Date,
+			required: function() {
+				return this.userType === 'Coach';
+			},
+		},
+	},
 });
+
 
 userSchema.methods.generateAuthToken = function () {
 	const token = jwt.sign({ _id: this._id }, secretKey, {
@@ -33,7 +64,7 @@ const User = mongoose.model("user", userSchema);
 const validate = (data) => {
 	const schema = Joi.object({
 
-	
+		
 		// profile: Joi.string()
 		// .empty()
 		// .required()
@@ -75,6 +106,30 @@ const validate = (data) => {
 		  'any.required': 'Le numéro de téléphone est requis',
 		  'string.pattern.base': 'Le numéro de téléphone doit être composé de 8 chiffres',
 		}),
+		userType: Joi.string().required().valid('User', 'Coach').messages({
+			'any.required': 'Le type d\'utilisateur est requis',
+			'any.only': 'Le type d\'utilisateur doit être "User" ou "Coach"',
+		}),
+		experience: Joi.when('userType', {
+			is: 'Coach',
+			then: Joi.number().required(),
+			otherwise: Joi.number().optional()
+		  }),
+		  gender: Joi.when('userType', {
+			is: 'Coach',
+			then: Joi.string().valid('man', 'woman').required(),
+			otherwise: Joi.optional()
+		  }),
+		  certificate: Joi.when('userType', {
+			is: 'Coach',
+			then: Joi.object({
+			  title: Joi.string().required(),
+			  date: Joi.date().required(),
+			 // file: Joi.string().optional(),
+			}).required(),
+			otherwise: Joi.optional(),
+		  }),
+		
 	});
   
 	return schema.validate(data, { abortEarly: false });

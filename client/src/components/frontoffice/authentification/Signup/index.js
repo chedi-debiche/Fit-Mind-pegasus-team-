@@ -4,35 +4,49 @@ import { Link } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import styles from "./styles.module.css";
 import HeaderFront from "../../shared/HeaderFront";
-import avatar from '../../profile.png';
-import convertToBase64 from '../../convert';
+import avatar from "../../profile.png";
+import convertToBase64 from "../../convert";
 
-
-const SITE_KEY = '6LfG7dckAAAAAKKcQVqZ5mS2jKb5DHWf4hVZwCx2';
-
+const SITE_KEY = "6LfG7dckAAAAAKKcQVqZ5mS2jKb5DHWf4hVZwCx2";
 
 const Signup = () => {
   const [data, setData] = useState({
-	// profile:"",
+    //profile:"",
     firstName: "",
     lastName: "",
     email: "",
     password: "",
-    phone:"",
+    phone: "",
+    userType: "User",
+	 //experience: "0",
+	// gender: "", 
+  certificate: {
+    title: "", // Ajouté dans le state
+    date: "",
+   // file: ""
+  },
   });
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");
   const [recaptchaResponse, setRecaptchaResponse] = useState("");
   const [file, setFile] = useState("");
+  const [secretKey, setSecretKey] = useState("");
+  const [experience, setExperience] = useState("");
 
   const handleChange = ({ currentTarget: input }) => {
     setData({ ...data, [input.name]: input.value });
   };
+  const handleCertificateChange = ({ currentTarget: input }) => {
+    setData({
+      ...data,
+      certificate: {
+        ...data.certificate,
+        [input.name]: input.value
+      }
+    });
+  };
 
   const handleSubmit = async (e) => {
-	
-	e = await Object.assign(e, { profile : file || ''})
-	
     e.preventDefault();
     if (!recaptchaResponse) {
       setError("Please complete the reCAPTCHA.");
@@ -59,12 +73,12 @@ const Signup = () => {
 
   const captchaRef = useRef();
 
-   /** formik doensn't support file upload so we need to create this handler */
- const onUpload = async e => {
- 	const base64 = await convertToBase64(e.target.files[0]);
- 	setFile(base64);
-	// setData({ ...data, profile: base64 });
- }
+  /** formik doensn't support file upload so we need to create this handler */
+  const onUpload = async (e) => {
+    const base64 = await convertToBase64(e.target.files[0]);
+    setFile(base64);
+    // setData({ ...data, profile: base64 });
+  };
 
 	return (
         
@@ -93,9 +107,11 @@ const Signup = () => {
 						</button>
 					</Link>
 				</div>
+				
 				<div className={styles.right}>
 					<form className={styles.form_container} onSubmit={handleSubmit}>
 						<h1>Create Account</h1>
+						
 						 {/* <div className='profile flex justify-center py-4'> */}
 
 						 <label htmlFor="profile">
@@ -106,7 +122,37 @@ const Signup = () => {
                       <input onChange={onUpload} type="file" id='profile' name='profile' /> 
               
 				   
-
+					 {/* <div>
+            Register As
+            <input
+              type="radio"
+              name="userType"
+            //   value="User"
+			value= {data.userType}
+             onChange={(e) => setUserType(e.target.value)}
+			//onChange={handleChange}
+            />
+            User
+            <input
+              type="radio"
+              name="userType"
+              value={data.userType}
+           onChange={(e) => setUserType(e.target.value)}
+			 // onChange={handleChange}
+            />
+            Admin
+          </div>
+		   {userType == "Admin" ? (
+            <div className="mb-3">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Secret Key"
+               onChange={(e) => setSecretKey(e.target.value)}
+				//onChange={handleChange}
+              />
+            </div>
+          ) : null}   */}
 
 			 			{/* <input
 							type="file"
@@ -119,7 +165,37 @@ const Signup = () => {
 							 
 							/> */}
 						
+						
 
+            
+			<h4>Registre As</h4>
+	<div>		
+  <label>
+    <input
+      type="radio"
+      name="userType"
+      value="User"
+      checked={data.userType === "User"}
+      onChange={handleChange}
+      required
+      className={styles.input}
+    />
+    User
+  </label>
+
+  <label>
+    <input
+      type="radio"
+      name="userType"
+      value="Coach"
+      checked={data.userType === "Coach"}
+      onChange={handleChange}
+      required
+      className={styles.input}
+    />
+    Coach
+  </label>
+  </div>
 
 						<input
 							type="text"
@@ -168,6 +244,100 @@ const Signup = () => {
 							className={styles.input}
 						/>
 
+
+
+{data.userType === "Coach" && (
+          <div>
+           
+            <input
+              type="number"
+              id="experience"
+              name="experience"
+			  placeholder=" Experience (years)"
+              value={data.experience}
+              onChange={handleChange}
+              required
+              className={styles.input}
+            />
+          </div>
+        )}
+
+
+
+{data.userType === "Coach" && (
+  <div style={{ display: "flex", flexDirection: "column" }}>
+    <input
+      type="text"
+      id="certificateTitle"
+      name="title"
+      placeholder="Certificate Title"
+      value={data.certificate.title}
+      onChange={handleCertificateChange}
+      required
+      className={styles.input}
+    />
+
+    <label htmlFor="certificateDate" className={styles.label}>
+      Certificate Date
+    </label>
+    <input
+      type="date"
+      id="certificateDate"
+      name="date"
+      value={data.certificate.date}
+      onChange={handleCertificateChange}
+      required
+      className={styles.input}
+    />
+  </div>
+)}
+
+
+
+
+
+
+
+{data.userType === "Coach" && (
+  <div>
+    {/* <label htmlFor="gender" className={styles.label}>
+      Gender
+    </label> */}
+    <div className={styles.radioGroup}>
+      <label htmlFor="man" className={styles.radioLabel}>
+        <input
+          type="radio"
+          id="man"
+          name="gender"
+          value="man"
+          checked={data.gender === "man"}
+          onChange={handleChange}
+          className={styles.radioInput}
+          required
+        />
+        man
+      </label>
+      <label htmlFor="woman" className={styles.radioLabel}>
+        <input
+          type="radio"
+          id="woman"
+          name="gender"
+          value="woman"
+          checked={data.gender === "woman"}
+          onChange={handleChange}
+          className={styles.radioInput}
+          required
+        />
+        woman
+      </label>
+    </div>
+  </div>
+)}
+
+
+
+
+
 							
 							 <ReCAPTCHA
 							 sitekey={SITE_KEY}
@@ -177,7 +347,7 @@ const Signup = () => {
 							 required
 						   />
 						
-						
+					
 						{error && <div className={styles.error_msg}>{error}</div>}
 						{msg && <div className={styles.success_msg}>{msg}</div>}
 						<button type="submit" className={styles.green_btn}>
