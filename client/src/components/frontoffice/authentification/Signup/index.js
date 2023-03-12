@@ -168,7 +168,7 @@ const Signup = () => {
 						
 
             
-			<h4>Registre As</h4>
+			<h4>Register as : </h4>
 	<div>		
   <label>
     <input
@@ -300,9 +300,9 @@ const Signup = () => {
 
 {data.userType === "Coach" && (
   <div>
-    {/* <label htmlFor="gender" className={styles.label}>
+     {/* <label htmlFor="gender" className={styles.label}>
       Gender
-    </label> */}
+    </label>  */}
     <div className={styles.radioGroup}>
       <label htmlFor="man" className={styles.radioLabel}>
         <input

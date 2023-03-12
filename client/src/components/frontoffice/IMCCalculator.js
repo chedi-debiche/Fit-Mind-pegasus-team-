@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Form, FormGroup, Label, Input, Button , Row , Col, Alert } from "reactstrap";
+import { Card, CardBody, CardTitle, CardText } from "reactstrap";
+
 
 const IMCCalculator = () => {
   const [height, setHeight] = useState();
@@ -38,8 +40,11 @@ const IMCCalculator = () => {
 
   return (
     <Container>
+      {/* informations :  */}
+
+
     <Form>
-  <h2 className="text-center mb-4"style={{ color: "white", fontSize: "6rem" }}>IMC Calculator</h2>
+  <h2 className="text-center mb-4"style={{ color: "white", fontSize: "6rem" }}>BMI Calculator</h2>
   <Row form>
     <Col md={6}>
       <FormGroup>
@@ -144,6 +149,31 @@ const IMCCalculator = () => {
   </FormGroup>
 </Form>
 
+
+<Card className="mb-3">
+  <CardBody>
+    <CardTitle style={{ color: "black", fontSize: "2rem", marginBottom: "2rem" }}>
+      BMI Information
+    </CardTitle>
+    <CardText style={{ color: "black", fontSize: "1.75rem" }}>
+      The body mass index (BMI) is a measure of body fat based on height and weight that applies to adult men and women. Use this BMI calculator to calculate your BMI and determine your weight status.
+    </CardText>
+    <ul style={{ color: "red", fontSize: "1.5rem", marginTop: "2rem" }}>
+      <li>
+        <span style={{ color: "red" }}>A BMI of less than 18.5 means you are underweight</span>
+      </li>
+      <li>
+        <span>A BMI of 18.5–24.9 means you are at a healthy weight</span>
+      </li>
+      <li>
+        <span style={{ color: "red" }}>A BMI of 25–29.9 means you are overweight</span>
+      </li>
+      <li>
+        <span style={{ color: "red" }}>A BMI of 30 or more means you are obese</span>
+      </li>
+    </ul>
+  </CardBody>
+</Card>
 
 
     </Container>

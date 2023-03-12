@@ -24,6 +24,14 @@ app.use(cors());
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/password-reset", passwordResetRoutes);
+// Route to display users
+// Route to display users
+app.get("/api/users", userRoutes.get);
+
+// Route to delete a user
+app.delete("/api/users/deleteuser/:id", userRoutes.delete);
+
+
 
 const port = process.env.PORT || 5000;
 

@@ -59,4 +59,35 @@ router.get("/:id/verify/:token/", async (req, res) => {
 	}
 });
 
+router.get("/", async (req, res) => {
+	try {
+	  const users = await User.find();
+	  res.status(200).send(users);
+	} catch (error) {
+	  console.log(error);
+	  res.status(500).send({ message: "Internal Server Error" });
+	}
+  });
+
+
+  //delete function
+
+  router.delete("/:id", async (req, res) => {
+	try {
+	  const user = await User.findById(req.params.id);
+	  if (!user)
+		return res.status(404).send({ message: "User not found" });
+  
+	  await user.remove();
+  
+	  res.status(200).send({ message: "User deleted successfully" });
+	} catch (error) {
+	  console.log(error);
+	  res.status(500).send({ message: "Internal Server Error" });
+	}
+  });
+  
+  
+  
+
 module.exports = router;

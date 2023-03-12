@@ -16,6 +16,9 @@ import Signedin from "./components/frontoffice/shared/signedin";
 import Captcha from "./components/frontoffice/authentification/Captcha/index";
 import HeaderSignedInClient from "./components/frontoffice/shared/HeaderSignedInClient";
 import EmailVerify from "./components/frontoffice/authentification/EmailVerify/index";
+import  User  from "./components/backoffice/usermanagement/UserList";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 
 function App() {
@@ -34,6 +37,8 @@ function App() {
 
            <Route path="/signedin" element={<Signedin/>} />
            <Route path="/test" element={<HeaderSignedInClient/>} />
+           <Route path="/user" element={<User/>} />
+
 
 
            {/* <Route path="/Captcha" element={<Captcha/>} /> */}

@@ -7,7 +7,7 @@ const About = () => {
   return (
     <div>
 <HeaderFront/>
-<main>
+<main style={{ background: 'black' }}>
   {/*? Hero Start */}
   <div className="slider-area2">
     <div className="slider-height2 d-flex align-items-center">
@@ -23,7 +23,7 @@ const About = () => {
     </div>
   </div>
 
-  <IMCCalculator/>
+  {/* <IMCCalculator/> */}
 
   {/* Hero End */}
   {/*? Team */}

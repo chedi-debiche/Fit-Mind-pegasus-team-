@@ -2,6 +2,9 @@ import React from 'react'
 import HeaderFront from './shared/HeaderFront'
 import FooterFront from './shared/FooterFront'
 import IMCCalculator from './IMCCalculator'
+import { Link } from 'react-router-dom';
+
+
 
 const HomeFront = () => {
   return (
@@ -15,7 +18,7 @@ const HomeFront = () => {
 
 
 
-<main>
+<main style={{ background: 'black' }}>
   {/*? slider Area Start*/}
   <div className="slider-area position-relative">
     <div className="slider-active">
@@ -25,9 +28,11 @@ const HomeFront = () => {
           <div className="row">
             <div className="col-xl-9 col-lg-9 col-md-10">
               <div className="hero__caption">
-                <span data-animation="fadeInLeft" data-delay="0.1s">Hi This is  Zacson</span>
-                <h1 data-animation="fadeInLeft" data-delay="0.4s">Gym Trainer</h1>
-                <a href="courses.html" className="border-btn hero-btn" data-animation="fadeInLeft" data-delay="0.8s">My Courses</a>
+                <span data-animation="fadeInLeft" data-delay="0.1s">Welcome to : </span>
+                <h1 data-animation="fadeInLeft" data-delay="0.4s">Fit Mind </h1>
+                <a><Link to="/signup" className="border-btn hero-btn"  data-animation="fadeInLeft" data-delay="0.8s"> Create an account</Link></a>
+                {/* <a><Link to="/signup" className="border-btn">Sign up </Link></a>   */}
+
               </div>
             </div>
           </div>
@@ -38,6 +43,8 @@ const HomeFront = () => {
   {/* slider Area End*/}
   {/* Traning categories Start */}
   <section className="traning-categories black-bg">
+  <IMCCalculator/>
+
     <div className="container-fluid">
       <div className="row">
         <div className="col-xl-6 col-lg-6">
@@ -390,7 +397,9 @@ const HomeFront = () => {
               check academic essays.</p>
             <p className="mb-40">Task One, how to approach the task and the language needed for a successful answer. You’ll 
               examine Task Two questions and learn how to plan, write and check academic essays.</p>
-            <a href="courses.html" className="border-btn">My Courses</a>
+            <a><Link to="/signup" className="border-btn">Sign up </Link></a>  
+
+            <a  className="border-btn">My Courses</a>
           </div>
         </div>
       </div>
