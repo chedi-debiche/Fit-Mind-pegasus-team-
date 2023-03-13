@@ -29,7 +29,9 @@ app.use("/api/password-reset", passwordResetRoutes);
 app.get("/api/users", userRoutes.get);
 
 // Route to delete a user
-app.delete("/api/users/deleteuser/:id", userRoutes.delete);
+app.delete("/api/users/:id", userRoutes.delete);
+// Route to block a user
+app.put("/api/users/:id/block", userRoutes.put);
 
 
 
