@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
 	phone : {type : String , required : true},
 	userType :{
 		type :String,
-		enum : ['User', 'Coach'],
+		enum : ['User', 'Coach', 'GymManager','Admin'],
 		default : 'User'
 	},
 	experience :{
@@ -49,6 +49,13 @@ const userSchema = new mongoose.Schema({
 			},
 		},
 	},
+	location :{
+		type : String,
+		required: function() {
+			return this.userType === 'GymManager';
+		},
+	},
+	
 });
 
 
@@ -66,12 +73,12 @@ const validate = (data) => {
 
 		
 		// profile: Joi.string()
-		// .empty()
-		// .required()
-		// .messages({
+		//  .empty()
+		//  .required()
+		//  .messages({
 		//   'any.required': 'votre image est requis',
-		//   'string.empty': 'votre image ne doit pas être vide',
-		// }),
+		//    'string.empty': 'votre image ne doit pas être vide',
+		//  }),
 	
 	  firstName: Joi.string()
 		.empty()
@@ -106,9 +113,9 @@ const validate = (data) => {
 		  'any.required': 'Le numéro de téléphone est requis',
 		  'string.pattern.base': 'Le numéro de téléphone doit être composé de 8 chiffres',
 		}),
-		userType: Joi.string().required().valid('User', 'Coach').messages({
+		userType: Joi.string().required().valid('User', 'Coach','GymManager','Admin').messages({
 			'any.required': 'Le type d\'utilisateur est requis',
-			'any.only': 'Le type d\'utilisateur doit être "User" ou "Coach"',
+			'any.only': 'Le type d\'utilisateur doit être "User" ou "Coach" ou "GymManager',
 		}),
 		experience: Joi.when('userType', {
 			is: 'Coach',
@@ -128,6 +135,11 @@ const validate = (data) => {
 			 // file: Joi.string().optional(),
 			}).required(),
 			otherwise: Joi.optional(),
+		  }),
+		  location: Joi.when('userType', {
+			is: 'GymManager',
+			then: Joi.string().required(),
+			otherwise: Joi.string().optional()
 		  }),
 		
 	});

@@ -79,6 +79,8 @@ const Signup = () => {
     setFile(base64);
     // setData({ ...data, profile: base64 });
   };
+  
+
 
 	return (
         
@@ -117,9 +119,21 @@ const Signup = () => {
 						 <label htmlFor="profile">
                    
                   
-                     <img src={file || avatar} className={styles.profile_img} alt="avatar"  /> 
+                     <img src={file || avatar} className={styles.profile_img} alt="avatar"  />  
+                     {/* <img src={postImage.profile || avatar} alt="" /> */}
+                     {/* <img src={postImage.profile ? URL.createObjectURL(postImage.profile) : avatar} alt="" /> */}
+
 					 </label>
-                      <input onChange={onUpload} type="file" id='profile' name='profile' /> 
+                      {/* <input onChange={onUpload} type="file" id='profile' name='profile' />  */}
+                      {/* <input 
+        //   type="file"
+        //   lable="Image"
+        //   name="profile"
+        //   id='profile'
+        //   accept='.jpeg, .png, .jpg'
+        //   onChange={(e) => onUpload(e)}
+        //  />
+                  */}
               
 				   
 					 {/* <div>
@@ -195,6 +209,19 @@ const Signup = () => {
     />
     Coach
   </label>
+
+  <label>
+    <input
+      type="radio"
+      name="userType"
+      value="GymManager"
+      checked={data.userType === "GymManager"}
+      onChange={handleChange}
+      required
+      className={styles.input}
+    />
+    GymManager
+  </label>
   </div>
 
 						<input
@@ -243,8 +270,17 @@ const Signup = () => {
 							required
 							className={styles.input}
 						/>
-
-
+{data.userType === "GymManager" && (
+              <input
+							type="text"
+							placeholder="Location"
+							name="location"
+							onChange={handleChange}
+							value={data.location}
+							required
+							className={styles.input}
+						/>
+            )}
 
 {data.userType === "Coach" && (
           <div>
