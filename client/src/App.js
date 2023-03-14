@@ -18,6 +18,8 @@ import HeaderSignedInClient from "./components/frontoffice/shared/HeaderSignedIn
 import EmailVerify from "./components/frontoffice/authentification/EmailVerify/index";
 import  User  from "./components/backoffice/usermanagement/UserList";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Profile from "./components/frontoffice/authentification/Profile/index";
+import { useEffect, useState } from 'react';
 
 
 
@@ -33,6 +35,7 @@ function App() {
            <Route path="/contact" element={<Contact/>} />
            <Route path="/signin" element={<Login/>} />
            <Route path="/signup" element={<Signup/>} />
+           <Route path="/showdetails/:id" element={<Profile/>} />
 
 
            <Route path="/signedin" element={<Signedin/>} />

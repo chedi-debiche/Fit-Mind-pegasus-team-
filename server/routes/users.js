@@ -38,7 +38,15 @@ const bcrypt = require("bcrypt");
 // 		res.status(500).send({ message: "Internal Server Error" });
 // 	}
 // });
-
+router.get("/getById/:id", async (req, res) => {
+	try {
+		const data=await User.findById(req.params.id);
+		res.json(data);
+	
+	} catch (err) {
+		res.send(err)
+	}
+});
 
 router.post("/", async (req, res) => {
 	try {

@@ -74,7 +74,7 @@ const HeaderSignedInClient = () => {
       <li>
         <Link to="/blog">Profile</Link>
         <ul className="submenu">
-          <li><Link to="/showdetails">show details </Link></li>
+          <li><Link to="/showdetails/:id">show details </Link></li>
           <li><Link to="/">Logout</Link></li>
         </ul>
       </li>
