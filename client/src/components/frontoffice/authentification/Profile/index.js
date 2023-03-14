@@ -56,12 +56,8 @@ console.log(user)
                         <div className={styles.left}>
                             <h1>Profile <br/>details ! </h1>
                             <h1></h1>
-                            <Link to={`/update/${user._id}`}>
-                            
-                                <button type="button" className={styles.white_btn}>
-                                    Update
-                                </button>
-                            </Link>
+                           <button type="button" className={styles.white_btn}>
+                           < Link to={`/update/${user._id}`} > Update </Link></button>
                             <h1></h1><h1></h1><h1></h1>
                             <Link to="/signedin">
                             

@@ -20,6 +20,8 @@ import  User  from "./components/backoffice/usermanagement/UserList";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Profile from "./components/frontoffice/authentification/Profile/index";
 import { useEffect, useState } from 'react';
+import UpdateUser from "./components/frontoffice/update";
+
 
 
 
@@ -36,6 +38,8 @@ function App() {
            <Route path="/signin" element={<Login/>} />
            <Route path="/signup" element={<Signup/>} />
            <Route path="/showdetails/:id" element={<Profile/>} />
+           <Route path="/update/:id" element={<UpdateUser/>} />
+
 
 
            <Route path="/signedin" element={<Signedin/>} />
