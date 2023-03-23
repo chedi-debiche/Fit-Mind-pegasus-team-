@@ -1,12 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 
-
 const HeaderSignedInClient = () => {
-    // const handleLogout = () => {
-	// 	localStorage.removeItem("token");
-	// 	window.location.reload();
-	// };
+    const handleLogout = () => {
+	 	localStorage.removeItem("token");
+	 	window.location.reload();
+	 };
+
+   
 
 
   return (
@@ -56,7 +57,7 @@ const HeaderSignedInClient = () => {
             <div className="main-menu f-right d-none d-lg-block">
   <nav>
     <ul id="navigation">
-      <li><Link to="/">Home</Link></li>
+      {/* <li><Link to="/">Home</Link></li> */}
       <li><Link to="/about">About</Link></li>
       <li><Link to="/gyms">Gyms</Link></li>
       <li><Link to="/coaches">Coaches</Link></li>
@@ -74,8 +75,8 @@ const HeaderSignedInClient = () => {
       <li>
         <Link to="/blog">Profile</Link>
         <ul className="submenu">
-          <li><Link to="/showdetails/:id">show details </Link></li>
-          <li><Link to="/">Logout</Link></li>
+          {/* <li><Link to={`/showdetails/${userId}`}>show details </Link></li> */}
+          <li onClick={handleLogout}>Logout</li>
         </ul>
       </li>
     </ul>

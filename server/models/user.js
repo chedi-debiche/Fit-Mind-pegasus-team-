@@ -11,12 +11,12 @@ const secretKey = 'my-secret-key';
 
 const userSchema = new mongoose.Schema({
 	profile: { type: String },
-	firstName: { type: String, required: true },
-	lastName: { type: String, required: true },
-	email: { type: String, required: true },
-	password: { type: String, required: true },
+	firstName: { type: String, required: false },
+	lastName: { type: String, required: false },
+	email: { type: String, required: false },
+	password: { type: String, required: false },
 	verified: { type: Boolean, default: false },
-	phone : {type : String , required : true},
+	phone : {type : String , required : false},
 	userType :{
 		type :String,
 		enum : ['User', 'Coach', 'GymManager','Admin'],

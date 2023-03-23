@@ -14,7 +14,7 @@ import { writeFile } from 'xlsx';
 import FileSaver from "file-saver";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-
+import requireAuth from "../../frontoffice/authentification/requireAuth";
 
 
 
@@ -220,4 +220,4 @@ const UserList = () => {
   );
 };
 
-export default UserList;
+export default requireAuth (UserList);
