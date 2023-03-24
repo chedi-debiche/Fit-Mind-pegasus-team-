@@ -1,6 +1,5 @@
 
 const express = require("express");
-const session = require('express-session');
 const dotenv = require("dotenv").config()
 // dotenv.config();
 const app = express();
@@ -10,28 +9,14 @@ const userRoutes = require("./routes/users");
 const authRoutes = require("./routes/auth");
 const passwordResetRoutes = require("./routes/passwordReset");
 const path = require("path");
-const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
-const productRoutes = require("./routes/products"); // import products router
+const cookieParser=require('cookie-parser');
+const session= require('express-session')
+
 
 
 
 // Définir le chemin pour les fichiers statiques, y compris les images
 
-// Define your MongoDBStore instance for storing sessions
-const MongoDBStore = require('connect-mongodb-session')(session);
-const store = new MongoDBStore({
-  uri: 'mongodb://localhost:27017/myapp',
-  collection: 'sessions'
-});
-
-// Define your session middleware
-app.use(session({
-  secret: 'mysecret',
-  resave: false,
-  saveUninitialized: false,
-  store: store
-}));
 
 
 
@@ -43,13 +28,17 @@ connection();
 
 // middlewares
 app.use(express.json());
-app.use(
-    cors({
-      origin: "http://localhost:3000",
-      credentials: true,
-    })
-  );
-  
+app.use(cors());
+
+app.use(cookieParser());
+
+app.use(session({
+    secret:'my-secret-key',
+    resave:false,
+    saveUninitialized:true
+}));
+
+
 // routes
 //app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/users", userRoutes);
@@ -63,10 +52,6 @@ app.get("/api/users", userRoutes.get);
 app.delete("/api/users/:id", userRoutes.delete);
 // Route to block a user
 app.put("/api/users/:id/block", userRoutes.put);
-
-app.use("/api/products", productRoutes); // use products router
-
-app.use('/uploads', express.static('uploads'));
 
 
 
@@ -82,8 +67,6 @@ const port = process.env.PORT || 5000;
 //          res.status(409).json({ message : error.message })
 //     }
 //  })
-
-
 
 app.listen(port, console.log(`Listening on port ${port}...`));
 

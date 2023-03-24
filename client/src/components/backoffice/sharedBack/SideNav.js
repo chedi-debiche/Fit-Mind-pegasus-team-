@@ -46,13 +46,6 @@ const SideNav = () => {
               </a>
             </li>
             <li className="nav-item">
-
-          <Link to="/productsd" className="nav-link active">
-                <i className="far fa-circle nav-icon" />
-                <p>Product management</p>
-              </Link>
-            </li>
-            <li className="nav-item">
               <a href="./index3.html" className="nav-link">
                 <i className="far fa-circle nav-icon" />
                 <p>Reclamation management</p>

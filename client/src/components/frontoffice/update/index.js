@@ -14,17 +14,39 @@ const UpdateUser = () => {
     lastName:"",
     email:"",
     phone:"",
+	userType:""
+	
 });
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");
   const { id } =useParams();
 
+useEffect(()=>{
+	fetch(`http://localhost:5000/api/users/getById/${id}`
+	,{
+		headers:{
+		Authorization:`Bearer ${localStorage.getItem('token')}`
+		}
+	  } 
+	)
+	 .then(response=>response.json())
+	 .then(({ _id,password,verified,__v, ...data }) => setData(data))
+	.catch(error =>console.error(error));
+},[id]);
+
+ 
+const handleCertificateChange = ({ currentTarget: input }) => {
+    setData({
+      ...data,
+      certificate: {
+        ...data.certificate,
+        [input.name]: input.value
+      }
+    });
+};
 
 
-
-
-
-  const handleChange = ({ currentTarget: input }) => {
+const handleChange = ({ currentTarget: input }) => {
     setData({ ...data, [input.name]: input.value });
   };
 
@@ -34,9 +56,15 @@ const UpdateUser = () => {
 	
     e.preventDefault();
     try {
-      
+      const{userType,...updatedData}=data;
       const url = "http://localhost:5000/api/users/update";
-      const { data: res } = await axios.put(`${url}/${id}`, data);
+      const { data: res } = await axios.put(`${url}/${id}`,updatedData
+	  ,{
+		headers:{
+		Authorization:`Bearer ${localStorage.getItem('token')}`
+		}
+	  } 
+	  );
       console.log(res);
       setMsg(res);
     } catch (error) {
@@ -48,7 +76,7 @@ const UpdateUser = () => {
         setError(error.response.data.message);
       }
     }
-  };
+};
 
  
 
@@ -77,7 +105,7 @@ const UpdateUser = () => {
 			<div className={styles.signup_form_container}>
 				<div className={styles.left}>
 					<h1>Here you can  <br/>update your <br/> account ! </h1>
-					<Link to="/showdetails">
+					<Link to={`/showdetails/${id}`}>
 						<button type="button" className={styles.white_btn}>
 							Back
 						</button>
@@ -115,7 +143,7 @@ const UpdateUser = () => {
 						<input
 							type="text"
 							name="firstName"
-                            placeholder="irstName"
+                            // placeholder="firstName"
 							onChange={handleChange}
 							value={data.firstName}
 							required
@@ -124,16 +152,16 @@ const UpdateUser = () => {
 						<input
 							type="text"
 							name="lastName"
-                            placeholder="lastName"
+                            // placeholder="lastName"
 							onChange={handleChange}
-							 value={data.lastName}
+							value={data.lastName}
 							required
 							className={styles.input}
 						/>
 						<input
 							type="email"
 							name="email"
-                            placeholder="email"
+                            // placeholder="email"
 							onChange={handleChange}
 							value={data.email}
 							required
@@ -141,25 +169,141 @@ const UpdateUser = () => {
 						/>
 
 
-                        <input
+                        {/* <input
 							type="password"
 							name="password"
-                            placeholder="password"
+                            // placeholder="password"
 							onChange={handleChange}
 							value={data.password}
 							required
 							className={styles.input}
-						/>
+						/> */}
 						
 							<input
 							type="text"
 							name="phone"
-                            placeholder="phone"
+                            // placeholder="phone"
 							onChange={handleChange}
 						    value={data.phone}
 							required
 							className={styles.input}
 						/>
+
+							{/* <input
+							type="text"
+							name="userType"
+                            // placeholder="userType"
+							onChange={handleChange}
+						    value={data.userType}
+							required
+							className={styles.input}
+						/> */}
+
+						
+
+
+
+
+				{data.userType === "GymManager" && (
+							<input
+							type="text"
+							placeholder="Location"
+							name="location"
+							onChange={handleChange}
+							value={data.location}
+							required
+							className={styles.input}
+							/>
+							)}
+
+				{data.userType === "Coach" && (
+						<div style={{ display: "flex", flexDirection: "column" }}>
+						    
+							<label htmlFor="certificateDate" className={styles.label}>
+								Experience
+							</label>
+							<input
+							type="number"
+							id="experience"
+							name="experience"
+							value={data.experience}
+							onChange={handleCertificateChange}
+							required
+							className={styles.input}
+							/>
+						</div>
+						)}
+
+
+
+				{data.userType === "Coach" && (
+				<div style={{ display: "flex", flexDirection: "column" }}>
+					
+					<label htmlFor="certificateDate" className={styles.label}>
+					Certificate Title
+					</label>
+					<input
+					type="text"
+					id="certificateTitle"
+					name="title"
+					value={data.certificate.title}
+					onChange={handleCertificateChange}
+					required
+					className={styles.input}
+					/>
+
+					<label htmlFor="certificateDate" className={styles.label}>
+					Certificate Date
+					</label>
+					<input
+					type="date"
+					id="certificateDate"
+					name="date"
+					value={data.certificate.date}
+					onChange={handleCertificateChange}
+					required
+					className={styles.input}
+					/>
+				</div>
+				)}
+
+
+				{data.userType === "Coach" && (
+				<div>
+					
+					<div className={styles.radioGroup}>
+					<label htmlFor="man" className={styles.radioLabel}>
+						<input
+						type="radio"
+						id="man"
+						name="gender"
+						value="man"
+						checked={data.gender === "man"}
+						onChange={handleChange}
+						className={styles.radioInput}
+						required
+						/>
+						man
+					</label>
+					<label htmlFor="woman" className={styles.radioLabel} style={{ marginLeft: "20px" }}>
+						<input
+						type="radio"
+						id="woman"
+						name="gender"
+						value="woman"
+						checked={data.gender === "woman"}
+						onChange={handleChange}
+						className={styles.radioInput}
+						required
+						/>
+						woman
+					</label>
+					</div>
+				</div>
+				)}
+
+
+
 
 						
 						

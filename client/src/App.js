@@ -21,25 +21,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Profile from "./components/frontoffice/authentification/Profile/index";
 import { useEffect, useState } from 'react';
 import UpdateUser from "./components/frontoffice/update";
-import ProductList from "./components/backoffice/productmanagement/ProductList";
-import Products from "./components/frontoffice/ProductManagement/Products";
-import ProductCard from "./components/frontoffice/ProductManagement/ProductCard";
-
 
 
 
 
 function App() {
- 
-
-
 
   return (
 
     <BrowserRouter>
     <div>
-      
-
       <Routes>
            <Route path="/" element={<HomeFront />} />
            <Route path="/about" element={<About/>} />
@@ -61,13 +52,6 @@ function App() {
           <Route path="/users/:id/verify/:token" element={<EmailVerify />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
 		      <Route path="/password-reset/:id/:token" element={<PasswordReset />} />
-
-          <Route path="/productsd" element={<ProductList/>} />
-          <Route path="/Products" element={<Products/>} />
-          {/* <Route path="/products/:id" component={ProductDetails} /> */}
-          <Route path="/productcard" element={<ProductCard/>} />
-
-
 
 
 

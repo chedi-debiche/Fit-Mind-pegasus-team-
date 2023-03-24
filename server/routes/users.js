@@ -1,9 +1,13 @@
 const router = require("express").Router();
-const { User, validate } = require("../models/user");
+const { User, validate ,validateUpdate} = require("../models/user");
 const Token = require("../models/token");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
 const bcrypt = require("bcrypt");
+const authent = require('../middilware/authent')
+const Joi = require("joi");
+
+
 //const SECRET = '6LfG7dckAAAAAKQsntuGV7TrjHfeFUCVlRyNWbAH';
 
 // router.post("/", async (req, res) => {
@@ -38,7 +42,7 @@ const bcrypt = require("bcrypt");
 // 		res.status(500).send({ message: "Internal Server Error" });
 // 	}
 // });
-router.get("/getById/:id", async (req, res) => {
+router.get("/getById/:id",authent,async (req, res) => {
 	try {
 		const data=await User.findById(req.params.id);
 		res.json(data);
@@ -71,7 +75,7 @@ router.post("/", async (req, res) => {
 		}).save();
 		
 		const message = "Thank you for registering! Please verify your email address by clicking the link below.";
-		const url = `${process.env.BASE_URL}users/${user.id}/verify/${token.token}`;
+		 const url = `${process.env.BASE_URL}users/${user.id}/verify/${token.token}`;
 		await sendEmail(user.email, "Email verification", url, message);
 
 		res
@@ -104,15 +108,15 @@ router.get("/:id/verify/:token/", async (req, res) => {
 	}
 });
 
-router.get("/", async (req, res) => {
-	try {
-	  const users = await User.find();
-	  res.status(200).send(users);
-	} catch (error) {
-	  console.log(error);
-	  res.status(500).send({ message: "Internal Server Error" });
-	}
-  });
+// router.get("/", async (req, res) => {
+// 	try {
+// 	  const users = await User.find();
+// 	  res.status(200).send(users);
+// 	} catch (error) {
+// 	  console.log(error);
+// 	  res.status(500).send({ message: "Internal Server Error" });
+// 	}
+//   });
 
 
   //delete function
@@ -146,11 +150,13 @@ router.put("/:id/block", async (req, res) => {
 	}
   });
 
-  router.put("/update/:id",async (req,res)=>{
+  router.put("/update/:id",authent,async (req,res)=>{
+	
 	try{
-		const { error } = validate(req.body);
+		const { error } = validateUpdate(req.body);
+	
 		if (error)
-			return res.status(400).send({ message: error.details[0].message });
+			return res.status(400).send({ message: error.details[0].message });  
 		await User.findByIdAndUpdate(req.params.id,req.body,{new:true});
 		res.status(201).send("updated successfully");
 
@@ -159,9 +165,12 @@ router.put("/:id/block", async (req, res) => {
 		res.status(500).send({ message: "Internal Server Error" });
 	}
 });
+
+
   
   
   
   
 
 module.exports = router;
+
