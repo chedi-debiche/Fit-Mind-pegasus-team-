@@ -49,6 +49,12 @@ const userSchema = new mongoose.Schema({
 				return this.userType === 'Coach';
 			},
 		},
+		file: {
+			type: String,
+			required: function() {
+				return this.userType === 'Coach';
+			},
+		},
 	},
 	location :{
 		type : String,
@@ -138,7 +144,11 @@ const validate = (data) => {
 			then: Joi.object({
 			  title: Joi.string().required(),
 			  date: Joi.date().required(),
-			 // file: Joi.string().optional(),
+			  file: Joi.string()
+			  .pattern(/\.pdf$/)
+			  .messages({
+				  'string.pattern.base': 'Le fichier doit être un PDF',
+			  }),
 			}).required(),
 			otherwise: Joi.optional(),
 		  }),
@@ -196,7 +206,11 @@ const validate = (data) => {
 			then: Joi.object({
 			  title: Joi.string().required(),
 			  date: Joi.date().required(),
-			 // file: Joi.string().optional(),
+			  file: Joi.string()
+			  .pattern(/\.pdf$/)
+			  .messages({
+				  'string.pattern.base': 'Le fichier doit être un PDF',
+			  }),
 			}).required(),
 			otherwise: Joi.optional(),
 		  }),

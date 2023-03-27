@@ -171,6 +171,7 @@ const UserList = () => {
             <th>Gender</th>
             <th>Certificate Title</th>
             <th>Certificate Date</th>
+            <th>Certificate File</th>
             <th>Block</th>
             <th>Actions</th>
           </tr>
@@ -191,6 +192,7 @@ const UserList = () => {
               <td>{user.gender}</td>
               <td>{user.certificate ? user.certificate.title : "-"}</td>
               <td>{user.certificate ? user.certificate.date : "-"}</td>
+              <td>{user.certificate ? user.certificate.file : "-"}</td>
               <td>{user.block ? "Yes" : "No"}</td>
 
               <tr>

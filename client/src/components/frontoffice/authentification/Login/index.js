@@ -49,7 +49,7 @@ const Login = () => {
 
 
 <div className={styles.login_container}>
-<HeaderFront/>
+{/* <HeaderFront/> */}
 
 			<div className={styles.login_form_container}>
 				<div className={styles.left}>
