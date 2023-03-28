@@ -112,3 +112,15 @@
   input[type='file']{
     display: none;
 }
+
+
+input[type="radio"] {
+	display: inline-block;
+	margin-right: 10px;
+  }
+
+label{
+	font-size: 11px;
+	margin-top: 0;
+	color: rgb(19, 33, 73);
+}

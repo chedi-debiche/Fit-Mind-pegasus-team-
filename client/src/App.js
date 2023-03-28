@@ -24,22 +24,17 @@ import UpdateUser from "./components/frontoffice/update";
 import ProductList from "./components/backoffice/productmanagement/ProductList";
 import Products from "./components/frontoffice/ProductManagement/Products";
 import ProductCard from "./components/frontoffice/ProductManagement/ProductCard";
-
+import Cart from "./components/frontoffice/ProductManagement/Cart"
 
 
 
 
 function App() {
- 
-
-
 
   return (
 
     <BrowserRouter>
     <div>
-      
-
       <Routes>
            <Route path="/" element={<HomeFront />} />
            <Route path="/about" element={<About/>} />
@@ -64,9 +59,8 @@ function App() {
 
           <Route path="/productsd" element={<ProductList/>} />
           <Route path="/Products" element={<Products/>} />
-          {/* <Route path="/products/:id" component={ProductDetails} /> */}
           <Route path="/productcard" element={<ProductCard/>} />
-
+          <Route path="/cart" element={<Cart/>} />
 
 
 
@@ -86,42 +80,6 @@ function App() {
 
 
 
-    // <>
-    // <HomeFront/>
-    // <HeaderFront/>
-    // <FooterFront/>
-    
-    
-    // </>
 
-    // <BrowserRouter>
-    
-    //   <div className="App">
-        
-    //     <Route exact path="/" component={Home} />
-    //     <Route path="/about" component={About} />
-
-
-    //     </div>
-    // </BrowserRouter>
-  // <>
-
-  // back office
-  //  <Header /> 
-  // <Home />
-  // <SideNav/>
-  //  <Footer/>  
-
-  //  front office 
-  //  <HeaderFront/>
-  // <HomeFront/>
-  // <FooterFront/> 
-
-  //   <HeaderFront/>
-  //   <About/>
-
-  // </>
-  // );
-// }
 
 export default App;

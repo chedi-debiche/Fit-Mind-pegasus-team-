@@ -1,25 +1,12 @@
-import React , {useEffect} from 'react'
+import React from 'react'
 import HeaderFront from './shared/HeaderFront'
 import FooterFront from './shared/FooterFront'
 import IMCCalculator from './IMCCalculator'
-import { Link,useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 
 const HomeFront = () => {
-  const navigate = useNavigate();
-  const token =localStorage.getItem('token');
-
-  useEffect(()=>{
-
-    // if(token !==null && token!== undefined ){
-    // navigate('/signedin');
-    
-    // }else{
-    //   navigate('/signin');
-    // }
-        
-      },[]);
   return (
     <div>
 

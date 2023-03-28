@@ -23,7 +23,7 @@ const Signup = () => {
   certificate: {
     title: "", // Ajouté dans le state
     date: "",
-   // file: ""
+    file: "",
   },
   });
   const [error, setError] = useState("");
@@ -321,6 +321,19 @@ const Signup = () => {
       id="certificateDate"
       name="date"
       value={data.certificate.date}
+      onChange={handleCertificateChange}
+      required
+      className={styles.input}
+    />
+
+<label htmlFor="certificateFile" className={styles.label}>
+      Certificate File
+    </label>
+    <input
+      type="file"
+      id="certificateFile"
+      name="file"
+      value={data.certificate.file}
       onChange={handleCertificateChange}
       required
       className={styles.input}

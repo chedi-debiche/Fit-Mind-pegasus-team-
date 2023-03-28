@@ -7,6 +7,7 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import SideNav from "../sharedBack/SideNav";
 import Header from "../sharedBack/Header";
 import Footer from "../sharedBack/Footer";
+import requireAuth from '../../frontoffice/authentification/requireAuth';
 
 
 
@@ -204,7 +205,7 @@ const ProductList = () => {
 );
 };
 
-export default ProductList;
+export default requireAuth (ProductList);
 
 
 

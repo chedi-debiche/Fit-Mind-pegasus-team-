@@ -1,13 +1,27 @@
-import React from 'react'
+import React,{ useState } from 'react'
 import { Link } from 'react-router-dom';
+import axios from "axios";
+
+
 
 const HeaderSignedInClient = () => {
-    const handleLogout = () => {
-	 	localStorage.removeItem("token");
-	 	window.location.reload();
-	 };
+  
 
-   
+  // const [loggedIn, setLoggedIn] = useState(false);
+
+  const id=localStorage.getItem('userId');
+  const handleLogout = async () =>{
+    try{
+      await axios.post('http://localhost:5000/api/auth/logout');
+      localStorage.removeItem('token');
+      localStorage.removeItem('userId');
+      sessionStorage.setItem('isAuthenticated', false);
+      window.location('/signin');
+      // setLoggedIn(false);
+    }catch(error){
+      console.log(error);
+    }
+  };
 
 
   return (
@@ -57,7 +71,7 @@ const HeaderSignedInClient = () => {
             <div className="main-menu f-right d-none d-lg-block">
   <nav>
     <ul id="navigation">
-      {/* <li><Link to="/">Home</Link></li> */}
+      <li><Link to="/">Home</Link></li>
       <li><Link to="/about">About</Link></li>
       <li><Link to="/gyms">Gyms</Link></li>
       <li><Link to="/coaches">Coaches</Link></li>
@@ -75,8 +89,8 @@ const HeaderSignedInClient = () => {
       <li>
         <Link to="/blog">Profile</Link>
         <ul className="submenu">
-          {/* <li><Link to={`/showdetails/${userId}`}>show details </Link></li> */}
-          <li onClick={handleLogout}>Logout</li>
+          <li><Link to={`/showdetails/${id}`} >show details </Link></li>
+          <li><Link to="/signin" onClick={handleLogout}>Logout</Link></li>
         </ul>
       </li>
     </ul>

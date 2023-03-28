@@ -14,7 +14,7 @@ import { writeFile } from 'xlsx';
 import FileSaver from "file-saver";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import requireAuth from "../../frontoffice/authentification/requireAuth";
+
 
 
 
@@ -25,6 +25,8 @@ import requireAuth from "../../frontoffice/authentification/requireAuth";
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [deletedUserId, setDeletedUserId] = useState(null);
+  const [blockUser, setBlockedUser] = useState(null) ;
+
   
 
   useEffect(() => {
@@ -34,7 +36,7 @@ const UserList = () => {
     };
     
     fetchUsers();
-  }, [deletedUserId]);
+  }, [deletedUserId,blockUser]);
 
   const handleDeleteUser = async (userId) => {
     try {
@@ -53,17 +55,14 @@ const UserList = () => {
 
   const handleBlockUser = async (userId) => {
     try {
-      await axios.patch(`http://localhost:5000/api/users/${userId}/block`);
-      setUsers(users.map(user => {
-        if (user._id === userId) {
-          return {
-            ...user,
-            blocked: true
-          }
-        }
-        return user;
-      }));
-    } catch (error) {
+      await axios.put(`http://localhost:5000/api/users/block/${userId}`);
+
+      setBlockedUser(blockUser+1) ;
+      console.log(blockUser+1) ;
+      
+
+    }
+    catch (error) {
       console.log(error);
     }
   }
@@ -172,6 +171,8 @@ const UserList = () => {
             <th>Gender</th>
             <th>Certificate Title</th>
             <th>Certificate Date</th>
+            <th>Certificate File</th>
+            <th>Block</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -191,18 +192,30 @@ const UserList = () => {
               <td>{user.gender}</td>
               <td>{user.certificate ? user.certificate.title : "-"}</td>
               <td>{user.certificate ? user.certificate.date : "-"}</td>
-              <td>
+              <td>{user.certificate ? user.certificate.file : "-"}</td>
+              <td>{user.block ? "Yes" : "No"}</td>
+
+              <tr>
+
+
+              <th className= {styles.transparent}>
+  <Button  onClick={()=> handleBlockUser(user._id)}>Block</Button>
+  </th>
+              <th className={styles.transparent}>
   {/* <Button className={styles.update}>
     <FontAwesomeIcon icon={faEdit} />
   </Button> */}
   <Button
+
     className={styles.delete}
     onClick={() => handleDeleteUser(user._id)}>
     <FontAwesomeIcon icon={faTrash} />
-  </Button>
+  </Button> </th>
+
+  
 
 
-</td>
+</tr>
 
             </tr>
           ))}
@@ -220,4 +233,4 @@ const UserList = () => {
   );
 };
 
-export default requireAuth (UserList);
+export default UserList;

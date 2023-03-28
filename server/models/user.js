@@ -11,12 +11,13 @@ const secretKey = 'my-secret-key';
 
 const userSchema = new mongoose.Schema({
 	profile: { type: String },
-	firstName: { type: String, required: false },
-	lastName: { type: String, required: false },
-	email: { type: String, required: false },
-	password: { type: String, required: false },
+	firstName: { type: String, required: true },
+	lastName: { type: String, required: true },
+	email: { type: String, required: true },
+	password: { type: String, required: true },
 	verified: { type: Boolean, default: false },
-	phone : {type : String , required : false},
+	block :{type : Boolean,default : false},
+	phone : {type : String , required : true},
 	userType :{
 		type :String,
 		enum : ['User', 'Coach', 'GymManager','Admin'],
@@ -48,6 +49,12 @@ const userSchema = new mongoose.Schema({
 				return this.userType === 'Coach';
 			},
 		},
+		file: {
+			type: String,
+			required: function() {
+				return this.userType === 'Coach';
+			},
+		},
 	},
 	location :{
 		type : String,
@@ -55,16 +62,21 @@ const userSchema = new mongoose.Schema({
 			return this.userType === 'GymManager';
 		},
 	},
+
+	
+	token:String
+
+
 	
 });
 
 
-userSchema.methods.generateAuthToken = function () {
-	const token = jwt.sign({ _id: this._id }, secretKey, {
-		expiresIn: "7d",
-	});
-	return token;
-};
+// userSchema.methods.generateAuthToken = function () {
+// 	const token = jwt.sign({sub:this._id}, secretKey, {
+// 		expiresIn: "7d",
+// 	});
+// 	return token;
+// };
 
 const User = mongoose.model("user", userSchema);
 
@@ -132,7 +144,11 @@ const validate = (data) => {
 			then: Joi.object({
 			  title: Joi.string().required(),
 			  date: Joi.date().required(),
-			 // file: Joi.string().optional(),
+			  file: Joi.string()
+			  .pattern(/\.pdf$/)
+			  .messages({
+				  'string.pattern.base': 'Le fichier doit être un PDF',
+			  }),
 			}).required(),
 			otherwise: Joi.optional(),
 		  }),
@@ -146,5 +162,69 @@ const validate = (data) => {
   
 	return schema.validate(data, { abortEarly: false });
   };
+
+  const validateUpdate = (data) => {
+	const schema = Joi.object({
+	  firstName: Joi.string()
+		.empty()
+		.required()
+		.messages({
+		  'any.required': 'Le prénom est requis',
+		  'string.empty': 'Le prénom ne doit pas être vide',
+		}),
+	  lastName: Joi.string().required().messages({
+		'any.required': 'Le nom est requis',
+	  }),
+	  email: Joi.string()
+		.email()
+		.required()
+		.messages({
+		  'any.required': "L'adresse email est requise",
+		  'string.email': 'Veuillez entrer une adresse email valide',
+		}),
+	  phone: Joi.string()
+		.trim()
+		.required()
+		.pattern(/^\d{8}$/)
+		.messages({
+		  'any.required': 'Le numéro de téléphone est requis',
+		  'string.pattern.base': 'Le numéro de téléphone doit être composé de 8 chiffres',
+		}),
+
+		experience: Joi.when('userType', {
+			is: 'Coach',
+			then: Joi.number().required(),
+			otherwise: Joi.number().optional()
+		  }),
+		  gender: Joi.when('userType', {
+			is: 'Coach',
+			then: Joi.string().valid('man', 'woman').required(),
+			otherwise: Joi.optional()
+		  }),
+		  certificate: Joi.when('userType', {
+			is: 'Coach',
+			then: Joi.object({
+			  title: Joi.string().required(),
+			  date: Joi.date().required(),
+			  file: Joi.string()
+			  .pattern(/\.pdf$/)
+			  .messages({
+				  'string.pattern.base': 'Le fichier doit être un PDF',
+			  }),
+			}).required(),
+			otherwise: Joi.optional(),
+		  }),
+		  location: Joi.when('userType', {
+			is: 'GymManager',
+			then: Joi.string().required(),
+			otherwise: Joi.string().optional()
+		  }),
+
+	});
   
-module.exports = { User, validate };
+	return schema.validate(data, { abortEarly: false });
+  };
+  
+  
+  
+module.exports = { User, validate ,validateUpdate};

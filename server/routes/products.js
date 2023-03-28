@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer'); // Add this line
+ const Stripe = require('stripe')(process.env.SECRET_KEY);
+ const bodyParser = require('body-parser');
+
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -96,5 +99,32 @@ async function getProduct(req, res, next) {
     res.status(500).json({ error: err.message });
   }
 }
+
+router.post('/payment', async (req, res) => {
+  let status, error;
+  const { token, amount } = req.body;
+  try {
+    await Stripe.charges.create({
+      source: token.id,
+      amount,
+      currency: 'usd',
+    });
+    status = 'success';
+  } catch (error) {
+    console.log(error);
+    status = 'Failure';
+  }
+  res.json({ error, status });
+});
+
+
+// define a route for auto-suggest search
+router.get('/search', (req, res) => {
+  const term = req.query.term.toLowerCase();
+  const suggestions = Product.filter((product) => product.name.toLowerCase().startsWith(term));
+  res.json(suggestions);
+});
+
+
 
 module.exports = router;
