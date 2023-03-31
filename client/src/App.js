@@ -21,7 +21,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Profile from "./components/frontoffice/authentification/Profile/index";
 import { useEffect, useState } from 'react';
 import UpdateUser from "./components/frontoffice/update";
-
+import GymFront from "./components/frontoffice/GymManagement/GymFront";
+import Gyms from "./components/frontoffice/GymManagement/Gym";
+import GymDetails from "./components/frontoffice/GymManagement/GymDetails";
+import GymSubscribe from "./components/frontoffice/GymManagement/GymSubscribe";
+import StripeContainer from "./components/frontoffice/GymManagement/StripeContainer";
 
 
 
@@ -54,6 +58,13 @@ function App() {
 		      <Route path="/password-reset/:id/:token" element={<PasswordReset />} />
 
 
+
+          {/* <Route path="/gym" element={<GymList/>} /> */}
+          <Route path="/gyms" element={<Gyms/>} />
+          <Route path="/gymf" element={<GymFront/>} />
+          <Route path="/gymDetails/:id" element={<GymDetails/>} />
+          <Route path="/subscribe" element={<GymSubscribe/>} />
+          <Route path="/subscribeGym/:idg/:idu" element={<StripeContainer/>} />
 
 
         {/* Add more routes for other components */}

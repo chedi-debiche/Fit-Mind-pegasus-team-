@@ -6,11 +6,14 @@ const app = express();
 const cors = require("cors");
 const connection = require("./db");
 const userRoutes = require("./routes/users");
+const gymRoutes = require("./routes/gym");
 const authRoutes = require("./routes/auth");
 const passwordResetRoutes = require("./routes/passwordReset");
 const path = require("path");
 const cookieParser=require('cookie-parser');
 const session= require('express-session')
+const multer = require("multer");
+
 
 
 
@@ -54,19 +57,11 @@ app.delete("/api/users/:id", userRoutes.delete);
 app.put("/api/users/:id/block", userRoutes.put);
 
 
+app.use('/uploads', express.static('uploads'));
+app.use("/api/gyms",gymRoutes);
 
 const port = process.env.PORT || 5000;
-/** POST: http://localhost:8080/uploads  */
-//  app.post("/uploads", async (req, res) => {
-//      const body = req.body;
-//      try{
-//          const newImage = await Post.create(body)
-//          newImage.save();
-//          res.status(201).json({ msg : "New image uploaded...!"})
-//      }catch(error){
-//          res.status(409).json({ message : error.message })
-//     }
-//  })
+
 
 app.listen(port, console.log(`Listening on port ${port}...`));
 

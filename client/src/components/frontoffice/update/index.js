@@ -30,7 +30,7 @@ useEffect(()=>{
 	  } 
 	)
 	 .then(response=>response.json())
-	 .then(({ _id,password,verified,__v, ...data }) => setData(data))
+	 .then(({ _id,password,verified,block,__v, ...data }) => setData(data))
 	.catch(error =>console.error(error));
 },[id]);
 
