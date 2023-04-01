@@ -54,20 +54,14 @@ const HeaderFront = () => {
       <li><Link to="/">Home</Link></li>
       <li><Link to="/about">About</Link></li>
       <li><Link to="/gyms">Gyms</Link></li>
+      <li><Link to="/gymsmanagement">Gyms Management</Link></li>
       <li><Link to="/coaches">Coaches</Link></li>
       <li><Link to="/products">Products</Link></li>
 
-      <li>
-        <Link to="/blog">Blog</Link>
-        <ul className="submenu">
-          <li><Link to="/blog">Blog</Link></li>
-          <li><Link to="/blog_details">Blog Details</Link></li>
-          <li><Link to="/elements">Elements</Link></li>
-        </ul>
-      </li>
+
       <li><Link to="/contact">Contact</Link></li>
       <li>
-        <Link to="/blog">Start the adventure</Link>
+        <Link to="/blog">Start adventure</Link>
         <ul className="submenu">
           <li><Link to="/signup">Sign up </Link></li>
           <li><Link to="/signin">Sign in</Link></li>

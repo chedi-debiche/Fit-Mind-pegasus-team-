@@ -172,6 +172,66 @@ router.post("/add", upload.array('photo', 5), async (req, res) => {
 	}
 });
 
+/*
+router.post("/addd", upload.single('photo'), async (req, res) => {
+	try {
+		const { error } = validate(req.body);
+		if (error)
+			return res.status(400).send({ message: error.details[0].message });
+
+		let gymExist = await Gym.findOne({ name: req.body.name });
+		if (gymExist)
+			return res
+				.status(409)
+				.send({ message: "Gym already Exist!" });
+        const gym=new Gym({
+            name: req.body.name,
+            description: req.body.description,
+            services: req.body.services,
+            photo: req.file.filename,
+            localisation: req.body.localisation,
+
+        });
+
+		await gym.save();
+		res.status(201)
+			.send({ message: "Gym added successfully" });
+	} catch (error) {
+		console.log(error);
+		res.status(500).send({ message: "Internal Server Error" });
+	}
+});
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //getAll
 router.get('/getAll', async (req, res) => {
@@ -184,12 +244,13 @@ router.get('/getAll', async (req, res) => {
 });
 
 
+
 //getById
-router.get("/getById/:id",async (req, res) => {
+router.get("/:id",async (req, res) => {
 	try {
 		const data=await Gym.findById(req.params.id);
 		res.json(data);
-	
+		//res.status(200).send(data);
 	} catch (err) {
 		res.send(err)
 	}
@@ -198,7 +259,7 @@ router.get("/getById/:id",async (req, res) => {
 
 //delete
 
-router.delete("/delete/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
 	try {
 	  const gym = await Gym.findById(req.params.id);
 	  if (!gym)
@@ -211,7 +272,7 @@ router.delete("/delete/:id", async (req, res) => {
 	  console.log(error);
 	  res.status(500).send({ message: "Internal Server Error" });
 	}
-  });
+  }); 
 
 
 // update

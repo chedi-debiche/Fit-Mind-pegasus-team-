@@ -16,6 +16,7 @@ function Gyms() {
       const response = await fetch('http://localhost:5000/api/gyms/getAll');
       const data = await response.json();
       setGyms(data);
+      console.log(token)
     }
     fetchGyms();
   }, []);
