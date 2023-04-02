@@ -62,6 +62,8 @@ app.use('/uploads', express.static('uploads'));
 app.get("/api/gyms", gymRoutes.get);
 
 
+
+
 app.use("/api/gyms",gymRoutes);
 app.delete("/api/gyms/:id", gymRoutes.delete);
 

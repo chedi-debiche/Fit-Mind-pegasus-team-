@@ -66,6 +66,7 @@ const validate = (data) => {
 		
 	});
   
+  
 	return schema.validate(data, { abortEarly: false });
   };
 

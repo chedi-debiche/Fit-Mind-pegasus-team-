@@ -208,33 +208,6 @@ router.post("/addd", upload.single('photo'), async (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //getAll
 router.get("/getAll", async (req, res) => {
     try {
@@ -250,7 +223,7 @@ router.get("/getAll", async (req, res) => {
 
 
 //getById
-router.get("/:id",async (req, res) => {
+router.get("/getbyid/:id",async (req, res) => {
 	try {
 		const data=await Gym.findById(req.params.id);
 		res.json(data);
@@ -260,6 +233,31 @@ router.get("/:id",async (req, res) => {
 	}
 });
 
+
+//find by localisation
+
+  router.get("/findbyloc/:localisation", async (req, res) => {
+	const localisation = req.params.localisation;
+	const filteredGyms = await Gym.find({ localisation: localisation }).exec();
+	res.json(filteredGyms);
+  });
+
+  
+
+
+/*find by name
+ router.get("/findbyName/:name", async (req, res) => {
+	const name = req.params.name;
+	const filteredGyms = await Gym.find({ name: name }).exec();
+	res.json(filteredGyms);
+  });*/
+
+ /* //find by service
+  router.get("/findbyService/:services", async (req, res) => {
+	const services = req.params.services;
+	const filteredGyms = await Gym.find({ services: services }).exec();
+	res.json(filteredGyms);
+  });*/
 
 //delete
 

@@ -3,7 +3,7 @@ import axios from "axios";
 import { useParams,Link } from 'react-router-dom';
 
 import { Form,Button } from 'react-bootstrap';
-import avatar from '../../profile.png';
+
 import styles from "./styles.module.css";
 
 
@@ -11,17 +11,19 @@ import styles from "./styles.module.css";
 
 
 const Profile = () => {
-  const [user, setUser]= useState([{
-    // firstName : "",
-    // lastName : "",
-    // email:"",
-    // phone:"",
+  const [data, setData]= useState([{
+    firstName:"",
+    lastName:"",
+    email:"",
+    phone:"",
+	 userType:""
+   
   }]);
   const {id} = useParams();
   const token = localStorage.getItem('token');
   const url = "http://localhost:5000/api/users/getById";
   //const { data: res } = await axios.get(`${url}/${id}`);
-  const getUser = async()=>{
+  const getData = async()=>{
     try{
     const result = await axios.get(`${url}/${id}`
     ,{
@@ -31,19 +33,19 @@ const Profile = () => {
     }
     );
     //console.log(result)
-    setUser(result.data);
+    setData(result.data);
   }catch(error){
     console.error(error);
   }
 };
   useEffect(() => {
-    getUser();
+    getData();
 
     },[]);
 
   
 console.log("AaAaAa")
-console.log(user)
+console.log(data)
 
     return (
         <main>
@@ -66,7 +68,7 @@ console.log(user)
                         <div className={styles.left}>
                             <h1>Profile <br/>details ! </h1>
                             <h1></h1>
-                            < Link to={`/update/${user._id}`} >
+                            < Link to={`/update/${data._id}`} >
                            <button type="button" className={styles.white_btn}>
                            Update
                           </button>
@@ -82,21 +84,82 @@ console.log(user)
                         
                         </div>
                         <div className={styles.right}>
-                        
-                        <br></br><br></br>
-                         <img src={avatar} className={styles.profile_img} alt="avatar"  /> 
+                         
+
+
+                         {data.userType === "User" ? (
+                         <div>
+                          <br></br><br></br>
+                         
                          <h1>firstName</h1>
-                         <strong>{user.firstName}</strong>
+                         <strong>{data.firstName}</strong>
                          <br></br><br></br>
                          <h1>lastName</h1>
-                         <strong>{user.lastName}</strong>
+                         <strong>{data.lastName}</strong>
                          <br></br><br></br>
                          <h1>Email</h1>
-                         <strong>{user.email}</strong>
+                         <strong>{data.email}</strong>
                          <br></br><br></br>
                          <h1>Phone</h1>
-                         <strong>{user.phone}</strong>
+                         <strong>{data.phone}</strong>
                          <br></br><br></br>
+                         </div>
+                         ) : data.userType === "Coach" ? (
+                         <div>
+                         <h1>firstName</h1>
+                         <strong>{data.firstName}</strong>
+                         <br></br><br></br>
+                         <h1>lastName</h1>
+                         <strong>{data.lastName}</strong>
+                         <br></br><br></br>
+                         <h1>Email</h1>
+                         <strong>{data.email}</strong>
+                         <br></br><br></br>
+                         <h1>Phone</h1>
+                         <strong>{data.phone}</strong>
+                         <br></br><br></br>
+                         <h1>Experience</h1>
+                         <strong>{data.experience}</strong>
+                         <h1>Certificate Title</h1>
+                         <strong>{data.certificate.title}</strong>
+                         <h1>Certificate Date</h1>
+                         <strong>{data.certificate.date}</strong>
+                         <h1>Gender</h1>
+                         <strong>{data.gender}</strong>
+
+
+                         </div>):(
+                          <div>
+                          <h1>firstName</h1>
+                         <strong>{data.firstName}</strong>
+                         <br></br><br></br>
+                         <h1>lastName</h1>
+                         <strong>{data.lastName}</strong>
+                         <br></br><br></br>
+                         <h1>Email</h1>
+                         <strong>{data.email}</strong>
+                         <br></br><br></br>
+                         <h1>Phone</h1>
+                         <strong>{data.phone}</strong>
+                         <br></br><br></br>
+                         <h1>Location</h1>
+                         <strong>{data.location}</strong>
+                          </div>
+                         )}
+                         
+      
+      
+
+   
+
+                         
+                         
+                          
+                          
+                          
+                         
+                         
+                         
                         </div>
                     </div>
                 </div>
