@@ -8,6 +8,8 @@ const Subscription = require('../models/subscription')
 const upload = require('../config/multerConfig');
 const path = require('path');
 const { default: Stripe } = require('stripe');
+const Joi = require("joi");
+
 
 
 
@@ -234,7 +236,7 @@ router.post("/addd", upload.single('photo'), async (req, res) => {
 
 
 //getAll
-router.get('/getAll', async (req, res) => {
+router.get("/getAll", async (req, res) => {
     try {
       const gyms = await Gym.find();
       res.status(200).send(gyms);
@@ -242,6 +244,8 @@ router.get('/getAll', async (req, res) => {
       res.status(500).json({ error: err.message });
     }
 });
+
+//get
 
 
 
@@ -275,6 +279,9 @@ router.delete("/:id", async (req, res) => {
   }); 
 
 
+
+
+  
 // update
 router.put("/update/:id", upload.array('photo', 5),async (req,res)=>{
 	

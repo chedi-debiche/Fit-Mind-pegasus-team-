@@ -58,7 +58,12 @@ app.put("/api/users/:id/block", userRoutes.put);
 
 
 app.use('/uploads', express.static('uploads'));
+// Route to display gyms
+app.get("/api/gyms", gymRoutes.get);
+
+
 app.use("/api/gyms",gymRoutes);
+app.delete("/api/gyms/:id", gymRoutes.delete);
 
 const port = process.env.PORT || 5000;
 

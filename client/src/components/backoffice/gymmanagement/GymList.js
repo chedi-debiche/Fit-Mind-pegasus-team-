@@ -15,81 +15,44 @@ import FileSaver from "file-saver";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
+/*const GymList = () => {
+    const [gyms, setGyms] = useState([]);
+    const [deletedGymId, setDeletedGymId] = useState(null);*/
+const GymList = () => {
+    const [gyms, setGyms] = useState([]);
+    const [deletedGymId, setDeletedGymId] = useState(null);
+   
+   
+    useEffect(() => {
+        const fetchGyms = async () => {
+          const response = await axios.get("http://localhost:5000/api/gyms/getAll");//questio,
+          setGyms(response.data);
+        };
+        fetchGyms();
+    }, [deletedGymId]);
+
+    const handleDeleteGym = async (gymId) => {
+        try {
+          await axios.delete(`http://localhost:5000/api/gyms/${gymId}`);//question
+          setDeletedGymId(gymId);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      const handleUndoDelete = () => {
+        setDeletedGymId(null);
+      };
 
 
-
-// 
-
-
-
-const UserList = () => {
-  const [users, setUsers] = useState([]);
-  const [deletedUserId, setDeletedUserId] = useState(null);
-  const [blockUser, setBlockedUser] = useState(null) ;
-  const [valideCoach, setValideCoach] = useState(null) ;
-
-  
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const response = await axios.get("http://localhost:5000/api/users");
-      setUsers(response.data);
-    };
-    
-    fetchUsers();
-  }, [deletedUserId,blockUser,valideCoach]);
-
-  const handleDeleteUser = async (userId) => {
-    try {
-      await axios.delete(`http://localhost:5000/api/users/${userId}`);
-      setDeletedUserId(userId);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-
-
-  const handleUndoDelete = () => {
-    setDeletedUserId(null);
-  };
-
-  const handleBlockUser = async (userId) => {
-    try {
-      await axios.put(`http://localhost:5000/api/users/block/${userId}`);
-
-      setBlockedUser(blockUser+1) ;
-      console.log(blockUser+1) ;
-      
-
-    }
-    catch (error) {
-      console.log(error);
-    }
-  }
-  //validecoach
-  const handleValideCoach = async (userId) =>
-{
-  try {
-    await axios.put(`http://localhost:5000/api/users/${userId}/valide`);
-
-
-    setValideCoach(valideCoach+1) ;
-    console.log(valideCoach+1) ;
-  }
-  catch (error) {
-    console.log(error);
-  }
-}
 
 //export to excel file function : 
-  const handleExportToExcel = (filteredUsers) => {
+const handleExportToExcel = (filteredUsers) => {
     const worksheet = XLSX.utils.json_to_sheet(filteredUsers);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Users");
     const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
     const blob = new Blob([excelBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8" });
-    FileSaver.saveAs(blob, "users list.xlsx");
+    FileSaver.saveAs(blob, "gyms list.xlsx");
   };
   
   //export to pdf personalised file 
@@ -118,7 +81,7 @@ const UserList = () => {
       // Add the title
       pdf.setFontSize(18);
       pdf.setTextColor("blue");
-      pdf.text("Users List", pdf.internal.pageSize.getWidth() / 2, 20, { align: "center" });
+      pdf.text("gyms List", pdf.internal.pageSize.getWidth() / 2, 20, { align: "center" });
   
       // Add the table image
       pdf.addImage(imgData, "PNG", 10, 40, imgWidth, imgHeight);
@@ -145,14 +108,14 @@ const UserList = () => {
       // Add the confidential information paragraph
       pdf.setFontSize(10);
       pdf.setTextColor("red");
-      const confidentialText = "Confidential information:  \n This users table information is highly confidential and can only be accessed by the Fitmind website admin ";
+      const confidentialText = "Confidential information:  \n This gyms table information is highly confidential and can only be accessed by the Fitmind website admin ";
       const confidentialTextWidth = pdf.getStringUnitWidth(confidentialText) * pdf.internal.getFontSize() / pdf.internal.scaleFactor;
       const confidentialX = pdf.internal.pageSize.getWidth() / 2 - confidentialTextWidth / 2;
       const confidentialY = 40 + imgHeight + pageHeight / 2;
       pdf.text(confidentialText, confidentialX, confidentialY);
   
       // Save the PDF file
-      pdf.save("users list.pdf");
+      pdf.save("gyms list.pdf");
     });
   };
   
@@ -160,78 +123,47 @@ const UserList = () => {
   
 
 
-  
 
-  const filteredUsers = users.filter((user) => user._id !== deletedUserId);
 
+ const filteredGyms = gyms.filter((gym) => gym._id !== deletedGymId);
+      
   return (
     <div className={styles.container}>
       <Header/>
       <SideNav/>
 
-      <h2>User List</h2>
+      <h2>Gym List</h2>
       <table className={styles.table}>
         <thead>
           <tr>
-            {/* <th>Profile</th> */}
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            {/* <th>Password</th> */}
-            <th>Verified</th>
-            <th>Phone</th>
-            <th>User Type</th>
-            <th>Location</th>
-            <th>Experience</th>
-            <th>Gender</th>
-            <th>Certificate Title</th>
-            <th>Certificate Date</th>
-            <th>Certificate File</th>
-            <th>Block</th>
-            <th>Actions</th>
+          
+            <th> Name</th>
+            <th> Description</th>
+            <th> Services </th>
+            <th> Localisation</th>
+            
           </tr>
         </thead>
         <tbody>
-          {filteredUsers.map((user) => (
-            <tr key={user._id}>
-              {/* <td>{user.profile}</td> */}
-              <td>{user.firstName}</td>
-              <td>{user.lastName}</td>
-              <td>{user.email}</td>
-              {/* <td>{user.password}</td> */}
-              <td>{user.verified ? "Yes" : "No"}</td>
-              <td>{user.phone}</td>
-              <td>{user.userType}</td>
-              <td>{user.location}</td>
-              <td>{user.experience}</td>
-              <td>{user.gender}</td>
-              <td>{user.certificate ? user.certificate.title : "-"}</td>
-              <td>{user.certificate ? user.certificate.date : "-"}</td>
-              <td>{user.certificate ? user.certificate.file : "-"}</td>
-              <td>{user.userType == "Coach" && user.valide ? "Yes" : "No" || user.userType == "User" && user.valide ? "-" : "-"}</td>
-              <td>{user.block ? "Yes" : "No"}</td>
-
+          {filteredGyms.map((gym) => (
+            <tr key={gym._id}>
+             
+           
+              <td>{gym.name}</td>
+              <td>{gym.description}</td>
+              <td>{gym.services}</td>
+              <td>{gym.localisation}</td>
               <tr>
-
-
-              <th className= {styles.transparent}>
-  <Button  onClick={()=> handleBlockUser(user._id)}>Block</Button>
-  </th>
               <th className={styles.transparent}>
-  {/* <Button className={styles.update}>
-    <FontAwesomeIcon icon={faEdit} />
-  </Button> */}
+  
   <Button
 
     className={styles.delete}
-    onClick={() => handleDeleteUser(user._id)}>
+    onClick={() => handleDeleteGym(gym._id)}>
     <FontAwesomeIcon icon={faTrash} />
   </Button> </th>
 
-  <th className= {styles.transparent}>
-  <Button  onClick={()=> handleValideCoach(user._id)}>Valide</Button>
-  </th>
-
+  
   
 
 
@@ -244,13 +176,13 @@ const UserList = () => {
 
       </table>
 
-      <Button onClick={() => handleExportToExcel(filteredUsers)}>Export to Excel</Button>
+      
+      <Button onClick={() => handleExportToExcel(filteredGyms)}>Export to Excel</Button>
         <Button onClick={handleExportToPdf}>Export to PDF</Button>
-
 
       <Footer/>
     </div>
   );
 };
 
-export default UserList;
+export default GymList;

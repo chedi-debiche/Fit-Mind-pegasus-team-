@@ -21,6 +21,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Profile from "./components/frontoffice/authentification/Profile/index";
 import { useEffect, useState } from 'react';
 import UpdateUser from "./components/frontoffice/update";
+import  Gym  from "./components/backoffice/gymmanagement/GymList";
 import GymFront from "./components/frontoffice/GymManagement/GymFront";
 import Gyms from "./components/frontoffice/GymManagement/Gym";
 import GymDetails from "./components/frontoffice/GymManagement/GymDetails";
@@ -50,6 +51,7 @@ function App() {
            <Route path="/signedin" element={<Signedin/>} />
            <Route path="/test" element={<HeaderSignedInClient/>} />
            <Route path="/user" element={<User/>} />
+           <Route path="/gym" element={<Gym/>} />
 
 
 

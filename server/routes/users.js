@@ -86,6 +86,35 @@ router.post("/", async (req, res) => {
 		res.status(500).send({ message: "Internal Server Error" });
 	}
 });
+router.put("/:id/valide", async (req, res) => {
+    try {
+
+        const Valide = { valide: true };
+        const unValide = { valide: false };
+		
+
+         us = await User.findById(req.params.id) ;
+        if (us.valide==false && us.userType== "Coach"){
+      await  us.updateOne( Valide, { new: true });
+      res.status(201).send("valide");
+        }
+        else if ( us.userType== "Coach" ){
+        await us.updateOne(unValide,{new: true}) ;
+        res.status(201).send("unvalide");
+        }
+
+        else {
+            res.status(200).send("not coach") ;
+        }
+        
+
+
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ message: "Internal Server Error" });
+    }
+  });
+
 
 
 router.get("/:id/verify/:token/", async (req, res) => {

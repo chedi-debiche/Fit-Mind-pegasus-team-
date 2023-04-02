@@ -40,7 +40,7 @@ const SideNav = () => {
               </a>
             </li>
             <li className="nav-item">
-              <a href="./index3.html" className="nav-link">
+              <a href="./Gym" className="nav-link">
                 <i className="far fa-circle nav-icon" />
                 <p>Gym management</p>
               </a>

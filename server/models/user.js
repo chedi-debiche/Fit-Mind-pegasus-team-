@@ -29,6 +29,12 @@ const userSchema = new mongoose.Schema({
 			return this.userType === 'Coach';
 		},
 	},
+	valide :{
+		type : Boolean,
+		required: function() {
+			return this.userType === 'Coach';
+		},
+	},
 	gender: {
 		type: String,
 		enum: ['man', 'woman'],
