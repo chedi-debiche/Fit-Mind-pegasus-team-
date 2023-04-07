@@ -4,6 +4,8 @@ import HomeFront from '../HomeFront'
 import FooterFront from './FooterFront'
 import HeaderSignedInClient from './HeaderSignedInClient'
 import CheckUser from '../authentification/CheckUser'
+import HeaderCoaches from './HeaderCoaches'
+
 
 
 const signedin = () => {
@@ -15,7 +17,7 @@ const signedin = () => {
 
      
         <>
-        <HeaderSignedInClient/>
+        <HeaderCoaches/>
 
         <HomeFront/>
 

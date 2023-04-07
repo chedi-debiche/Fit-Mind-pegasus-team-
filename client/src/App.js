@@ -21,6 +21,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Profile from "./components/frontoffice/authentification/Profile/index";
 import { useEffect, useState } from 'react';
 import UpdateUser from "./components/frontoffice/update";
+import HeaderCoaches from "./components/frontoffice/shared/HeaderCoaches";
+ import Coaching from "./components/frontoffice/CoachMangement/Coaching";
+ import CoachingCard from "./components/frontoffice/CoachMangement/CoachingCard";
+ import Coachings from "./components/frontoffice/CoachMangement/Coachings";
+ import SignedinUser from "./components/frontoffice/shared/signedinUser";
+ import CoachingsClient from "./components/frontoffice/CoachMangement/CoachingsClient";
+ import CoachList from "./components/backoffice/coachmanagement/CoachList";
+
 
 
 
@@ -31,6 +39,7 @@ function App() {
 
     <BrowserRouter>
     <div>
+     
       <Routes>
            <Route path="/" element={<HomeFront />} />
            <Route path="/about" element={<About/>} />
@@ -43,8 +52,18 @@ function App() {
 
 
            <Route path="/signedin" element={<Signedin/>} />
+           <Route path="/signedinUser" element={<SignedinUser/>} /> 
            <Route path="/test" element={<HeaderSignedInClient/>} />
+           <Route path="/testt" element={<HeaderCoaches/>} />
            <Route path="/user" element={<User/>} />
+           <Route path="/CoachList" element={<CoachList/>} /> 
+
+
+
+           <Route path="/Coaching" element={<Coaching/>} /> 
+           <Route path="/CoachingCard" element={<CoachingCard/>} />
+           <Route path="/Coachings" element={<Coachings/>} />
+           <Route path="/CoachingsClient" element={<CoachingsClient/>} />
 
 
 

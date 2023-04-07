@@ -33,12 +33,12 @@ const SideNav = () => {
                 <p>User management</p>
               </Link>
             </li>
-            <li className="nav-item">
-              <a href="./index2.html" className="nav-link">
+             <li className="nav-item">
+            <Link to="/CoachList" className="nav-link active">
                 <i className="far fa-circle nav-icon" />
                 <p>Coach management</p>
-              </a>
-            </li>
+                </Link>
+            </li> 
             <li className="nav-item">
               <a href="./index3.html" className="nav-link">
                 <i className="far fa-circle nav-icon" />

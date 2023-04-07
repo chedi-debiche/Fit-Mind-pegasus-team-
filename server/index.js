@@ -10,7 +10,10 @@ const authRoutes = require("./routes/auth");
 const passwordResetRoutes = require("./routes/passwordReset");
 const path = require("path");
 const cookieParser=require('cookie-parser');
-const session= require('express-session')
+const session= require('express-session');
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+const coachingRoutes = require("./routes/coachings"); // import products router
 
 
 
@@ -52,6 +55,9 @@ app.get("/api/users", userRoutes.get);
 app.delete("/api/users/:id", userRoutes.delete);
 // Route to block a user
 app.put("/api/users/:id/block", userRoutes.put);
+
+app.use("/api/coachings", coachingRoutes); // use products router
+app.use('/uploads', express.static('uploads'));
 
 
 
