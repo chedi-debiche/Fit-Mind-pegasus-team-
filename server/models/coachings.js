@@ -1,15 +1,14 @@
 const mongoose = require('mongoose');
 
-
 const CoachingSchema = new mongoose.Schema({
   nameCoaching: {
     type: String,
     required: true
   },
-  nameCoach: {
-    type: String,
-    required: true
-  },
+   nameCoach: {
+     type: String,
+     required: true
+   },
   description: {
     type: String,
     required: true
@@ -29,10 +28,24 @@ const CoachingSchema = new mongoose.Schema({
     required: true,
     enum: ['sport', 'psychologist']
   },
-  // user: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'User'
-  // }
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required:true
+  }
 });
+
+CoachingSchema.pre('save', function(next) {
+  if (!this.isModified('user')) {
+    return next();
+  }
+  if (!this.user) {
+    this.user = this._id;
+  }
+  next();
+});
+
+
+
 
 module.exports = mongoose.model('Coaching', CoachingSchema);

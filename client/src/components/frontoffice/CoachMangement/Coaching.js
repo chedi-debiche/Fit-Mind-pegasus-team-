@@ -3,6 +3,7 @@ import axios from 'axios';
 import styles from "./styles.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import requireAuth from '../authentification/requireAuth';
 // import { Button } from '@material-ui/core';
 // import SideNav from "../sharedBack/SideNav";
  import HeaderCoaches from "../shared/HeaderCoaches";
@@ -10,9 +11,10 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 
 
-const Coaching = () => {
+const Coaching = (props) => {
  // ken bel props jarrabha kif tna7i commentaire taa id user fel form data const Coaching = (props) => {
   // console.log(props);
+ // const [nameCoach, setNameCoach] = useState('');
   const [coachings, setCoachings] = useState([]);
   const [formValues, setFormValues] = useState({
     nameCoaching: '',
@@ -32,13 +34,13 @@ const Coaching = () => {
 
   const getCoachings = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/coachings');
+      const user = localStorage.getItem('userId');
+      const response = await axios.get(`http://localhost:5000/api/coachings/spesific?user=${user}`);
       setCoachings(response.data);
     } catch (error) {
       console.error(error);
     }
   };
-
   
 
   const handleSubmit = async (e) => {
@@ -51,7 +53,8 @@ const Coaching = () => {
       formData.append('image', formValues.image);
       formData.append('rating', 0);
       formData.append('category', formValues.category);
-    //  formData.append('user', props.user._id);
+      const userId = localStorage.getItem('userId');
+      formData.append('user', userId); // Add the user ID to the form data
 
       
       if (editing) {
@@ -199,7 +202,7 @@ const Coaching = () => {
         }
       />
     </div>
-    <div>
+     <div>
       <label htmlFor="nameCoach">nameCoach:</label>
       <input
         type="text"
@@ -209,7 +212,7 @@ const Coaching = () => {
           setFormValues({ ...formValues, nameCoach: e.target.value })
         }
       />
-    </div>
+    </div>  
     <div>
       <label htmlFor="description">Description:</label>
       <textarea
@@ -244,7 +247,7 @@ const Coaching = () => {
 );
 };
 
-export default Coaching;
+export default requireAuth(Coaching);
 
 
 
