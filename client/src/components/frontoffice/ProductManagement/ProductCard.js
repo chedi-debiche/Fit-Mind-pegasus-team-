@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import styles from './styles.css';
 import requireAuth from '../authentification/requireAuth';
 import { Link } from 'react-router-dom';
@@ -6,15 +6,32 @@ import axios from 'axios';
 import StripeCheckout from 'react-stripe-checkout';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import Rating from 'react-rating-stars-component';
 
 function ProductCard({ product, onAddToCart,props }) {
   const [showDetails, setShowDetails] = useState(false);
   const [productId, setProductId] = useState('');
   const [quantity, setQuantity] = useState('');
-  const priceForStripe = product.price * 100;
+  // const priceForStripe = product.price * 100;
+  let priceForStripe;
+if (product.promotion > 0) {
+  priceForStripe = (product.price * (1 - product.promotion / 100) );
+} else {
+  priceForStripe = product.price ;
+}
+
 const publishableKey = 'pk_test_51MqQubH8gtFTSlJTmkJ77QzT7tJHebL75910DWD3ahqR46duS0bNe6rkqVrhJrTVBW3bkKXxWMYViErJB7mDUtFC00Rzb2caZ5'
   // const { userId } = props;
   const MySwal = withReactContent(Swal);
+  const [message, setMessage] = useState('');
+  const [to, setTo] = useState('');
+
+  const price = product.promotion > 0 ? (product.price * (1 - (product.promotion / 100))) : product.price;
+  const [rating, setRating] = useState(0);
+  const [review, setReview] = useState('');
+  const [showMessage, setShowMessage] = useState(false);
+
+
 
 
   const handleShowDetails = () => {
@@ -37,6 +54,30 @@ const publishableKey = 'pk_test_51MqQubH8gtFTSlJTmkJ77QzT7tJHebL75910DWD3ahqR46d
     });
   };
 
+  const handleAddReview = async () => {
+    try {
+      const userId = localStorage.getItem('userId');
+      const response = await axios.post(
+        `http://localhost:5000/api/products/${product._id}/reviews`,
+        {
+          userId,
+          rating,
+          review,
+        }
+      );
+      console.log(response.data);
+      setShowMessage(true);
+    } catch (error) {
+      console.error(error);
+      setMessage('Something went wrong. Please try again later.');
+    }
+
+  };
+
+
+ 
+
+
 
   const payNow = async token => {
     try {
@@ -50,12 +91,35 @@ const publishableKey = 'pk_test_51MqQubH8gtFTSlJTmkJ77QzT7tJHebL75910DWD3ahqR46d
       });
       if (response.status === 200) {
         handleSuccess();
+        // Get user's phone number from the database using the user ID stored in the local storage
+        const userId = localStorage.getItem('userId');
+        const userResponse = await axios.get(`http://localhost:5000/api/users/${userId}`);
+        const phoneNumber = userResponse.data.phone;
+        console.log(phoneNumber); // Check the value of phoneNumber
+
+        // Send SMS message to user
+        const message = `Your payment of ${product.price} dinars has been successful! Thank you for your purchase. have a great day dear customer , FitMind TEAM.`;
+        const to = phoneNumber;
+        axios.post('http://localhost:5000/api/products/send-sms', { message, to })
+          .then((res) => {
+            console.log(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     } catch (error) {
       handleFailure();
       console.log(error);
     }
   };
+  
+  
+  
+  
+
+  
+  
 
 
   const handleAddToCart = async () => {
@@ -109,34 +173,63 @@ const publishableKey = 'pk_test_51MqQubH8gtFTSlJTmkJ77QzT7tJHebL75910DWD3ahqR46d
         {showDetails && (
           <div>
             <h5>Product details : </h5>
+            {product.promotion > 0 &&
+  <p style={{fontSize: '24px', textDecoration: 'underline', fontWeight: 'bold', color: 'red'}}>
+    {`New Price:  ${price} Dt`}
+  </p>
+}
 
-            <p>{`Price: $${product.price}`}</p> 
+<p style={{fontSize: '24px', fontWeight: 'bold', color: 'black'}}>Price: {`${product.price} Dt`}</p>
             <p>{`Quantity: ${product.quantity}`}</p>
             <p>{`Description: ${product.description}`}</p>
-            {/* <button
-              className="genric-btn danger radius"
-              style={{
-                fontSize: '20px',
-                padding: '10px 20px',
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-              onClick={handleAddToCart}
-            >
-              Add to Cart
-            </button> */}
-            <StripeCheckout
+         
+        <StripeCheckout
         stripeKey={publishableKey}
         label="Pay Now"
         name="Pay With Credit Card"
         billingAddress
         shippingAddress
         amount={priceForStripe}
-        description={`Your total is $${product.price}`}
+        description={`Your total is  ${priceForStripe} Dt`}
        token={payNow}
+       
              />
+             <br/>
+            <h4>rating :  </h4>
+
+<div style={{ display: 'flex', flexDirection: 'column' }}>
+      <Rating
+        count={5}
+        size={35}
+        activeColor="#ffd700"
+        value={rating}
+        onChange={(newRating) => setRating(newRating)}
+      />
+      <div>
+</div>
+
+<textarea
+  className="form-control"
+  placeholder="Write a review"
+  value={review}
+  onChange={(e) => setReview(e.target.value)}
+/>
 
 
+
+
+      
+      <button
+        className="btn btn-danger"
+        style={{ fontSize: '10px',  }}
+        onClick={() => handleAddReview()}
+      >
+        Submit Review
+      </button>
+              {/* conditionally render message */}
+              {showMessage && <p>Thank you for your review!</p>}
+
+    </div>
 
           </div>
         )}

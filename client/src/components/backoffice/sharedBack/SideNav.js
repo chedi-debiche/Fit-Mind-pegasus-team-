@@ -27,12 +27,31 @@ const SideNav = () => {
           </a>
           <ul className="nav nav-treeview">
             <li className="nav-item">
-
           <Link to="/User" className="nav-link active">
                 <i className="far fa-circle nav-icon" />
                 <p>User management</p>
               </Link>
             </li>
+            {/* module chedi  */}
+
+            <li className="nav-item">
+
+<Link to="/productsd" className="nav-link active">
+      <i className="far fa-circle nav-icon" />
+      <p>products management</p>
+    </Link>
+  </li>
+
+  <li className="nav-item">
+
+<Link to="/blogd" className="nav-link active">
+      <i className="far fa-circle nav-icon" />
+      <p>blog posts management</p>
+    </Link>
+  </li>
+
+              {/* module chedi  */}
+
             <li className="nav-item">
               <a href="./index2.html" className="nav-link">
                 <i className="far fa-circle nav-icon" />

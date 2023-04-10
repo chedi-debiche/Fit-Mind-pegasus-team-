@@ -52,6 +52,17 @@ router.get("/getById/:id",authent,async (req, res) => {
 	}
 });
 
+router.get('/:id', async (req, res) => {
+	try {
+	  const user = await User.findById(req.params.id);
+	  res.json(user);
+	} catch (err) {
+	  console.error(err.message);
+	  res.status(500).send('Server Error');
+	}
+  });
+  
+
 router.post("/", async (req, res) => {
 	try {
 		const { error } = validate(req.body);

@@ -9,6 +9,9 @@ import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons
 import HeaderSignedInClient from '../shared/HeaderSignedInClient';
 import { Link } from 'react-router-dom';
 import WelcomeMessage from './WelcomeMessage';
+import Dictaphone from './Dictaphone';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+
 function Products() {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -16,6 +19,7 @@ function Products() {
   const [maxPrice, setMaxPrice] = useState(1000);
   const [pageNumber, setPageNumber] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(9);
+  
 
   useEffect(() => {
     async function fetchProducts() {
@@ -45,6 +49,7 @@ function Products() {
     <div style={{ background: 'white' }} className="">
       <HeaderSignedInClient />
 <WelcomeMessage/>
+
       <div className="slider-area2">
         <div className="slider-height2 d-flex align-items-center">
           <div className="container">
@@ -68,9 +73,20 @@ function Products() {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="searchbar"
           />
-          <i className="fa fa-search search-icon"></i>
+          
+            {/* <i className="fa fa-microphone search-icon"></i> */}
+            <i class="fa fa-microphone search-icon" onClick={() => SpeechRecognition.startListening()}></i>
+
+
+
         </div>
       </div>
+      <i class="fa fa-microphone search-icon" onClick={() => SpeechRecognition.startListening()}></i>
+
+      <div className="col-md-4 mb-4">
+  <Dictaphone setSearchTerm={setSearchTerm} />
+</div>
+
 
       <div className="col-md-4 mb-4">
         <div className="price-range-container">
@@ -116,6 +132,8 @@ function Products() {
   pageClassName={'pagination-item'}
   pageLinkClassName={'pagination-link'}
 />
+
+
 
 
 

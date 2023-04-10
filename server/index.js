@@ -13,8 +13,9 @@ const cookieParser=require('cookie-parser');
 const session= require('express-session')
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
-const productRoutes = require("./routes/products"); // import products router
-const cartRoutes = require("./routes/Cart"); // import products router
+const productRoutes = require("./routes/products"); // 
+const cartRoutes = require("./routes/Cart"); // 
+const blogRoutes = require("./routes/blog"); // 
 
 
 
@@ -57,7 +58,8 @@ app.delete("/api/users/:id", userRoutes.delete);
 app.put("/api/users/:id/block", userRoutes.put);
 
 app.use("/api/products", productRoutes); // use products router
-app.use("/api/cart", cartRoutes); // use products router
+app.use("/api/cart", cartRoutes); // use products router 
+app.use("/api/blog", blogRoutes); // use products router 
 
 app.use('/uploads', express.static('uploads'));
 

@@ -25,8 +25,12 @@ import ProductList from "./components/backoffice/productmanagement/ProductList";
 import Products from "./components/frontoffice/ProductManagement/Products";
 import ProductCard from "./components/frontoffice/ProductManagement/ProductCard";
 import Cart from "./components/frontoffice/ProductManagement/Cart"
-
-
+import Dictaphone from "./components/frontoffice/ProductManagement/Dictaphone";
+import BlogList from "./components/frontoffice/blogManagement/BlogList";
+import CreateBlogPost from "./components/frontoffice/blogManagement/createBlog";
+import BlogUpdate from "./components/frontoffice/blogManagement/BlogUpdate";
+import Blogdashboard from "./components/backoffice/blogmanagement/BlogList";
+import BlogPost from "./components/frontoffice/blogManagement/BlogPost"
 
 
 function App() {
@@ -61,6 +65,17 @@ function App() {
           <Route path="/Products" element={<Products/>} />
           <Route path="/productcard" element={<ProductCard/>} />
           <Route path="/cart" element={<Cart/>} />
+          <Route path="/voice" element={<Dictaphone/>} />
+
+          <Route path="/blogd" element={<Blogdashboard/>} />
+          <Route path="/createblog" element={<CreateBlogPost/>} />
+          <Route path="/listBlog" element={<BlogList/>} />
+          {/* <Route path="/blog/:id/update" exact component={BlogUpdate} /> */}
+          <Route path="/blogpost/:id" element={<BlogPost/>} />
+
+          {/* <Route path="/blog/:id" element={<BlogUpdate/>} /> */}
+
+
 
 
 

@@ -8,6 +8,7 @@ import SideNav from "../sharedBack/SideNav";
 import Header from "../sharedBack/Header";
 import Footer from "../sharedBack/Footer";
 import requireAuth from '../../frontoffice/authentification/requireAuth';
+import Form from 'react-bootstrap/Form';
 
 
 
@@ -19,9 +20,20 @@ const ProductList = () => {
     price: '',
     image: '',
     quantity: '',
+    promotion: '',
+
   });
   const [editing, setEditing] = useState(false);
   const [editId, setEditId] = useState(null);
+  const [formErrors, setFormErrors] = useState({
+    name: '',
+    description: '',
+    price: '',
+    image: '',
+    quantity: '',
+    promotion: ''
+  });
+  
 
   useEffect(() => {
     getProducts();
@@ -38,16 +50,69 @@ const ProductList = () => {
     }
   };
 
+  const validateForm = () => {
+    const { name, description, price, image, quantity, promotion } = formValues;
+    const errors = {};
+  
+    if (!name) {
+      errors.name = 'Name is required';
+    }
+  
+    if (!description) {
+      errors.description = 'Description is required';
+    }
+  
+    if (!price) {
+      errors.price = 'Price is required';
+    } else if (isNaN(price)) {
+      errors.price = 'Price must be a number';
+    } else if (price < 0) {
+      errors.price = 'Price must be a positive number';
+    }
+  
+    if (!quantity) {
+      errors.quantity = 'Quantity is required';
+    } else if (isNaN(quantity)) {
+      errors.quantity = 'Quantity must be a number';
+    } else if (quantity < 0) {
+      errors.quantity = 'Quantity must be a positive number';
+    }
+  
+    if (!promotion) {
+      errors.promotion = 'Promotion is required';
+    } else if (isNaN(promotion)) {
+      errors.promotion = 'Promotion must be a number';
+    } else if (promotion < 0 || promotion > 100) {
+      errors.promotion = 'Promotion must be a positive number between 0 and 100';
+    }
+  
+    if (!image) {
+      errors.image = 'Image is required';
+    }
+  
+    setFormErrors(errors);
+    
+    // Return true if there are no errors
+    return Object.keys(errors).length === 0;
+  };
+  
+
   
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) {
+      return; // Arrêtez l'exécution de la fonction si les données ne sont pas valides
+    }
+  
     try {
       const formData = new FormData();
       formData.append('name', formValues.name);
       formData.append('description', formValues.description);
       formData.append('price', formValues.price);
       formData.append('quantity', formValues.quantity);
+      formData.append('promotion', formValues.promotion);
+
       formData.append('image', formValues.image);
       
       if (editing) {
@@ -62,10 +127,13 @@ const ProductList = () => {
         price: '',
         image: '',
         quantity: '',
+        promotion: '',
+
       });
       getProducts();
     } catch (error) {
       console.error(error);
+      
     }
   };
 
@@ -102,6 +170,8 @@ const ProductList = () => {
         <th>Price</th>
         <th>Image</th>
         <th>Quantity</th>
+        <th>promotion(en %)</th>
+
         <th>Actions</th>
       </tr>
     </thead>
@@ -119,6 +189,8 @@ const ProductList = () => {
             />
           </td>
           <td>{product.quantity}</td>
+          <td>{product.promotion}</td>
+
           <td>
 
 
@@ -138,68 +210,101 @@ const ProductList = () => {
   </table>
   <h2>{editing ? 'Edit Product' : 'Add Product'}</h2>
   <form onSubmit={handleSubmit} encType="multipart/form-data" className={styles.formcontainer}>
-    <div>
-      <label htmlFor="name">Name:</label>
-      <input
-        type="text"
-        id="name"
-        value={formValues.name}
-        onChange={(e) =>
-          setFormValues({ ...formValues, name: e.target.value })
-        }
-      />
-    </div>
-    <div>
-      <label htmlFor="description">Description:</label>
-      <textarea
-        id="description"
-        value={formValues.description}
-        onChange={(e) =>
-          setFormValues({ ...formValues, description: e.target.value })
-        }
-      />
-    </div>
-    <div>
-      <label htmlFor="price">Price:</label>
-      <input
-        type="number"
-        id="price"
-        value={formValues.price}
-        onChange={(e) =>
-          setFormValues({ ...formValues, price: e.target.value })
-        }
-      />
-    </div>
-    <div>
-       <label htmlFor="image">upload product picture</label> 
+  <div className="form-group">
+    <label htmlFor="name">Name:</label>
+    <input
+      type="text"
+      id="name"
+      className="form-control"
+      value={formValues.name}
+      onChange={(e) =>
+        setFormValues({ ...formValues, name: e.target.value })
+      }
+    />
+    {formErrors.name && <small className="form-text text-danger">{formErrors.name}</small>}
+  </div>
+
+  <div className="form-group">
+    <label htmlFor="description">Description:</label>
+    <textarea
+      id="description"
+      className="form-control"
+      value={formValues.description}
+      onChange={(e) =>
+        setFormValues({ ...formValues, description: e.target.value })
+      }
+    />
+    {formErrors.description && <small className="form-text text-danger">{formErrors.description}</small>}
+  </div>
+
+  <div className="form-group">
+    <label htmlFor="price">Price:</label>
+    <input
+      type="number"
+      id="price"
+      className="form-control"
+      value={formValues.price}
+      onChange={(e) =>
+        setFormValues({ ...formValues, price: e.target.value })
+      }
+    />
+    {formErrors.price && <small className="form-text text-danger">{formErrors.price}</small>}
+  </div>
+
+  <div className="form-group">
+    <label htmlFor="image">Image:</label>
+    <div className="custom-file">
       <input
         type="file"
         id="image"
-        className={styles.filedesign}
+        className="custom-file-input"
         onChange={(e) => {
           setFormValues({ ...formValues, image: e.target.files[0] });
         }}
       />
+      <label className="custom-file-label" htmlFor="image">
+        Choose file
+      </label>
     </div>
-    <div>
-      <label htmlFor="quantity">Quantity:</label>
+    {formErrors.image && <small className="form-text text-danger">{formErrors.image}</small>}
+  </div>
 
-      <input
-        type="number"
-        id="quantity"
-        value={formValues.quantity}
-        onChange={(e) =>
-          setFormValues({ ...formValues, quantity: e.target.value })
-        }
-      />
-    </div>
-    <button type="submit">{editing ? 'Update' : 'Add'}</button>
-    {editing && (
-      <button type="button" onClick={() => setEditing(false)}>
-        Cancel
-      </button>
-    )}
-  </form>
+  <div className="form-group">
+    <label htmlFor="quantity">Quantity:</label>
+    <input
+      type="number"
+      id="quantity"
+      className="form-control"
+      value={formValues.quantity}
+      onChange={(e) =>
+        setFormValues({ ...formValues, quantity: e.target.value })
+      }
+    />
+    {formErrors.quantity && <small className="form-text text-danger">{formErrors.quantity}</small>}
+  </div>
+
+  <div className="form-group">
+    <label htmlFor="promotion">Promotion (for example: 10 = 10%):</label>
+    <input
+      type="number"
+      id="promotion"
+      className="form-control"
+      value={formValues.promotion}
+      onChange={(e) =>
+        setFormValues({ ...formValues, promotion: e.target.value })
+      }
+    />
+    {formErrors.promotion && <small className="form-text text-danger">{formErrors.promotion}</small>}
+  </div>
+
+  <button type="submit" className="btn btn-primary">{editing ? 'Update' : 'Add'}</button>
+  {editing && (
+    <button type="button" className="btn btn-secondary" onClick={() => setEditing(false)}>
+      Cancel
+    </button>
+  )}
+</form>
+
   <Footer/>
 </div>
 );

@@ -80,8 +80,8 @@ const HeaderSignedInClient = () => {
       <li>
         <Link to="/blog">Blog</Link>
         <ul className="submenu">
-          <li><Link to="/blog">Blog</Link></li>
-          <li><Link to="/blog_details">Blog Details</Link></li>
+          <li><Link to="/listBlog">Blogs</Link></li>
+          <li><Link to="/createblog">create a new blog post</Link></li>
           <li><Link to="/elements">Elements</Link></li>
         </ul>
       </li>

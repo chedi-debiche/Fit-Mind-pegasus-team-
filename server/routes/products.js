@@ -3,9 +3,11 @@ const router = express.Router();
 const multer = require('multer'); // Add this line
  const Stripe = require('stripe')(process.env.SECRET_KEY);
  const bodyParser = require('body-parser');
-
+ const { User, validate ,validateUpdate} = require("../models/user");
+ const Product = require('../models/products');
 
 const storage = multer.diskStorage({
+
   destination: function (req, file, cb) {
     cb(null, 'uploads/'); // specify the upload directory
   },
@@ -16,7 +18,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage }); // create the Multer object
 
-const Product = require('../models/products');
+
+const accountSid = 'AC18ec9aedcf2464e929af3bb49ee96111';
+const authToken = '65e89533cfd3ec18860c7295a8ed4f42';
+const client = require('twilio')(accountSid, authToken);
+
 
 // Create a new product with image upload
 router.post('/', upload.single('image'), async (req, res) => {
@@ -26,7 +32,10 @@ router.post('/', upload.single('image'), async (req, res) => {
         description: req.body.description,
         price: req.body.price,
         image: req.file.filename, // store the filename in the database
-        quantity: req.body.quantity
+        quantity: req.body.quantity,
+        promotion: req.body.promotion
+
+
       });
       await product.save();
       res.status(201).json(product);
@@ -67,6 +76,9 @@ router.patch('/:id', getProduct, upload.single('image'), async (req, res) => {
     }
     if (req.body.quantity != null) {
       res.product.quantity = req.body.quantity;
+    }
+    if (req.body.promotion != null) {
+      res.product.promotion = req.body.promotion;
     }
     try {
       const updatedProduct = await res.product.save();
@@ -118,12 +130,178 @@ router.post('/payment', async (req, res) => {
 });
 
 
+router.post('/send-sms', (req, res) => {
+  const { message, to } = req.body;
+  
+  client.messages
+    .create({
+      body: message,
+      from: '+15856202425',
+      to: to
+    })
+    .then(() => {
+      res.send('SMS sent!');
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send('Failed to send SMS');
+    });
+});
+
+
+
 // define a route for auto-suggest search
 router.get('/search', (req, res) => {
   const term = req.query.term.toLowerCase();
   const suggestions = Product.filter((product) => product.name.toLowerCase().startsWith(term));
   res.json(suggestions);
 });
+
+
+router.post('/:productId/promotions', async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.productId);
+    product.promotion = req.body.promotion;
+    await product.save();
+    res.status(200).send({ message: 'Promotion added successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: 'Internal server error' });
+  }
+});
+
+
+// router.post('/:productId/reviews' ,async (req, res) => {
+//   try {
+//     const { text, rating } = req.body;
+//     // const { productId } = req.params;
+//     //  const productId = req.params.id;
+//     // const product = await Product.findById(req.params.id);
+
+
+//     // const userId = req.user._id; // assuming you have authentication middleware that sets the user ID on the request object
+// 		const userId = await User.findOne({ _id: req.params.id });
+
+//       // const product = await Product.findById(productId);
+//     // const product = await Product.findOne({_id : req.params.id});
+
+//     const product = await Product.findById(req.params.id);
+
+
+//     if (!product) {
+//       return res.status(404).json({ message: 'Product not found' });
+//     }
+
+//     const review = {
+//       user: userId,
+//       text,
+//       rating
+//     };
+
+//     product.reviews.push(review);
+
+//     // calculate new rating based on average of all reviews
+//     const totalRating = product.reviews.reduce((acc, cur) => acc + cur.rating, 0);
+//     product.rating = totalRating / product.reviews.length;
+
+//     await product.save();
+
+//     return res.json({ message: 'Review added successfully' });
+//   } catch (err) {
+//     console.error(err);
+//     return res.status(500).json({ message: 'Internal server error' });
+//   }
+// });
+
+
+// router.post('/:productId/reviews', async (req, res) => {
+//   try {
+//     const { text, rating } = req.body;
+//     // const { productId } = req.params.productId;
+//     // const product = await Product.findById(productId);
+//     // const product = await Product.findOne({ _id: req.params.id });
+//     const productId  = req.params.productId;
+
+//     const product = await Product.findById(productId);
+
+//     if (!product) {
+//       return res.status(404).json({ message: 'Product not found' });
+//     }
+
+
+//     // const userId = req.user._id; // Assuming you have authentication middleware that sets the user ID on the request object
+//     const userId = await User.findOne({ _id: req.params.id });
+//     const review = {
+//       user: userId,
+//       text,
+//       rating
+//     };
+
+//     product.reviews.push(review);
+
+//     // Calculate new rating based on average of all reviews
+//     const totalRating = product.reviews.reduce((acc, cur) => acc + cur.rating, 0);
+//     product.rating = totalRating / product.reviews.length;
+
+//     await product.save();
+
+//     return res.json({ message: 'Review added successfully' });
+//   } catch (err) {
+//     console.error(err);
+//     return res.status(500).json({ message: 'Internal server error' });
+//   }
+// });
+
+
+// // Handle POST request to add a review for a product
+// router.post('/:productId/reviews', async (req, res) => {
+//   try {
+//     const { userId, rating, review } = req.body;
+//     const product = await Product.findById(req.params.productId);
+//     if (!product) {
+//       return res.status(404).json({ message: 'Product not found' });
+//     }
+//     product.review = review;
+//     product.ratingStars = rating;
+//     await product.save();
+//     res.json({ message: 'Review added successfully' });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Something went wrong' });
+//   }
+// });
+
+
+router.post('/:productId/reviews', async (req, res) => {
+  try {
+    const { userId , rating, review } = req.body;
+    // const userId = await User.findOne({ _id: req.params.id });
+    const product = await Product.findById(req.params.productId);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    product.reviews.push({ userId, rating, review });
+    await product.save();
+
+    const totalRating = calculateTotalRating(product.reviews);
+
+    res.json({ message: 'Review added successfully', totalRating });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+});
+
+function calculateTotalRating(reviews) {
+  let total = 0;
+  for (let review of reviews) {
+    total += review.rating;
+  }
+  return total;
+}
+
+
+
 
 
 
