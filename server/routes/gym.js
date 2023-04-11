@@ -102,6 +102,14 @@ router.post("/stripe/:idg/:idu",async(req,res)=>{
 			// stripeSubscriptionId: subscription.id,
 		  });
 
+
+		  const gyms1 = await Gym.findById(idg);
+		  gyms1.participant = await gyms1.participant + 1;
+		  gyms1.save();
+		  console.log(gyms1.participant);
+
+
+
 		await newSubscription.save();
 
 
@@ -145,8 +153,9 @@ router.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 
 //add new gym
-router.post("/add", upload.array('photo', 5), async (req, res) => {
+router.post("/add/:idu", upload.array('photo', 5), async (req, res) => {
 	try {
+		const {idu} = req.params ;
 		const { error } = validate(req.body);
 		if (error)
 			return res.status(400).send({ message: error.details[0].message });
@@ -162,6 +171,7 @@ router.post("/add", upload.array('photo', 5), async (req, res) => {
             services: req.body.services,
             photo: req.files.map(file =>file.filename),
             localisation: req.body.localisation,
+			user : idu
 
         });
 
@@ -223,7 +233,8 @@ router.get("/getAll", async (req, res) => {
 
 
 //getById
-router.get("/getbyid/:id",async (req, res) => {
+//getById
+router.get("/:id",async (req, res) => {
 	try {
 		const data=await Gym.findById(req.params.id);
 		res.json(data);
@@ -419,8 +430,34 @@ router.get('/:gymId/offer/:offerId', async (req, res) => {
 	  res.status(500).send('Server Error');
 	}
   });
-  
 
+
+
+  
+  router.get('/rating/r',async (req,res) => {
+	try{
+	const gym = await Gym.findOne().sort('-rating').limit(1); 
+	res.json(gym) ;
+
+	}
+	catch(err){
+console.error(err) ;
+res.status(500).send('Server Error');
+	}
+  } 
+  ) ;
+
+
+
+  router.get('/getGymsByManager/:id', async (req, res) => {
+    try {
+      const gym = await Gym.find({user:req.params.id});
+      res.status(200).send(gym);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+});
+    
 
 
 module.exports = router;

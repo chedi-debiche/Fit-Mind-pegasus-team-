@@ -1,8 +1,42 @@
 
 import { Link } from 'react-router-dom';
+import { useState,useEffect } from 'react';
+import axios from 'axios';
 
 
 const HeaderFront = () => {
+
+  const [role,setRole] = useState('') ;
+
+  const id=localStorage.getItem('userId');
+
+  useEffect(() => {
+    const handleRole = async () =>{
+    
+
+      const Role =  await axios.get(`http://localhost:5000/api/users/userRole/${id}`);
+      setRole(Role.data) ;
+      console.log(Role.data) ;
+       
+   };
+    
+    handleRole();
+  }, []);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   return (
 
 <div>
@@ -54,7 +88,7 @@ const HeaderFront = () => {
       <li><Link to="/">Home</Link></li>
       <li><Link to="/about">About</Link></li>
       <li><Link to="/gyms">Gyms</Link></li>
-      <li><Link to="/gymsmanagement">Gyms Management</Link></li>
+      { role === 'GymManager' && (<li><Link to="/gymsmanagement">Gyms Management</Link></li>)}
       <li><Link to="/coaches">Coaches</Link></li>
       <li><Link to="/products">Products</Link></li>
 

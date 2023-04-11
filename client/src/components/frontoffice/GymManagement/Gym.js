@@ -131,7 +131,6 @@ function Gyms() {
       <div className="row">
         {gyms.map((gym) => (
           <div className="col-md-4 mb-4" key={gym._id}>
-            
             <GymFront gym={gym} />
           </div>
         ))}

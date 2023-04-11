@@ -1,11 +1,12 @@
-import React,{ useState } from 'react'
+import React,{ useState,useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import axios from "axios";
 
 
 
+
 const HeaderSignedInClient = () => {
-  
+  const [role,setRole] = useState('') ;
 
   // const [loggedIn, setLoggedIn] = useState(false);
 
@@ -22,6 +23,29 @@ const HeaderSignedInClient = () => {
       console.log(error);
     }
   };
+
+
+
+  const idu=localStorage.getItem('userId');
+
+  useEffect(() => {
+    const handleRole = async () =>{
+    
+
+      const Role =  await axios.get(`http://localhost:5000/api/users/userRole/${idu}`);
+      setRole(Role.data) ;
+      console.log(Role.data) ;
+       
+   };
+    
+    handleRole();
+  }, []);
+
+
+
+
+
+
 
 
   return (
@@ -74,7 +98,7 @@ const HeaderSignedInClient = () => {
       <li><Link to="/">Home</Link></li>
       <li><Link to="/about">About</Link></li>
       <li><Link to="/gyms">Gyms</Link></li>
-      <li><Link to="/gymsmanagement">Gyms Management</Link></li>  
+      {  role === 'GymManager'    &&  (<li><Link to="/gymsmanagement">Gyms Management</Link></li>)  } 
       <li><Link to="/products">Products</Link></li>
 
       <li>

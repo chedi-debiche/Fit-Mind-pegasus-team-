@@ -212,6 +212,16 @@ router.get("/:id/verify/:token/", async (req, res) => {
 });
 
 
+router.get('/userRole/:id', async (req, res) => {
+    try {
+      const user= await User.findById(req.params.id);
+	  
+      res.status(200).send(user.userType);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+});
+
   
   
   

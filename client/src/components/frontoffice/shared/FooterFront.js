@@ -1,6 +1,38 @@
 import React from 'react'
-
+import { useState,useEffect } from 'react';
+import axios from 'axios';
 const FooterFront = () => {
+
+
+
+  const [role,setRole] = useState('') ;
+
+  const id=localStorage.getItem('userId');
+
+  useEffect(() => {
+    const handleRole = async () =>{
+    
+
+      const Role =  await axios.get(`http://localhost:5000/api/users/userRole/${id}`);
+      setRole(Role.data) ;
+      console.log(Role.data) ;
+       
+   };
+    
+    handleRole();
+  }, []);
+
+
+
+
+
+
+
+
+
+
+
+
   return (
     <div>
 
@@ -30,7 +62,7 @@ const FooterFront = () => {
                             <li><a href="index.html">Home</a></li>
                             <li><a href="about.html">About</a></li>
                             <li><a href="courses.html">Gyms</a></li>
-                            <li><a href="/gymsmanagement">Gyms Management</a></li>>
+                            {    role === 'GymManager'     &&  (<li><a href="/gymsmanagement">Gyms Management</a></li>)}
                             <li><a href="pricing.html">Coaches</a></li>
                             <li><a href="gallery.html">Products</a></li>
                             <li><a href="contact.html">Contact</a></li>

@@ -20,6 +20,18 @@ const GymSchema = new mongoose.Schema({
     type: [String],
     required: false
   },
+  participant: {
+    type: Number,
+    default: 0,
+    min: 0,
+
+  },
+  user :{
+    type: mongoose.Schema.Types.ObjectId,
+    ref : 'User',
+    required : true
+    
+  },
  
   localisation: {
     type: String,

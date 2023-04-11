@@ -22,6 +22,7 @@ const GymsManagement=()=>{
       photo: '',
       services: '',
     });
+    const idu = localStorage.getItem('userId') ;
 
     const handleEdit = async (id) => {
       try {
@@ -31,6 +32,9 @@ const GymsManagement=()=>{
         setFormValues(response.data);
         setEditing(true);
         setEditId(id);
+
+
+
       } catch (error) {
         console.error(error);
       }
@@ -47,7 +51,7 @@ const GymsManagement=()=>{
     const getGyms = async () => {
      
       try {
-        const response = await axios.get('http://localhost:5000/api/gyms/getAll');
+        const response = await axios.get(`http://localhost:5000/api/gyms/getGymsByManager/${idu}`);
         setGyms(response.data);
       } catch (error) {
         console.error(error);
@@ -64,19 +68,32 @@ const GymsManagement=()=>{
       formData.append('services', formValues.services);
       formData.append('localisation', formValues.localisation);
       formData.append('photo', formValues.photo);
-
+      console.log(formValues.name);
+      console.log(formValues.description);
+      console.log(formValues.services);
+      console.log(formValues.localisation);
+      console.log(formValues.photo);
+      console.log(editing);
 
 
       if (editing) {
-          await axios.put(`http://localhost:5000/api/gyms/update/${editId}`, formData);
+         const  response = await axios.put(`http://localhost:5000/api/gyms/update/${editId}`, formData);
         setEditing(false);
-        console.log(formData);
+        console.log(response);
+        console.log(formValues.name);
+        console.log(formValues.description);
+        console.log(formValues.services);
+        console.log(formValues.localisation);
+        console.log(formValues.photo);
+      
         console.log(editing);
         
+        
       } else {
-         await axios.post('http://localhost:5000/api/gyms/add', formData);
+         await axios.post(`http://localhost:5000/api/gyms/add/${idu}`, formData);
       }
 console.log(e) ;
+console.log(editing);
       setFormValues({
         name: '',
         description: '',
@@ -116,11 +133,11 @@ console.log(e) ;
       </div>
     </main>
 
-    <Button className='me-1 float-right' color='success' size='lg' onClick={()=> handleVisible()}>
-        Add Your Gym
-      </Button> 
+    {/* <Button className='me-1 float-right' color='success' size='lg' onClick={()=> handleVisible()}>
+      Add Your Gym
+      </Button>  */}
         
-     { showForm && (
+     {  (
     <Container>
       {/* informations :  */}
 
@@ -253,6 +270,7 @@ Gym Picture
                 <p>{gym.description}</p>
                 <p >Services :{gym.services}</p>
                 <p className="price">{gym.localisation}</p>
+                <p className="price">participant : {gym.participant}</p>
                 <div className="btn" onClick={() => handleEdit(gym._id)} >Update</div>
             </div>
         </div>
@@ -273,4 +291,4 @@ Gym Picture
       )
 }
 
-export default GymsManagement 
+export default GymsManagement  

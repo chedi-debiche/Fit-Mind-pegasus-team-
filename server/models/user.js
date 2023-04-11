@@ -62,6 +62,15 @@ const userSchema = new mongoose.Schema({
 			},
 		},
 	},
+	gyms :[{
+		type : String,
+		type: mongoose.Schema.Types.ObjectId,
+      	ref: 'Gym',
+
+		required: function() {
+			return this.userType === 'GymManager';
+		},
+	}],
 	location :{
 		type : String,
 		required: function() {
