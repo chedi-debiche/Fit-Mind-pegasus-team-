@@ -4,6 +4,7 @@ const multer = require('multer');
 
 const {Gym,validate} = require('../models/gym');
 const Subscription = require('../models/subscription')
+const Offer = require('../models/offer');
 
 const upload = require('../config/multerConfig');
 const path = require('path');
@@ -16,72 +17,11 @@ const Joi = require("joi");
 
 const stripe = require('stripe')('sk_test_51MqwXKLtZDUJknUFE722lacEc8I0b1kyH9OJyfQOIqDbnlX143oZCABQXWMheTwAaKptkpaXOxyTWzJzXAN72EHj00B8ej4W5b');
 
-// router.post('/create-customer', async (req, res) => {
-//   try {
-//     const customer = await stripe.customers.create({
-//       email: req.body.email,
-//       name: req.body.name,
-//       payment_method: req.body.payment_method,
-//       invoice_settings: {
-//         default_payment_method: req.body.payment_method,
-//       },
-//     });
-
-//     res.json({ customerId: customer.id });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).send('Something went wrong');
-//   }
-// });
-
-// Define a function to create a product and price in Stripe
-// async function createProductAndPrice() {
-//   try {
-//     // Create a product
-//     const product = await stripe.products.create({
-//       name: 'Gym Subscription',
-//       description: 'Monthly subscription for access to our gym facilities',
-//     });
-
-//     // Create a price for the product
-//     const price = await stripe.prices.create({
-//       product: product.id,
-//       unit_amount: 1000, // the price in cents (this represents $10.00)
-//       currency: 'usd',
-//       recurring: { interval: 'month' },
-//     });
-
-//     return { product, price };
-//   } catch (err) {
-//     console.error(err);
-//     throw err;
-//   }
-// };
-
-// Create a new subscription for the customer using the product and price
-// router.post('/create-subscription', async (req, res) => {
-//   const { customerId } = req.body;
-
-//   try {
-//     // Create product and price
-//     const { product, price } = await createProductAndPrice();
-
-//     // Create subscription
-//     const subscription = await stripe.subscriptions.create({
-//       customer: customerId,
-//       items: [{ price: price.id }],
-//       expand: ['latest_invoice.payment_intent'],
-//     });
-
-//     res.json(subscription);
-//   } catch (error) {
-//     res.status(400).send({ error: { message: error.message } });
-//   }
-// });
 
 
-router.post("/stripe/:idg/:idu",async(req,res)=>{
-	const {idg,idu}=req.params;
+
+router.post("/stripe/:idg/:idu/:ido",async(req,res)=>{
+	const {idg,idu,ido}=req.params;
 	let {amount , id}=req.body;
 	try{
 		const Payment=await stripe.paymentIntents.create({
@@ -97,18 +37,11 @@ router.post("/stripe/:idg/:idu",async(req,res)=>{
 		const newSubscription = new Subscription({
 			user:idu, // Assuming you are using passport and req.user contains the user object
 			gym: idg,
+			offer:ido,
 			startDate: startDate,
 			endDate: endDate,
 			// stripeSubscriptionId: subscription.id,
 		  });
-
-
-		  const gyms1 = await Gym.findById(idg);
-		  gyms1.participant = await gyms1.participant + 1;
-		  gyms1.save();
-		  console.log(gyms1.participant);
-
-
 
 		await newSubscription.save();
 
@@ -126,10 +59,6 @@ router.post("/stripe/:idg/:idu",async(req,res)=>{
 		})
 	}
 });
-
-
-
-
 
 
 
@@ -184,39 +113,6 @@ router.post("/add/:idu", upload.array('photo', 5), async (req, res) => {
 	}
 });
 
-/*
-router.post("/addd", upload.single('photo'), async (req, res) => {
-	try {
-		const { error } = validate(req.body);
-		if (error)
-			return res.status(400).send({ message: error.details[0].message });
-
-		let gymExist = await Gym.findOne({ name: req.body.name });
-		if (gymExist)
-			return res
-				.status(409)
-				.send({ message: "Gym already Exist!" });
-        const gym=new Gym({
-            name: req.body.name,
-            description: req.body.description,
-            services: req.body.services,
-            photo: req.file.filename,
-            localisation: req.body.localisation,
-
-        });
-
-		await gym.save();
-		res.status(201)
-			.send({ message: "Gym added successfully" });
-	} catch (error) {
-		console.log(error);
-		res.status(500).send({ message: "Internal Server Error" });
-	}
-});
-*/
-
-
-
 
 //getAll
 router.get("/getAll", async (req, res) => {
@@ -228,11 +124,7 @@ router.get("/getAll", async (req, res) => {
     }
 });
 
-//get
 
-
-
-//getById
 //getById
 router.get("/:id",async (req, res) => {
 	try {
@@ -332,11 +224,20 @@ router.put("/update/:id", upload.array('photo', 5),async (req,res)=>{
 // 	}
 // });
 
-router.put('/rating/:id', async (req, res) => {
+router.put('/rating/:id/:idu', async (req, res) => {
 	try {
 	  const { rating } = req.body;
+	  const userId=req.params.idu;
+
+	 
+
+	  const gym = await Gym.findById(req.params.id);
+	  if (gym.ratedBy.includes(userId)) {
+		// The user has already rated this gym
+		return res.status(400).json({ message: 'You have already rated this gym' });
+	  }
   
-	  const updatedGym = await Gym.findByIdAndUpdate(req.params.id,{$push:{ ratings:req.body.rating },}, { new: true });
+	  const updatedGym = await Gym.findByIdAndUpdate(req.params.id,{$push:{ ratings:req.body.rating },$addToSet: { ratedBy: userId}}, { new: true });
   
 	  // Calculate the average rating
 	  const ratings = updatedGym.ratings;
@@ -375,6 +276,7 @@ router.post('/:gymId/offers', async (req, res) => {
 		name:name,
 		type:type,
 		price:price,
+		gym:gymId,
 		createdAt:createdAt,
 		updatedAt:updatedAt,
 
@@ -394,8 +296,6 @@ router.post('/:gymId/offers', async (req, res) => {
 	  res.status(500).json({ error: 'Internal Server Error' });
 	}
 });
-
-
 
 
 // GET gym offer by ID
@@ -429,12 +329,27 @@ router.get('/:gymId/offer/:offerId', async (req, res) => {
 	  console.error(err);
 	  res.status(500).send('Server Error');
 	}
-  });
+});
+
+
+//get offer by id Gym
+router.get('/getOffersByGym/:id', async (req, res) => {
+	try {
+	  const offer = await Offer.find({gym:req.params.id});
+	  if (!offer) {
+		return res.status(404).json({ message: 'There is no offer' });
+	  }
+	  res.json(offer);
+	} catch (err) {
+	  console.error(err);
+	  res.status(500).send('Server Error');
+	}
+});
 
 
 
   
-  router.get('/rating/r',async (req,res) => {
+router.get('/rating/r',async (req,res) => {
 	try{
 	const gym = await Gym.findOne().sort('-rating').limit(1); 
 	res.json(gym) ;
@@ -445,14 +360,25 @@ console.error(err) ;
 res.status(500).send('Server Error');
 	}
   } 
-  ) ;
+) ;
 
 
 
-  router.get('/getGymsByManager/:id', async (req, res) => {
+router.get('/getGymsByManager/:id', async (req, res) => {
     try {
       const gym = await Gym.find({user:req.params.id});
       res.status(200).send(gym);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+});
+
+
+
+router.get('/subscription/getByUser/:id', async (req, res) => {
+    try {
+      const subscriptions = await Subscription.find({user:req.params.id}).populate('gym').populate('offer');
+      res.status(200).send(subscriptions);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }

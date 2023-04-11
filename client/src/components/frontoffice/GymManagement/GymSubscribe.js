@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 import { useParams } from 'react-router-dom';
+import CheckUser from '../authentification/CheckUser';
 
 const GymSubscribe = () => {
   const [processing, setProcessing] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
 
-  const {idg,idu}=useParams();
+  const {idg,idu,amount,ido}=useParams();
+
+  const token=localStorage.getItem('token');
 
 
   const handlePayment = async (e) => {
@@ -24,8 +27,8 @@ const GymSubscribe = () => {
       const { id } = paymentMethod;
 
       try {
-        const response = await axios.post(`http://localhost:5000/api/gyms/stripe/${idg}/${idu}`, {
-          amount: 100,
+        const response = await axios.post(`http://localhost:5000/api/gyms/stripe/${idg}/${idu}/${ido}`, {
+          amount: amount,
           id: id,
         });
 
@@ -45,6 +48,8 @@ const GymSubscribe = () => {
   };
 
   return (
+    <div>
+    {token ?(
     <div style={containerStyle}>
       <form onSubmit={handlePayment} style={formStyle}>
         <label style={labelStyle}>
@@ -101,6 +106,11 @@ const GymSubscribe = () => {
         </button>
       </form>
     </div>
+    ):(
+      <CheckUser/>
+    )
+}
+</div>
   );
 };
 

@@ -26,13 +26,6 @@ function Gyms() {
     fetchGyms();
   }, []);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Appeler l'API pour récupérer la liste des gyms correspondant à la localisation entrée
-  };
-
-
-
 
 
   function handleLocalisationChange(event) {
@@ -46,25 +39,7 @@ function Gyms() {
 
 
 
- /* function handleServiceChange(event) {
-    setService(event.target.value);
-  }
-  async function handleSearch(event) {
-    event.preventDefault();
-    const response = await axios.get(`http://localhost:5000/api/gyms/findbyService/${services}`);//non
-    setGyms(response.data);
-  }
-
-
-
-  function handleNameChange(event) {
-    setName(event.target.value);
-  }
-  async function handleSearch(event) {
-    event.preventDefault();
-    const response = await axios.get(`http://localhost:5000/api/gyms/findbyName/${name}`);//non
-    setGyms(response.data);
-  }*/
+ 
 
 
   return (

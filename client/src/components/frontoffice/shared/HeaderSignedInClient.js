@@ -26,13 +26,13 @@ const HeaderSignedInClient = () => {
 
 
 
-  const idu=localStorage.getItem('userId');
+  // const idu=localStorage.getItem('userId');
 
   useEffect(() => {
     const handleRole = async () =>{
     
 
-      const Role =  await axios.get(`http://localhost:5000/api/users/userRole/${idu}`);
+      const Role =  await axios.get(`http://localhost:5000/api/users/userRole/${id}`);
       setRole(Role.data) ;
       console.log(Role.data) ;
        
@@ -57,7 +57,7 @@ const HeaderSignedInClient = () => {
   <meta name="description" content />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="manifest" href="site.webmanifest" />
-  <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico" />
+  <link rel="shortcut icon" type="image/x-icon" href="../assets/img/favicon.ico" />
 </div>
 
 
@@ -85,7 +85,7 @@ const HeaderSignedInClient = () => {
           <div className="menu-wrapper d-flex align-items-center justify-content-between">
             {/* Logo */}
             <div className="logo">
-<a href="index.html"><img src="assets/img/logo/logofit.png" alt="Logo" style={{width: 180, height: 100}} /></a>
+<a href="index.html"><img src="../assets/img/logo/logofit.png" alt="Logo" style={{width: 180, height: 100}} /></a>
               {/* <img src="assets/img/logo/logo.png" alt="Logo" style="width: 50px; height: 50px;"> */}
 
 
@@ -97,7 +97,13 @@ const HeaderSignedInClient = () => {
     <ul id="navigation">
       <li><Link to="/">Home</Link></li>
       <li><Link to="/about">About</Link></li>
-      <li><Link to="/gyms">Gyms</Link></li>
+      <li>
+        <Link to="/gyms">Gyms</Link>
+        <ul className="submenu">
+          <li><Link to="/gyms">Gyms</Link></li>
+          <li><Link to={`/subscriptions/${id}`}>Subscriptions</Link></li>
+        </ul>
+      </li>
       {  role === 'GymManager'    &&  (<li><Link to="/gymsmanagement">Gyms Management</Link></li>)  } 
       <li><Link to="/products">Products</Link></li>
 

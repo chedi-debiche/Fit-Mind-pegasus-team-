@@ -28,6 +28,7 @@ import GymDetails from "./components/frontoffice/GymManagement/GymDetails";
 import GymSubscribe from "./components/frontoffice/GymManagement/GymSubscribe";
 import StripeContainer from "./components/frontoffice/GymManagement/StripeContainer";
 import GymsManagement from "./components/frontoffice/GymManagement/GymsManagement";
+import Subscription from "./components/frontoffice/GymManagement/subscription";
 
 
 
@@ -67,7 +68,8 @@ function App() {
           <Route path="/gymf" element={<GymFront/>} />
           <Route path="/gymDetails/:id" element={<GymDetails/>} />
           <Route path="/subscribe" element={<GymSubscribe/>} />
-          <Route path="/subscribeGym/:idg/:idu" element={<StripeContainer/>} />
+          <Route path="/subscribeGym/:idg/:idu/:amount/:ido" element={<StripeContainer/>} />
+          <Route path="/subscriptions/:id" element={<Subscription/>} />
           <Route path="/gymsmanagement" element={<GymsManagement/>} />
 
         {/* Add more routes for other components */}

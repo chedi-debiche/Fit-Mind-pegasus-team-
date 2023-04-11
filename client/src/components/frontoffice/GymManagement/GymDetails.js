@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect, useRef} from 'react'
 import HeaderFront from '../shared/HeaderFront';
 import FooterFront from '../shared/FooterFront';
 import { Link, useParams } from 'react-router-dom';
@@ -6,12 +6,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt,faCheck } from '@fortawesome/free-solid-svg-icons';
 import {faPhoneAlt} from '@fortawesome/free-solid-svg-icons';
 import {faEnvelope} from '@fortawesome/free-solid-svg-icons';
-// import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import "./styles.css";
 import { FaStar } from 'react-icons/fa';
 import axios from 'axios';
+import CheckUser from '../authentification/CheckUser';
+import OffreFront from './OffreFront';
 // import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 // import { loadStripe } from '@stripe/stripe-js';
+import styles from "./styles.module.css";
 
 
 // const stripePromise = loadStripe('pk_test_51MqwXKLtZDUJknUFqrT9QWqseSlznuwfUJLZb7InHzAZ2EHNxPVqgYmxcy9CE0r96wchlhTvr6QnLWp1vA1kxIWJ00e4rQ4gk4');
@@ -19,54 +21,22 @@ function GymDetails () {
   const [gyms, setGyms] = useState([]);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [showMorePics, setShowMorePics] = useState(false);
-  // const [showSubscription, setShowSubscriptions] = useState(false);  
+  const [error, setError] = useState("");
+  const [msg, setMsg] = useState("");
+  const [catchRate, setCatchRate] = useState(false);  
   const [rating, setRating] = useState(0);
+
+  const [Offers, setOffers] = useState([]);
+  const [role,setRole] = useState('') ;
+
+
   const idu=localStorage.getItem('userId');
-
-  // const [isProcessing, setIsProcessing] = useState(false);
-  // const stripe = useStripe();
-  // const elements = useElements();
+  const token=localStorage.getItem('token');
 
 
-
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   setIsProcessing(true);
-
-  //   const { paymentMethod, error } = await stripe.createPaymentMethod({
-  //     type: 'card',
-  //     card: elements.getElement(CardElement),
-  //   });
-
-  //   if (error) {
-  //     console.log(error);
-  //     setIsProcessing(false);
-  //     return;
-  //   }
-
-  //   const response = await fetch('http://localhost:5000/api/gyms/create-subscription', {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify({
-  //       customerId: 'cus_NcDBXNnuFRRf0d',
-  //       paymentMethodId: paymentMethod.id,
-  //     }),
-  //   });
-
-  //   if (!response.ok) {
-  //     console.log('Error creating subscription:', response);
-  //     setIsProcessing(false);
-  //     return;
-  //   }
-
-  //   setIsProcessing(false);
-  //   console.log('Subscription created successfully:', response);
-  // };
-
-
-
-  // const [showMap, setShowMap] = useState(false);
   const {id}=useParams()
+  const offersSectionRef = useRef(null)
+
 
   const nextPhoto = () => {
     setCurrentPhotoIndex((prevIndex) => prevIndex<4 ? (prevIndex + 1) : prevIndex=0);
@@ -78,6 +48,10 @@ function GymDetails () {
   }
   const handleCatchPicsClick = () => {
     setShowMorePics(false);
+  }
+
+  const handleCatchRate = () => {
+    setCatchRate(true);
   }
 
 
@@ -99,39 +73,71 @@ function GymDetails () {
 
   const submitRating = async () => {
     try {
-      const response = await axios.put(`http://localhost:5000/api/gyms/rating/${id}`, { rating });
+      const response = await axios.put(`http://localhost:5000/api/gyms/rating/${id}/${idu}`, { rating });
       // setGyms(response.data);
+      console.log(response.data);
+      setMsg(response.data);
     } catch (error) {
-      console.log(error);
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        setError(error.response.data.message);
+      }
     }
+    
   }
   
   
-  
-  
-
-  // const toggleMap = () => {
-  //   setShowMap(!showMap);
-  // };
 
   useEffect(() => {
     async function fetchGyms() {
-      const response = await fetch(`http://localhost:5000/api/gyms/getById/${id}`);
+      const response = await fetch(`http://localhost:5000/api/gyms/${id}`);
       const data = await response.json();
       setGyms(data);
     }
     fetchGyms();
   }, [id]);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       nextPhoto();
     }, 3000);
     return () => clearTimeout(timer);
   }, [currentPhotoIndex]);
+
+
+  useEffect(() => {
+    async function fetchOffers() {
+      const response = await fetch(`http://localhost:5000/api/gyms/getOffersByGym/${id}`);
+      const data = await response.json();
+      setOffers(data);
+      console.log(Offers);
+    }
+    fetchOffers();
+  }, []);
+
+
+  useEffect(() => {
+    const handleRole = async () =>{
+    
+
+      const Role =  await axios.get(`http://localhost:5000/api/users/userRole/${idu}`);
+      setRole(Role.data) ;
+      console.log(Role.data) ;
+       
+   };
+    
+    handleRole();
+  }, []);
+
   
   return (
     <div>
 {/* <HeaderFront/> */}
+{/* <HeaderSignedInClient/> */}
+{token ?(
 <main style={{ background: 'black' }}>
   {/*? Hero Start */}
   <div className="slider-area2">
@@ -157,7 +163,7 @@ function GymDetails () {
       <div className="right-content2 wow fadeInUp" data-wow-duration="1s" data-wow-delay=".2s">
         {/* img */}
         <div className="right-img">
-          {gyms.photo && gyms.photo.length > 0 && <img src={`http://localhost:5000/uploads/${gyms.photo[currentPhotoIndex]}`} alt={gyms.name} />}
+          {gyms.photo && gyms.photo.length > 0 && <img src={`http://localhost:5000/uploads/${gyms.photo[currentPhotoIndex]}`} alt={gyms.name} style={{borderRadius:'12px'}} />}
         </div>
       </div>
       
@@ -182,11 +188,41 @@ function GymDetails () {
             <h2 className>{gyms.name}</h2>
             <p>{gyms.description}</p>
             <p className="mb-40">{gyms.services}</p>
-            <Link  className="border-btn" style={{backgroundColor: 'darkred', color: 'white'}} onClick={handleMorePicsClick} >All pics</Link>
-            <Link  className="border-btn" style={{backgroundColor: 'darkred', color: 'white'}} to={`/subscribeGym/${id}/${idu}`} >Subscribe</Link>
+
+        <div className='row'>
+          <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+            <div className="single-services mb-40 wow fadeInUp" data-wow-duration="1s" data-wow-delay=".1s">
+              <div className="features-icon">
+                <FontAwesomeIcon icon={faMapMarkerAlt} style={{ color: 'red' , fontSize: '40px' , cursor: 'pointer'}} />
+              </div>
+              <div className="features-caption">
+                <p>{gyms.localisation}</p>
+              </div>
+            </div>
+          </div>
+          <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+            <div className="single-services mb-40 wow fadeInUp" data-wow-duration="1s" data-wow-delay=".2s">
+              <div className="features-icon">
+                <FontAwesomeIcon icon={faPhoneAlt} style={{ color: 'red' , fontSize: '40px' }} />
+              </div>
+              <div className="features-caption">
+                <p>(90) 277 278 2566</p>
+              </div>
+            </div>
+          </div>
+         
+        </div>
+
+
+
+
+
+            <Link  className="border-btn" style={{backgroundColor: 'darkred', color: 'white', borderRadius: '12px'}} onClick={handleMorePicsClick} >All pics</Link>
+            <Link  className="border-btn" style={{backgroundColor: 'darkred', color: 'white', borderRadius: '12px'}} onClick={() => offersSectionRef.current.scrollIntoView({ behavior: 'smooth' })} >Subscribe</Link>
             {/* <button  className="border-btn" style={{ backgroundColor: "red", color: "white", padding: "10px" }}>
               More photos
             </button> */}
+            
                     
 
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' ,marginTop: '20px'  }} >
@@ -213,6 +249,10 @@ function GymDetails () {
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <Link style={{ backgroundColor: 'yellow', borderRadius: '4px', padding: '10px 18px', color: 'black' }} onClick={submitRating}>Rate</Link>
           </div>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            {error && <div className={styles.error_msg}>{error}</div>}
+						{msg && <div className={styles.success_msg}>{msg}</div>}
+            </div>
 
 
 
@@ -226,66 +266,39 @@ function GymDetails () {
     </div>
   </section>
 
- 
-
- 
-  <section className="services-area">
-    <div className="container">
-      <div className="row justify-content-between">
-        <div className="col-xl-4 col-lg-4 col-md-6 col-sm-8">
-          <div className="single-services mb-40 wow fadeInUp" data-wow-duration="1s" data-wow-delay=".1s">
-            <div className="features-icon">
-              <FontAwesomeIcon icon={faMapMarkerAlt} style={{ color: 'red' , fontSize: '40px' , cursor: 'pointer'}} />
-            </div>
-            <div className="features-caption">
-              <h3>Location</h3>
-              <p>{gyms.localisation}</p>
-            </div>
-          </div>
-        </div>
-        <div className="col-xl-3 col-lg-4 col-md-6 col-sm-8">
-          <div className="single-services mb-40 wow fadeInUp" data-wow-duration="1s" data-wow-delay=".2s">
-            <div className="features-icon">
-              <FontAwesomeIcon icon={faPhoneAlt} style={{ color: 'red' , fontSize: '40px' }} />
-            </div>
-            <div className="features-caption">
-              <h3>Phone</h3>
-              <p>(90) 277 278 2566</p>
-              <p>  (78) 267 256 2578</p>
-            </div>
-          </div>
-        </div>
-        <div className="col-xl-3 col-lg-4 col-md-6 col-sm-8">
-          <div className="single-services mb-40 wow fadeInUp" data-wow-duration="2s" data-wow-delay=".4s">
-            <div className="features-icon">
-              <FontAwesomeIcon icon={faEnvelope} style={{ color: 'red' , fontSize: '40px' }} />
-            </div>
-            <div className="features-caption">
-              <h3>Email</h3>
-              <p>pegasus-sport@gmail.com</p>
-              <p>fit-mind@pegasus.tn</p>
-            </div>
+  <div className="row"  ref={offersSectionRef}>
+        <div className="col-xl-12">
+          <div className="section-tittle text-center mb-55 wow fadeInUp" data-wow-duration="2s" data-wow-delay=".1s">
+            <h2>Offers</h2>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-  {/* {showMap && (
-        <MapContainer center={[gyms.lat, gyms.lng]} zoom={13} style={{ height: '400px', marginBottom: '20px' }}>
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          <Marker position={[gyms.lat, gyms.lng]}>
-            <Popup>{gyms.name}</Popup>
-          </Marker>
-        </MapContainer>
-      )} */}
-</main>
-{/* <FooterFront/> */}
 
+  <div className="row">
+        {Offers.map((offer) => (
+          <div className="col-md-6 mb-6" key={offer._id}>
+             {  role === 'User'    && (<Link to={`/subscribeGym/${id}/${idu}/${offer.price}/${offer._id}`} style={{ textDecoration: "none" }} >
+            <OffreFront offer={offer} />
+            </Link>)  } 
+          </div>
+          
+        ))}
+  </div>
+
+  <FooterFront/>
+
+
+
+
+</main>
+):(
+  <CheckUser/>
+)
+}
       
     </div>
   )
 }
-
 export default GymDetails;
 
 

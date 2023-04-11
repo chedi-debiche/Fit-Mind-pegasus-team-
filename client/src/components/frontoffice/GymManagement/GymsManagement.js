@@ -8,6 +8,7 @@ import { FaCloudUploadAlt } from "react-icons/fa";
 import axios from 'axios';
 
 import "./gyms.css" ;
+import HeaderSignedInClient from "../shared/HeaderSignedInClient";
 
 
 const GymsManagement=()=>{
@@ -67,7 +68,9 @@ const GymsManagement=()=>{
       formData.append('description', formValues.description);
       formData.append('services', formValues.services);
       formData.append('localisation', formValues.localisation);
-      formData.append('photo', formValues.photo);
+      for (let i = 0; i < formValues.photo.length; i++) {
+        formData.append('photo', formValues.photo[i]);
+      }
       console.log(formValues.name);
       console.log(formValues.description);
       console.log(formValues.services);
@@ -114,7 +117,7 @@ console.log(editing);
     
     return (
         <div style={{backgroundColor : "black"}}>
-    <HeaderFront/>
+    <HeaderSignedInClient/>
     <main style={{ background: 'black' }}>
       {/*? Hero Start */}
       <div className="slider-area2">
@@ -229,8 +232,9 @@ Gym Picture
       type="file"
       name="height" 
       id="file-input"
+      multiple
       onChange={(e) => {
-        setFormValues({ ...formValues, photo: e.target.files[0] });
+        setFormValues({ ...formValues, photo: e.target.files });
       }}
     >
     </Input>
@@ -260,7 +264,7 @@ Gym Picture
         <div className="card" key={gym.id}>
             <div className="card_img">
             <img
-        src={`http://localhost:5000/uploads/${gym.photo}`}
+        src={`http://localhost:5000/uploads/${gym.photo[0]}`}
 //   alt={`Image of ${product.name}`}
               width="400"
             />

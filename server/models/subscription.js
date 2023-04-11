@@ -11,6 +11,11 @@ const subscriptionSchema = new mongoose.Schema({
     ref: 'Gym',
     required: true
   },
+  offer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Offer',
+    required: true
+  },
   startDate: {
     type: Date,
     required: true
@@ -21,7 +26,7 @@ const subscriptionSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['active', 'cancelled'],
+    enum: ['active', 'cancelled','expired'],
     default: 'active'
   }
 });

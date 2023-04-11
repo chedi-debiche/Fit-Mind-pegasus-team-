@@ -48,6 +48,17 @@ const GymSchema = new mongoose.Schema({
     min: 0,
     max: 5
   }],
+  ratedBy:[
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    }
+  ],
+  offers: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Offer'
+  }]
  
 });
 
