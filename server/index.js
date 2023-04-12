@@ -14,6 +14,8 @@ const session= require('express-session');
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 const coachingRoutes = require("./routes/coachings"); // import products router
+const reservationcRoutes = require("./routes/reservationcs"); // import products router
+
 
 
 
@@ -58,6 +60,8 @@ app.put("/api/users/:id/block", userRoutes.put);
 
 app.use("/api/coachings", coachingRoutes); // use products router
 app.use('/uploads', express.static('uploads'));
+app.use("/api/reservations", reservationcRoutes); // use products router
+
 
 
 

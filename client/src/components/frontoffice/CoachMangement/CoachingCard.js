@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 // import { useHistory } from 'react-router-dom';
 import styles from './styles.css';
+//import { Link, useHistory } from 'react-router-dom';
+import requireAuth from '../authentification/requireAuth';
 
 function CoachingCard({ coaching }) {
-//   const history = useHistory();
+ //const history = useHistory();
   const [showDetails, setShowDetails] = useState(false);
 
   const handleShowDetails = () => {
     setShowDetails(true);
   };
 
-  const handleAddToCart = () => {
-    // TODO: implement add to cart functionality
-  };
+  // const handleAddToCart = () => {
+  //   history.push('/Reservationc');
+  // };
 
   return (
     <div className="coach-card" style={{ backgroundColor: 'white' }}>
@@ -59,27 +61,23 @@ function CoachingCard({ coaching }) {
             {/* <p>{`Name: ${product.name}`}</p>
             <p>{`Price: $${product.price}`}</p> */}
             <p>{`Description: ${coaching.description}`}</p>
+            <p>{`Disponibilité: ${new Date(coaching.start).toLocaleDateString()} - ${new Date(coaching.end).toLocaleDateString()}`}</p>
+
             <h5>{`Name of the coach: ${coaching.nameCoach}`}</h5>
-            <button
-              className="genric-btn danger circle"
-              style={{
-                fontSize: '18px',
-                padding: '2px 20px',
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-              onClick={handleAddToCart}
-            >
-              Réserver
-            </button>
+             <a href={`/Reservationc/${coaching._id}`} class="reservation-link">Réserver</a> 
+            {/* <a href="/Reservationc" class="reservation-link">Réserver</a> */}
+
+
+
+
             <br></br>
-            <button   className="btn btn-primary"
+            {/* <button   className="btn btn-primary"
               style={{
                 fontSize: '15px',
                 padding: '0px 10px',
                 display: 'flex',
                 justifyContent: 'center',
-              }}>Envoyer un message </button>
+              }}>Envoyer un message </button> */}
           </div>
         )}
       </div>
@@ -87,4 +85,4 @@ function CoachingCard({ coaching }) {
   );
 }
 
-export default CoachingCard;
+export default requireAuth(CoachingCard);

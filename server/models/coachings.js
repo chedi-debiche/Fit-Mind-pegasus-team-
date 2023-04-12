@@ -5,10 +5,10 @@ const CoachingSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-   nameCoach: {
-     type: String,
-     required: true
-   },
+  nameCoach: {
+    type: String,
+    required: true
+  },
   description: {
     type: String,
     required: true
@@ -32,7 +32,11 @@ const CoachingSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required:true
-  }
+  },
+  
+      start: { type: Date, required: true },
+      end: { type: Date, required: true }
+
 });
 
 CoachingSchema.pre('save', function(next) {
@@ -45,7 +49,13 @@ CoachingSchema.pre('save', function(next) {
   next();
 });
 
-
-
+// CoachingSchema.pre('validate', function(next) {
+//   if (this.availability && this.availability.start && this.availability.end) {
+//     if (this.availability.start >= this.availability.end) {
+//       return next(new Error('End date must be after start date'));
+//     }
+//   }
+//   next();
+// });
 
 module.exports = mongoose.model('Coaching', CoachingSchema);

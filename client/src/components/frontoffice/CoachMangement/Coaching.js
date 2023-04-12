@@ -14,14 +14,18 @@ import requireAuth from '../authentification/requireAuth';
 const Coaching = (props) => {
  // ken bel props jarrabha kif tna7i commentaire taa id user fel form data const Coaching = (props) => {
   // console.log(props);
- // const [nameCoach, setNameCoach] = useState('');
+  //const [nameCoach, setNameCoach] = useState('');
   const [coachings, setCoachings] = useState([]);
   const [formValues, setFormValues] = useState({
     nameCoaching: '',
     nameCoach: '',
     description: '',
     image: '',
-   // category:'',
+    category:'',
+    // availability:{
+      start :'',
+      end: ''
+    // },
   });
   const [editing, setEditing] = useState(false);
   const [editId, setEditId] = useState(null);
@@ -47,14 +51,25 @@ const Coaching = (props) => {
     e.preventDefault();
     try {
       const formData = new FormData();
+      const userId = localStorage.getItem('userId');
+      formData.append('user', userId); // Add the user ID to the form data
+      const response = await axios.get(`http://localhost:5000/api/users/${userId}`);
+      const user = response.data;
+      const nameCoach = `${user.firstName} ${user.lastName}`;
+      formData.append('nameCoach', nameCoach);
       formData.append('nameCoaching', formValues.nameCoaching);
-      formData.append('nameCoach', formValues.nameCoach);
+     // formData.append('nameCoach', formValues.nameCoach);
       formData.append('description', formValues.description);
       formData.append('image', formValues.image);
       formData.append('rating', 0);
       formData.append('category', formValues.category);
-      const userId = localStorage.getItem('userId');
-      formData.append('user', userId); // Add the user ID to the form data
+      formData.append('start', formValues.start);
+      formData.append('end', formValues.end);
+      // formData.append('availability.start', formValues.start);
+      // formData.append('availability.end', formValues.end);
+
+    
+    
 
       
       if (editing) {
@@ -68,6 +83,10 @@ const Coaching = (props) => {
         nameCoach: '',
         description: '',
         image: '',
+    //       availability:{
+     start :'',
+      end: ''
+    // },
        // category:'',
       });
       getCoachings();
@@ -202,7 +221,7 @@ const Coaching = (props) => {
         }
       />
     </div>
-     <div>
+     {/* <div>
       <label htmlFor="nameCoach">nameCoach:</label>
       <input
         type="text"
@@ -212,7 +231,7 @@ const Coaching = (props) => {
           setFormValues({ ...formValues, nameCoach: e.target.value })
         }
       />
-    </div>  
+    </div>   */}
     <div>
       <label htmlFor="description">Description:</label>
       <textarea
@@ -223,6 +242,91 @@ const Coaching = (props) => {
         }
       />
     </div>
+    <div>
+      <label htmlFor="start">start:</label>
+      <input
+        type="date"
+        id="start"
+        value={formValues.start}
+        onChange={(e) =>
+          setFormValues({ ...formValues, start: e.target.value })
+        }
+      />
+    </div>
+    <div>
+      <label htmlFor="end">end:</label>
+      <input
+        type="date"
+        id="end"
+        value={formValues.end}
+        onChange={(e) =>
+          setFormValues({ ...formValues, end: e.target.value })
+        }
+      />
+    </div>
+
+    {/* <div>
+  <label htmlFor="availabilityStart">Date de début:</label>
+  <input
+    type="date"
+    id="availabilityStart"
+    value={formValues.availability.start}
+    onChange={(e) =>
+      setFormValues({
+        ...formValues,
+        availability: {
+          ...formValues.availability,
+          start: e.target.value,
+        },
+      })
+    }
+  />
+</div>
+
+<div>
+  <label htmlFor="availabilityEnd">Date de fin:</label>
+  <input
+    type="date"
+    id="availabilityEnd"
+    value={formValues.availability.end}
+    onChange={(e) =>
+      setFormValues({
+        ...formValues,
+        availability: {
+          ...formValues.availability,
+          end: e.target.value,
+        },
+      })
+    }
+  />
+</div> */}
+
+
+    {/* <div>
+      <label htmlFor="start">start:</label>
+      <input
+        type="date"
+        id="start"
+        value={formValues.start}
+        onChange={(e) =>
+          setFormValues({ ...formValues, start: e.target.value })
+        }
+      />
+    </div>
+
+
+    <div>
+      <label htmlFor="end">end:</label>
+      <input
+        type="date"
+        id="end"
+        value={formValues.end}
+        onChange={(e) =>
+          setFormValues({ ...formValues, end: e.target.value })
+        }
+      />
+    </div> */}
+
     <div>
        <label htmlFor="image">upload product picture</label> 
       <input
@@ -248,6 +352,3 @@ const Coaching = (props) => {
 };
 
 export default requireAuth(Coaching);
-
-
-

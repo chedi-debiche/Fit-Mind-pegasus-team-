@@ -70,6 +70,42 @@
     width: 80%;
     margin: 0 auto;
   }
+  .reservationsList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .reservationItem {
+    border: 1px solid #ccc;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .actions {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+  
+  .update {
+    background-color: #1abc9c;
+    color: #fff;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+  }
+  
+  .delete {
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+  }
   
   
   

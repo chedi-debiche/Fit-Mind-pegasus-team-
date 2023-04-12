@@ -28,6 +28,10 @@ import HeaderCoaches from "./components/frontoffice/shared/HeaderCoaches";
  import SignedinUser from "./components/frontoffice/shared/signedinUser";
  import CoachingsClient from "./components/frontoffice/CoachMangement/CoachingsClient";
  import CoachList from "./components/backoffice/coachmanagement/CoachList";
+ import ReservationC from "./components/frontoffice/CoachMangement/ReservationC";
+import ListReservation from "./components/frontoffice/CoachMangement/ListReservation";
+
+ 
 
 
 
@@ -65,12 +69,19 @@ function App() {
            <Route path="/Coachings" element={<Coachings/>} />
            <Route path="/CoachingsClient" element={<CoachingsClient/>} />
 
+           <Route path="/Reservationc/:coachingId" element={<ReservationC/>} />
+           {/* <Route path="/Reservationc" element={<ReservationC/>} /> */}
+
+           <Route path="/listreservation" element={<ListReservation/>} />
+
 
 
            {/* <Route path="/Captcha" element={<Captcha/>} /> */}
           <Route path="/users/:id/verify/:token" element={<EmailVerify />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
 		      <Route path="/password-reset/:id/:token" element={<PasswordReset />} />
+
+    
 
 
 

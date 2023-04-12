@@ -42,6 +42,17 @@ const Joi = require("joi");
 // 		res.status(500).send({ message: "Internal Server Error" });
 // 	}
 // });
+
+// router.get("/getById/:userId",authent,async (req, res) => {
+// 	try {
+// 		const data=await User.findById(req.params.userId);
+// 		res.json(data);
+	
+// 	} catch (err) {
+// 		res.send(err)
+// 	}
+// });
+
 router.get("/getById/:id",authent,async (req, res) => {
 	try {
 		const data=await User.findById(req.params.id);
@@ -184,7 +195,15 @@ router.get("/:id/verify/:token/", async (req, res) => {
 
 
   
-  
+router.get('/:id', async (req, res) => {
+	try {
+	  const user = await User.findById(req.params.id);
+	  res.json(user);
+	} catch (err) {
+	  console.error(err.message);
+	  res.status(500).send('Server Error');
+	}
+  });
   
   
 

@@ -18,31 +18,38 @@ const upload = multer({ storage: storage });
 const Coaching = require('../models/coachings');
 const User = require('../models/user');
 
+// Get all coachings for a specific user
 
 
-// Create a new coaching with image upload
+
+
+//Create a new coaching with image upload
 router.post('/', upload.single('image'), async (req, res) => {
-    try {
-     // const user = await User.findById(req.body.user);
-     // const user = await User.findById(user_id);
-      const coaching = new Coaching({
-        nameCoaching: req.body.nameCoaching,
-        nameCoach: req.body.nameCoach,
-        description: req.body.description,
-        image: req.file.filename, // store the filename in the database
-        rating: req.body.rating ,// add rating as an optional field
-        category : req.body.category,
-        user: req.body.user
-       // user: req.auth.user_id // use the authenticated user ID instead of req.user._id
-       // user: req.user._id
-       // createdBy: req.user._id // add the user ID of the creator
-      });
-      await coaching.save();
-      res.status(201).json(coaching);
-    } catch (err) {
-      res.status(400).json({ error: err.message });
-    }
-  });
+  try {
+   // const user = await User.findById(req.body.user);
+   // const user = await User.findById(user_id);
+    const coaching = new Coaching({
+      nameCoaching: req.body.nameCoaching,
+      nameCoach: req.body.nameCoach,
+      description: req.body.description,
+      image: req.file.filename, // store the filename in the database
+      rating: req.body.rating ,// add rating as an optional field
+      category : req.body.category,
+      user: req.body.user,
+      start : req.body.start,
+      end : req.body.end,
+     // availability: req.body.availability
+     // user: req.auth.user_id // use the authenticated user ID instead of req.user._id
+     // user: req.user._id
+     // createdBy: req.user._id // add the user ID of the creator
+    });
+    await coaching.save();
+    res.status(201).json(coaching);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 
 // Get all coachings
 router.get('/', async (req, res) => {
@@ -97,6 +104,15 @@ router.patch('/:id', getCoaching, upload.single('image'), async (req, res) => {
     if (req.body.category != null) { // add rating as an optional field
       res.coaching.category = req.body.category;
     }
+    if (req.body.start != null) { // add rating as an optional field
+      res.coaching.start = req.body.start;
+    }
+    if (req.body.end != null) { // add rating as an optional field
+      res.coaching.end = req.body.end;
+    }
+    // if (req.body.availability != null) { // add rating as an optional field
+    //   res.coaching.availability = req.body.availability;
+    // }
     try {
       const updatedCoaching = await res.coaching.save();
       res.json(updatedCoaching);

@@ -117,5 +117,22 @@
     background-color: #000000;
     color: #fff;
   }
+  .reservation-link {
+    color: rgb(231, 0, 0);
+    font-size: 20px;
+    text-decoration: none;
+  }
+  .card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  .black-text {
+    color: black;
+  }
+
+  
+  
+  
   
  
