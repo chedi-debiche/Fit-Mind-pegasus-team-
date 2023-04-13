@@ -10,7 +10,16 @@ const authRoutes = require("./routes/auth");
 const passwordResetRoutes = require("./routes/passwordReset");
 const path = require("path");
 const cookieParser=require('cookie-parser');
-const session= require('express-session')
+const session= require('express-session');
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+const coachingRoutes = require("./routes/coachings"); // import products router
+const reservationcRoutes = require("./routes/reservationcs"); // import products router
+
+const productRoutes = require("./routes/products"); // 
+const cartRoutes = require("./routes/Cart"); // 
+const blogRoutes = require("./routes/blog"); // 
+const comment = require("./routes/comment")
 
 
 
@@ -52,6 +61,23 @@ app.get("/api/users", userRoutes.get);
 app.delete("/api/users/:id", userRoutes.delete);
 // Route to block a user
 app.put("/api/users/:id/block", userRoutes.put);
+//jawher routes
+app.use("/api/coachings", coachingRoutes); // use products router
+app.use('/uploads', express.static('uploads'));
+app.use("/api/reservations", reservationcRoutes); // use products router
+//end jawher routes
+
+//chedi routes
+app.use("/api/products", productRoutes); // use products router
+app.use("/api/cart", cartRoutes); // use products router 
+app.get("/api/blog/recent", blogRoutes.get); // use products router 
+
+app.use("/api/blog", blogRoutes); // use products router 
+
+
+app.use("/api/commentaire", comment); // use products router 
+
+//chedi routes fin
 
 
 

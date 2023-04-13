@@ -19,6 +19,8 @@ const HomeFront = () => {
 
 
 <main style={{ background: 'black' }}>
+                        
+
   {/*? slider Area Start*/}
   <div className="slider-area position-relative">
     <div className="slider-active">

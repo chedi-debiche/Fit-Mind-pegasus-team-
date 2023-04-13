@@ -33,24 +33,36 @@ const SideNav = () => {
                 <p>User management</p>
               </Link>
             </li>
-            <li className="nav-item">
-              <a href="./index2.html" className="nav-link">
+            {/* jawher module */}
+             <li className="nav-item">
+            <Link to="/CoachList" className="nav-link active">
                 <i className="far fa-circle nav-icon" />
                 <p>Coach management</p>
-              </a>
-            </li>
-            <li className="nav-item">
-              <a href="./index3.html" className="nav-link">
+                </Link>
+            </li> 
+            {/* end jawher module */}
+
+              {/* module chedi  */}
+
+              <li className="nav-item">
+
+            <Link to="/productsd" className="nav-link active">
                 <i className="far fa-circle nav-icon" />
-                <p>Gym management</p>
-              </a>
-            </li>
-            <li className="nav-item">
-              <a href="./index3.html" className="nav-link">
-                <i className="far fa-circle nav-icon" />
-                <p>Reclamation management</p>
-              </a>
-            </li>
+                <p>products management</p>
+            </Link>
+           </li>
+
+  <li className="nav-item">
+
+<Link to="/blogd" className="nav-link active">
+      <i className="far fa-circle nav-icon" />
+      <p>blog posts management</p>
+    </Link>
+  </li>
+
+              {/* module chedi  */}
+
+          
           </ul>
         </li>
 

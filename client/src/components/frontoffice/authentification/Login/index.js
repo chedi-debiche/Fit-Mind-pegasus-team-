@@ -21,19 +21,31 @@ const Login = () => {
 		}));
 	  };
 
-	const handleSubmit = async (e) => {
+	  const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
 			const url = "http://localhost:5000/api/auth/";
-			const { data: res } = await axios.post(url,credentials);
+			const { data: res } = await axios.post(url, credentials);
 			localStorage.setItem("token", res.token);
 			localStorage.setItem("userId", res.userId);
-			sessionStorage.setItem('isAuthenticated', true);
-
-			//window.location = "/";
-			navigate('/signedin');
+			sessionStorage.setItem("isAuthenticated", true);
+	
+			switch (res.userType) {
+				case "User":
+					navigate("/signedinUser");
+					break;
+				case "Coach":
+					navigate("/signedin");
+					break;	
+				case "GymManager":
+					navigate("/gymmanger");
+					break;
+				case "Admin":
+					navigate("/user");
+					break;
+			}
+	
 			console.log(res.token);
-			
 		} catch (error) {
 			if (
 				error.response &&
@@ -44,6 +56,7 @@ const Login = () => {
 			}
 		}
 	};
+	
 
 	return (
 
