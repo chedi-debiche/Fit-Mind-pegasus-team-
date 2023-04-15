@@ -31,6 +31,17 @@ router.post("/stripe/:idg/:idu/:ido",async(req,res)=>{
 			payment_method:id,
 			confirm:true,
 		});
+
+		// Find the user's active subscriptions for that gym in order to avoid a double subscription
+		const activeSubscriptions = await Subscription.find({
+			user: idu,
+			gym: idg,
+			status: "active"
+		});
+		if (activeSubscriptions.length > 0) {
+			return res.status(400).json({ message: "You already have an active subscription for this gym" });
+		}
+
 		const startDate=new Date();
 		const endDate = new Date();
 		endDate.setMonth(endDate.getMonth() + 1);
@@ -383,6 +394,41 @@ router.get('/subscription/getByUser/:id', async (req, res) => {
       res.status(500).json({ error: err.message });
     }
 });
+
+
+
+
+
+router.get('/sort/:sortOrder', async (req, res) => {
+	const sortOrder = req.params.sortOrder;
+	const gyms = await Gym.find();
+	let sortedGyms;
+  
+	switch (sortOrder) {
+	  case 'highest-rated':
+		sortedGyms = gyms.sort((a, b) => b.rating - a.rating);
+		break;
+	  case 'lowest-rated':
+		sortedGyms = gyms.sort((a, b) => a.rating - b.rating);
+		break;
+	  default:
+		sortedGyms = gyms;
+		break;
+	}
+  
+	res.json(sortedGyms);
+  });
+
+
+  // Filter gyms by rating
+router.get('/filter/:rating', async (req, res) => {
+	const rating = req.params.rating;
+	const gyms = await Gym.find({ rating: { $gte: rating } });
+	res.json(gyms);
+  });
+  
+  
+  
     
 
 

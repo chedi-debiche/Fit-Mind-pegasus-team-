@@ -7,6 +7,7 @@ const cors = require("cors");
 const connection = require("./db");
 const userRoutes = require("./routes/users");
 const gymRoutes = require("./routes/gym");
+const reclamationRoutes = require("./routes/reclamation");
 const authRoutes = require("./routes/auth");
 const passwordResetRoutes = require("./routes/passwordReset");
 const path = require("path");
@@ -64,6 +65,8 @@ app.use('/uploads', express.static('uploads'));
 
 
 app.use("/api/gyms",gymRoutes);
+app.use("/api/reclamations",reclamationRoutes);
+
 
 const port = process.env.PORT || 5000;
 

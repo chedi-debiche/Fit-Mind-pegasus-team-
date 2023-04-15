@@ -3,9 +3,11 @@ import axios from 'axios';
 import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 import { useParams } from 'react-router-dom';
 import CheckUser from '../authentification/CheckUser';
+import styles from './styles.module.css'
 
 const GymSubscribe = () => {
   const [processing, setProcessing] = useState(false);
+  const [error, setError] = useState("");
   const stripe = useStripe();
   const elements = useElements();
 
@@ -37,7 +39,14 @@ const GymSubscribe = () => {
           alert('Payment successful');
         }
       } catch (error) {
-        console.log('Error:', error);
+        if (
+          error.response &&
+          error.response.status >= 400 &&
+          error.response.status <= 500
+        ) {
+          setError(error.response.data.message);
+        }
+       
       }
     } else {
       console.error(error);
@@ -104,6 +113,7 @@ const GymSubscribe = () => {
         <button type="submit" disabled={processing} style={buttonStyle}>
           {processing ? 'Processing...' : 'Subscribe'}
         </button>
+        {error && <div className={styles.error_msg}>{error}</div>}
       </form>
     </div>
     ):(
@@ -156,5 +166,7 @@ const inputStyle = {
   marginBottom: '10px',
   width: '100%'
 };
+
+
 
 export default GymSubscribe;
