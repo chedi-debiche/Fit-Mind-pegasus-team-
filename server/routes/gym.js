@@ -1,15 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-
 const {Gym,validate} = require('../models/gym');
-const Subscription = require('../models/subscription')
+const Subscription = require('../models/subscription');
 const Offer = require('../models/offer');
-
 const upload = require('../config/multerConfig');
 const path = require('path');
 const { default: Stripe } = require('stripe');
 const Joi = require("joi");
+
+
+const twilio = require('twilio');
+
 
 
 
@@ -56,6 +58,14 @@ router.post("/stripe/:idg/:idu/:ido",async(req,res)=>{
 
 		await newSubscription.save();
 
+		
+		const phoneNumber = '+21628499722';
+	
+		const accountSid = 'AC9b7d1f01a2a2393e47097587ca0a19e7';
+		const authToken = 'b4e950019e5d1ef9a0d6a17cf85798a6';
+		const client = new twilio(accountSid, authToken);
+		const message = `Thank you for subscribing to our gym. Your subscription is now active`;
+    	await client.messages.create({ body: message, from: '+16232788531', to: phoneNumber });
 
 
 		res.json({
@@ -426,6 +436,22 @@ router.get('/filter/:rating', async (req, res) => {
 	const gyms = await Gym.find({ rating: { $gte: rating } });
 	res.json(gyms);
   });
+
+
+
+
+router.get('/search/:name', async (req, res) => {
+	const { name } = req.params;
+  
+	try {
+	  const gyms = await Gym.find({ name: { $regex: new RegExp(name, 'i') } });
+	  res.json(gyms);
+	} catch (error) {
+	  console.error(error);
+	  res.status(500).send('Server error');
+	}
+});
+  
   
   
   

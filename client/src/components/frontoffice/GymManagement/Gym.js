@@ -8,8 +8,12 @@ import axios from "axios"
 import { Form } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch,faFilter,faSort } from '@fortawesome/free-solid-svg-icons';
+import { faSearch,faFilter,faSort, faMicrophone } from '@fortawesome/free-solid-svg-icons';
 import Rating from "react-rating-stars-component";
+
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+
+import { Navbar, Nav } from 'react-bootstrap';
 
 
 
@@ -23,6 +27,8 @@ function Gyms() {
   const [isFilterClicked, setIsFilterClicked] = useState(false);
   const [isSortClicked, setIsSortClicked] = useState(false);
   const [minRating, setMinRating] = useState(0);
+
+  const { transcript,listening, resetTranscript } = useSpeechRecognition();
 
   const [gyms, setGyms] = useState([]);
   const token=localStorage.getItem('token');
@@ -95,6 +101,21 @@ function Gyms() {
       .catch((error) => console.log(error));
   };
 
+
+
+  const handleClick = () => {
+    resetTranscript();
+    SpeechRecognition.startListening();
+  };
+
+  const handleVocalSearch=()=>{
+
+    fetch(`http://localhost:5000/api/gyms/search/${transcript}`)
+      .then((response) => response.json())
+      .then((data) => setGyms(data))
+      .catch((error) => console.log(error));
+  }
+
  
   
   
@@ -122,96 +143,108 @@ function Gyms() {
           </div>
         </div>
       </div>
+
+
+
+      <Navbar bg="light" expand="lg">
+        <Navbar.Brand href=""></Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="mr-auto">
+        {/* Add other Nav items as needed */}
+        </Nav>
       
   
-      
+        <section style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "20vh" }}>
+          {showIcons && (<div className='row'>
+            <div className='features-icon col lg-4 md-4 sm-4' onClick={() => handleSearchClick()}>
+              <FontAwesomeIcon icon={faSearch} size="3x" style={{color: '#8b0000'}}/>
+            </div>
+            <div className='features-icon col lg-4 md-4 sm-4'>
+              <FontAwesomeIcon icon={faFilter} size="3x" style={{ marginLeft: '1rem', marginRight: '1rem' ,color: '#8b0000'}} onClick={handleFilterClick} />
+            </div>
+            <div className='features-icon col lg-4 md-4 sm-4'>
+              <FontAwesomeIcon icon={faSort} size="3x" style={{ marginRight: '1rem',color: '#8b0000' }} onClick={handleSortClick} />
+            </div>
 
-     
-      <section style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "30vh" }}>
-        {showIcons && (<div className='row'>
-          <div className='features-icon col lg-4 md-4 sm-4' onClick={() => handleSearchClick()}>
-            <FontAwesomeIcon icon={faSearch} size="3x" style={{color: 'red'}}/>
-          </div>
-          <div className='features-icon col lg-4 md-4 sm-4'>
-            <FontAwesomeIcon icon={faFilter} size="3x" style={{ marginLeft: '1rem', marginRight: '1rem' ,color: 'red'}} onClick={handleFilterClick} />
-          </div>
-          <div className='features-icon col lg-4 md-4 sm-4'>
-            <FontAwesomeIcon icon={faSort} size="3x" style={{ marginRight: '1rem',color: 'red' }} onClick={handleSortClick} />
-          </div>
-        </div> )}
+            <div className='features-icon col lg-4 md-4 sm-4'>
+              <FontAwesomeIcon icon={faMicrophone} size="3x" style={{ marginRight: '1rem',color: '#8b0000' }} onClick={handleClick} />
+            </div>
 
-      
-
-      
-
-        {isSearchClicked &&(
-    
-         <div style={{ border: "1px solid black", padding: "10px", borderRadius: "15px" }}>
-          <form onSubmit={handleSearch}>
-        <label>
-          <h1>location :</h1>
-          
-          <input
-            type="text"
-            placeholder=" your location"
-            value={localisation}
-            onChange={handleLocalisationChange}
-            style={{
-              border: "1px solid #ccc",
-              borderRadius: "5px",
-              backgroundColor: "#f5f5f5",
-              padding: "10px",
-              marginBottom: "10px",
-            }}
-          />
-        </label>
-        <button type="submit" style={{ backgroundColor: "red", color: "white", fontSize: "20px", padding: "10px 20px", borderRadius: "5px", border: "none" }} >find</button>
-      </form>
-          
-      
-      </div> )}
-
-
-
-
-
-            {isSortClicked &&(
-          
-          <div style={{ border: "1px solid black", padding: "10px", borderRadius: "15px" }}>
-            <Form.Group>
-              <Form.Label>Sort by:</Form.Label>
-              <Form.Control as="select" onChange={handleSort}>
-                <option value="default">Default</option>
-                <option value="highest-rated">Highest Rated</option>
-                <option value="lowest-rated">Lowest Rated</option>
-              </Form.Control>
-            </Form.Group>
-      
+            
+              <div style={{justifyContent: "center", alignItems: "center",marginLeft:"75px" }} >
+              <p style={{ fontSize: '18px' }}>{transcript}</p>
+                {!listening && transcript && (
+                <button onClick={handleVocalSearch} style={{ backgroundColor: "#8b0000", color: "white",  padding: "5px 10px", border: "none", borderRadius: "10px", fontSize: "12px", cursor: "pointer"}}>Search</button>
+                )}    
+              </div>    
+            
           </div> )}
 
+        
+
+          {isSearchClicked &&(
+      
+          <div style={{ border: "1px solid black", padding: "10px", borderRadius: "15px" }}>
+            <form onSubmit={handleSearch}>
+          <label>
+            <h1>location :</h1>
+            
+            <input
+              type="text"
+              placeholder=" your location"
+              value={localisation}
+              onChange={handleLocalisationChange}
+              style={{
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+                backgroundColor: "#f5f5f5",
+                padding: "10px",
+                marginBottom: "10px",
+              }}
+            />
+          </label>
+          <button type="submit" style={{ backgroundColor: "red", color: "white", fontSize: "20px", padding: "10px 20px", borderRadius: "5px", border: "none" }} >find</button>
+        </form>
+            
+        
+        </div> )}
 
 
 
-
-          {isFilterClicked &&(
-            <div>
-          <Rating
-            name="min-rating"
-            count={5}
-            size={24}
-            activeColor="#ffd700"
-            onChange={(newRating) => setMinRating(newRating)}
-          /> 
-          <button onClick={handleFilter} style={{ backgroundColor: "red", color: "white", fontSize: "15px", padding: "10px 10px", borderRadius: "15px", border: "none", marginLeft:"20px" }} >Filter</button>
-          </div>
-
-          )}
-
-
-    
+              {isSortClicked &&(
+            
+            <div style={{ border: "1px solid black", padding: "10px", borderRadius: "15px" }}>
+              <Form.Group>
+                <Form.Label>Sort by:</Form.Label>
+                <Form.Control as="select" onChange={handleSort}>
+                  <option value="default">Default</option>
+                  <option value="highest-rated">Highest Rated</option>
+                  <option value="lowest-rated">Lowest Rated</option>
+                </Form.Control>
+              </Form.Group>
+        
+            </div> )}
 
 
-      </section>
+
+            {isFilterClicked &&(
+              <div>
+            <Rating
+              name="min-rating"
+              count={5}
+              size={24}
+              activeColor="#ffd700"
+              onChange={(newRating) => setMinRating(newRating)}
+            /> 
+            <button onClick={handleFilter} style={{ backgroundColor: "red", color: "white", fontSize: "15px", padding: "10px 10px", borderRadius: "15px", border: "none", marginLeft:"20px" }} >Filter</button>
+            </div>
+
+            )}
+
+        </section>
+        </Navbar.Collapse>
+      </Navbar>
       
 
   

@@ -14,6 +14,8 @@ import OffreFront from './OffreFront';
 // import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 // import { loadStripe } from '@stripe/stripe-js';
 import styles from "./styles.module.css";
+import { WiDaySunny } from 'react-icons/wi'; // import sun icon
+import { WiCloud } from 'react-icons/wi'; // import cloud icon
 
 
 // const stripePromise = loadStripe('pk_test_51MqwXKLtZDUJknUFqrT9QWqseSlznuwfUJLZb7InHzAZ2EHNxPVqgYmxcy9CE0r96wchlhTvr6QnLWp1vA1kxIWJ00e4rQ4gk4');
@@ -25,6 +27,7 @@ function GymDetails () {
   const [msg, setMsg] = useState("");
   const [catchRate, setCatchRate] = useState(false);  
   const [rating, setRating] = useState(0);
+  const [weatherData, setWeatherData] = useState(null);
 
   const [Offers, setOffers] = useState([]);
   const [role,setRole] = useState('') ;
@@ -131,6 +134,27 @@ function GymDetails () {
     
     handleRole();
   }, []);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?q=Ariana&units=metric&appid=e6c6b890d2b7bfe05c3add6d510da50c `
+      );
+      setWeatherData(response.data);
+      console.log(weatherData);
+    };
+
+    fetchData();
+    
+  }, []);
+  let weatherIcon = null;
+  if (weatherData && weatherData.weather && weatherData.weather[0]) {
+    weatherIcon = weatherData.weather[0].main === 'Clear' ? <WiDaySunny size={64} /> : <WiCloud size={64} />;
+  }
+
+  
+
 
   
   return (
@@ -284,6 +308,27 @@ function GymDetails () {
           
         ))}
   </div>
+
+  <section style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "30vh" }}>
+  <div className="weather-widget">
+  {weatherData ? (
+  <>
+  <div className="weather-icon">{weatherIcon}
+      <div className="weather-data">
+        <h1>Weather in {weatherData.name}</h1>
+        <p>Temperature: {weatherData.main.temp} °C</p>
+        <p>Humidity: {weatherData.main.humidity} %</p>
+        <p>Description: {weatherData.weather[0].description}</p>
+    </div>
+  </div>
+  </>
+) : (
+  <p>Loading weather data...</p>
+)}
+    </div>
+
+  </section>
+
 
   <FooterFront/>
 

@@ -23,6 +23,7 @@
     "react-rating-stars-component": "^2.2.0",
     "react-router-dom": "^6.9.0",
     "react-scripts": "^5.0.1",
+    "react-speech-recognition": "^3.10.0",
     "react-stripe-elements": "^6.1.2",
     "reactstrap": "^9.1.6",
     "source-map-generator": "^0.8.0",

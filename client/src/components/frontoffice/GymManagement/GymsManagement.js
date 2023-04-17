@@ -13,6 +13,10 @@ import HeaderSignedInClient from "../shared/HeaderSignedInClient";
 
 const GymsManagement=()=>{
   const [gyms, setGyms] = useState([]);
+  const [Offers, setOffers] = useState([]);
+  const [postuling, setPostuling] = useState(false);
+  const [postuleId, setPostuleId] = useState(null);
+
     const [showForm, setShowForm] = useState(false);
     const [editing, setEditing] = useState(false);
     const [editId, setEditId] = useState(null);
@@ -23,6 +27,14 @@ const GymsManagement=()=>{
       photo: '',
       services: '',
     });
+    const [formOffer, setFormOffer] = useState({
+      name: '',
+      type: '',
+      Price:''
+    });
+   
+    const [showOffer, setShowOffer] = useState(false);
+
     const idu = localStorage.getItem('userId') ;
 
     const handleEdit = async (id) => {
@@ -44,6 +56,7 @@ const GymsManagement=()=>{
     const handleVisible = async () => {
   setShowForm(!showForm) ;
     }
+
 
     useEffect(() => {
       getGyms();
@@ -114,6 +127,34 @@ console.log(editing);
 
 
   
+
+  const handleAddOffer = async (e) => {
+    e.preventDefault();
+    try {
+      
+      const url = `http://localhost:5000/api/gyms/${postuleId}/offers`;
+      const {data:res} = await axios.post(url, formOffer);
+      console.log(res)
+      setShowOffer(false);
+      
+    } catch (error) {
+      console.error(error);
+      // handle error
+    }
+  };
+  
+  const handleOffer = async (id) => {
+    setShowOffer(true);
+   setPostuleId(id);
+  };
+  
+
+
+ 
+
+
+
+  
     
     return (
         <div style={{backgroundColor : "black"}}>
@@ -143,6 +184,76 @@ console.log(editing);
      {  (
     <Container>
       {/* informations :  */}
+
+      {showOffer && (
+        <Form onSubmit={handleAddOffer}>
+        <h2 className="text-center mb-4"style={{ color: "white", fontSize: "6rem" }}>Offer</h2>
+        <Row form>
+          <Col md={6}>
+            <FormGroup>
+              <Label for="name" style={{ color: "white", fontSize: "2rem" }}>
+                Offer Name:
+              </Label>
+              <Input style={{ fontSize: "2rem" }}
+                type="string" name="name" id="name" value={formOffer.name}
+                onChange={(e) =>
+                  setFormOffer({ ...formOffer, name: e.target.value })
+                }  />
+            </FormGroup>
+          </Col>
+          <Col md={6}>
+            <FormGroup>
+              <Label for="type" style={{ color: "white", fontSize: "2rem" }}>
+                Offer Type
+              </Label>
+              <Input style={{ fontSize: "2rem" }}
+                type="string"
+                name="type"
+                id="type"
+                value={formOffer.type}
+                onChange={(e) =>
+                  setFormOffer({ ...formOffer, type: e.target.value })
+                }
+              />
+            </FormGroup>
+          </Col>
+        </Row>
+      
+      <Row>
+          <Col>
+          <FormGroup>
+          <Label for="price" style={{ color: "white", fontSize: "2rem" }}>
+            Price
+          </Label>
+          <Input style={{ fontSize: "2rem" }}
+            type="number"
+            name="price"
+            id="price"
+            value={formOffer.price}
+            onChange={(e) =>
+              setFormOffer({ ...formOffer, price: e.target.value })
+            }
+      
+          />
+        </FormGroup>
+        </Col>
+      
+      
+      
+     
+      </Row>
+       
+      
+      
+    
+      <Button color="danger"
+        size="lg"
+        className="rounded-pill shadow-sm" type="submit" > Add  Offer</Button>
+  
+        
+      </Form>
+
+      )}
 
 
     <Form onSubmit={AddGyms}>
@@ -276,6 +387,8 @@ Gym Picture
                 <p className="price">{gym.localisation}</p>
                 <p className="price">participant : {gym.participant}</p>
                 <div className="btn" onClick={() => handleEdit(gym._id)} >Update</div>
+                <div className="btn" onClick={() => handleOffer(gym._id)}>Add Offer</div>
+
             </div>
         </div>
        
