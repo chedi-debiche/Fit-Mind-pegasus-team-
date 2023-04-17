@@ -2,7 +2,25 @@ const express = require('express');
 const router = express.Router();
 const {Reclamation,validate} = require('../models/reclamation');
 
+router.post('/add/:userId', async (req, res) => {
+  try {
+    const { error } = validate(req.body);
+    if (error)
+      return res.status(400).send({ message: error.details[0].message });
+    // user_id: req.params.userId;
+    const reclamation = new Reclamation({
+      description: req.body.description,
+      user_id:req.params.userId,
+      comments:req.body.comments,
+      type:req.body.type
 
+    });
+    await reclamation.save();
+    res.status(201).send("Your reclamation will be treated as soon as possible !");
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+});
 
 
 // Get all reclamations
@@ -41,6 +59,9 @@ router.delete('/delete/:id', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+
+
 
 // Update a reclamation by id
 

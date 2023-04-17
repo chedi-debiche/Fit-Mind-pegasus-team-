@@ -73,7 +73,7 @@ function App() {
           <Route path="/subscriptions/:id" element={<Subscription/>} />
           <Route path="/gymsmanagement" element={<GymsManagement/>} />
 
-          {/* <Route path="/reclame" element={<Reclamation/>} /> */}
+           <Route path="/reclame" element={<Reclamation/>} /> 
 
 
         {/* Add more routes for other components */}
