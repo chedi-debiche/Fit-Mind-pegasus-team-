@@ -58,24 +58,25 @@ td:last-child {
     background-color: #f2f2f2;
   }
 
-  .update {
+  .table td:last-child button {
+    font-size: 14px;
+  }
+  
+  .table td:last-child .update {
     background-color: green;
     color: white;
     border: none;
-    padding: 5px;
     border-radius: 15px;
     margin-right: 20px;
-    display: inline-block;
   }
   
-  .delete {
+  .table td:last-child .delete {
     background-color: red;
     color: white;
     border: none;
-    padding: 5px;
     border-radius: 15px;
-    display: inline-block;
   }
+  
   
 
   .container {

@@ -55,6 +55,7 @@ import Blogdashboard from "./components/backoffice/blogmanagement/BlogList";
 import BlogPost from "./components/frontoffice/blogManagement/BlogPost"
 import CommentForm from "./components/frontoffice/blogManagement/commentForm";
 import CommentsList from "./components/frontoffice/blogManagement/CommentsList";
+import ReclamationList from "./components/backoffice/reclamationManagement/reclamationList";
 //end chedi imports
  
 
@@ -112,7 +113,9 @@ function App() {
           <Route path="/subscriptions/:id" element={<Subscription/>} />
           <Route path="/gymsmanagement" element={<GymsManagement/>} />
 
-          {/* <Route path="/reclame" element={<Reclamation/>} /> */}
+          <Route path="/reclame" element={<Reclamation/>} />
+          <Route path="/reclamations" element={<ReclamationList/>} />
+
 
 
 
