@@ -27,7 +27,8 @@ const ReclamationSchema = new mongoose.Schema({
     default: 'other'
   },
   comments: {
-    type: String
+    type: String,
+    default: ''
     },
 //   assigned_to: { type: String },
 //   resolution_date: { type: Date },

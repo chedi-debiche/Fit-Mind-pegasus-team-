@@ -56,6 +56,12 @@ router.post("/stripe/:idg/:idu/:ido",async(req,res)=>{
 			// stripeSubscriptionId: subscription.id,
 		  });
 
+
+		  const gyms1 = await Gym.findById(idg);
+		  gyms1.participant = await gyms1.participant + 1;
+		  gyms1.save();
+		  console.log(gyms1.participant);
+
 		await newSubscription.save();
 
 		

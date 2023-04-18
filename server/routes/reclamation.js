@@ -106,5 +106,35 @@ router.post('/rating/:idu', async (req, res) => {
   });
 
 
+  router.patch('/update/:id', async (req, res) => {
+    try {
+      const newData = {
+        description: req.body.description,
+        type:req.body.type,
+        comments:req.body.comments,
+        status:req.body.status
+      }
+
+      const { error } = validate(newData);
+      if (error)
+        return res.status(400).send({ message: error.details[0].message });
+      const reclamation = await Reclamation.findById(req.params.id);
+      if (!reclamation) {
+        return res.status(404).json({ message: 'Reclamation not found' });
+      }
+      Object.assign(reclamation, req.body);
+      await reclamation.save();
+      res.json(reclamation);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  });
+
+
+
+
+
+
+
 
 module.exports = router;
