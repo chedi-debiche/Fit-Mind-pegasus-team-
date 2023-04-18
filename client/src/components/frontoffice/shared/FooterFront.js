@@ -16,7 +16,7 @@ const FooterFront = () => {
               <div className="single-footer-caption mb-50 text-center">
                 {/* logo */}
                 <div className="footer-logo wow fadeInUp" data-wow-duration="1s" data-wow-delay=".2s">
-                  <a href="index.html"><img src="assets/img/logo/logo2.png" alt="logo2" style={{width: 300, height: 200}} /></a>
+                  <a href="index.html"><img src="../assets/img/logo/logo2.png" alt="logo2" style={{width: 300, height: 200}} /></a>
                 </div>
                 {/* Menu */}
                 {/* Header Start */}

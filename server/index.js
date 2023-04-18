@@ -1,4 +1,3 @@
-
 const express = require("express");
 const dotenv = require("dotenv").config()
 // dotenv.config();
@@ -6,6 +5,9 @@ const app = express();
 const cors = require("cors");
 const connection = require("./db");
 const userRoutes = require("./routes/users");
+const gymRoutes = require("./routes/gym");
+const reclamationRoutes = require("./routes/reclamation");
+
 const authRoutes = require("./routes/auth");
 const passwordResetRoutes = require("./routes/passwordReset");
 const path = require("path");
@@ -20,6 +22,10 @@ const productRoutes = require("./routes/products"); //
 const cartRoutes = require("./routes/Cart"); // 
 const blogRoutes = require("./routes/blog"); // 
 const comment = require("./routes/comment")
+
+
+const twilio = require('twilio');
+
 
 
 
@@ -78,6 +84,10 @@ app.use("/api/blog", blogRoutes); // use products router
 app.use("/api/commentaire", comment); // use products router 
 
 //chedi routes fin
+
+
+app.use("/api/gyms",gymRoutes);
+app.use("/api/reclamations",reclamationRoutes);
 
 
 

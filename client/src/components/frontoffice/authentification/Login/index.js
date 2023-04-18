@@ -38,7 +38,7 @@ const Login = () => {
 					navigate("/signedin");
 					break;	
 				case "GymManager":
-					navigate("/gymmanger");
+					navigate("/signedinUser");
 					break;
 				case "Admin":
 					navigate("/user");

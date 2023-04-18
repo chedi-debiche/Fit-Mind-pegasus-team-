@@ -21,6 +21,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Profile from "./components/frontoffice/authentification/Profile/index";
 import { useEffect, useState } from 'react';
 import UpdateUser from "./components/frontoffice/update";
+import GymFront from "./components/frontoffice/GymManagement/GymFront";
+import Gyms from "./components/frontoffice/GymManagement/Gym";
+import GymDetails from "./components/frontoffice/GymManagement/GymDetails";
+import GymSubscribe from "./components/frontoffice/GymManagement/GymSubscribe";
+import StripeContainer from "./components/frontoffice/GymManagement/StripeContainer";
+import GymsManagement from "./components/frontoffice/GymManagement/GymsManagement";
+import Subscription from "./components/frontoffice/GymManagement/subscription";
+import Reclamation from "./components/frontoffice/reclamation/reclamation";
 
 //jawher imports
 import HeaderCoaches from "./components/frontoffice/shared/HeaderCoaches";
@@ -90,6 +98,28 @@ function App() {
            {/* <Route path="/Reservationc" element={<ReservationC/>} /> */}
 
            <Route path="/listreservation" element={<ListReservation/>} />
+
+
+
+
+
+
+          <Route path="/gyms" element={<Gyms/>} />
+          <Route path="/gymf" element={<GymFront/>} />
+          <Route path="/gymDetails/:id" element={<GymDetails/>} />
+          <Route path="/subscribe" element={<GymSubscribe/>} />
+          <Route path="/subscribeGym/:idg/:idu/:amount/:ido" element={<StripeContainer/>} />
+          <Route path="/subscriptions/:id" element={<Subscription/>} />
+          <Route path="/gymsmanagement" element={<GymsManagement/>} />
+
+          {/* <Route path="/reclame" element={<Reclamation/>} /> */}
+
+
+
+
+
+
+
 
 
 

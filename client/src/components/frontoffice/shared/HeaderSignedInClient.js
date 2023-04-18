@@ -1,10 +1,11 @@
-import React,{ useState } from 'react'
+import React,{ useState,useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import axios from "axios";
 
 
 
 const HeaderSignedInClient = () => {
+  const [role,setRole] = useState('') ;
   
 
   // const [loggedIn, setLoggedIn] = useState(false);
@@ -24,6 +25,20 @@ const HeaderSignedInClient = () => {
   };
 
 
+  useEffect(() => {
+    const handleRole = async () =>{
+    
+
+      const Role =  await axios.get(`http://localhost:5000/api/users/userRole/${id}`);
+      setRole(Role.data) ;
+      console.log(Role.data) ;
+       
+   };
+    
+    handleRole();
+  }, []);
+
+
   return (
 <div>
 <div>
@@ -33,7 +48,7 @@ const HeaderSignedInClient = () => {
   <meta name="description" content />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="manifest" href="site.webmanifest" />
-  <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico" />
+  <link rel="shortcut icon" type="image/x-icon" href="../assets/img/favicon.ico" />
 </div>
 
 
@@ -73,7 +88,14 @@ const HeaderSignedInClient = () => {
     <ul id="navigation">
       <li><Link to="/">Home</Link></li>
       <li><Link to="/about">About</Link></li>
-      <li><Link to="/gyms">Gyms</Link></li>
+      <li>
+        <Link to="/gyms">Gyms</Link>
+        <ul className="submenu">
+          <li><Link to="/gyms">Gyms</Link></li>
+          <li><Link to={`/subscriptions/${id}`}>Subscriptions</Link></li>
+        </ul>
+      </li>
+      {  role === 'GymManager'    &&  (<li><Link to="/gymsmanagement">Gyms Management</Link></li>)  } 
       <li><Link to="/coaches">Coaches</Link>
             <ul className="submenu">
                  <li><Link to="/CoachingsClient">List of Coaches</Link></li>
@@ -92,6 +114,7 @@ const HeaderSignedInClient = () => {
       </li>
 
       <li><Link to="/contact">Contact</Link></li>
+      <li><Link to="/reclame">Reclame</Link></li>
       <li>
         <Link to="/blog">Profile</Link>
         <ul className="submenu">
