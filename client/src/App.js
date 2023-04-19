@@ -61,6 +61,7 @@ import CommentsList from "./components/frontoffice/blogManagement/CommentsList";
 import Cart from "./components/frontoffice/ProductManagement/Cart";
 import NotFound from "./components/frontoffice/shared/NotFound";
 import CommentsListd from "./components/backoffice/blogmanagement/CommentList";
+import Dashboard from "./components/frontoffice/Dash/index";
 
 
 //end chedi imports
@@ -122,6 +123,8 @@ function App() {
 
 
 
+
+<Route path="/dashboard" element={<Dashboard/>} />
 
 
           <Route path="/gyms" element={<Gyms/>} />

@@ -109,6 +109,7 @@ const HeaderSignedInClient = () => {
             </ul>
      </li> */}
       <li><Link to="/products">Products</Link></li>
+      {  role === 'GymManager'    &&  (<li><Link to="/dashboard">Dashboard</Link></li>)  } 
 
 <li>
   <Link to="/listBlog">Blog</Link>
