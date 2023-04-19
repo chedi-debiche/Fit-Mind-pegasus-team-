@@ -16,6 +16,8 @@ const GymsManagement=()=>{
   const [Offers, setOffers] = useState([]);
   const [postuling, setPostuling] = useState(false);
   const [postuleId, setPostuleId] = useState(null);
+  const [deleteGym,setDeletedGymId ]= useState(null);
+  const[ performance,setPrfomance]= useState(null);
 
     const [showForm, setShowForm] = useState(false);
     const [editing, setEditing] = useState(false);
@@ -60,7 +62,7 @@ const GymsManagement=()=>{
 
     useEffect(() => {
       getGyms();
-    }, []);
+    }, [deleteGym,performance]);
 
     const getGyms = async () => {
      
@@ -150,7 +152,32 @@ console.log(editing);
   
 
 
+
+
+
+
+  const HandleDeleteGym = async (id) => {
+     
+    try {
+     await axios.delete(`http://localhost:5000/api/gyms/delete/${id}`);
+     setDeletedGymId(id);
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
  
+
+  const GetPerformance = async (id) => {
+     
+    try {
+        await axios.get(`http://localhost:5000/api/gyms/gym-performance/${id}`);
+      setPrfomance(performance+1);
+      //console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 
 
@@ -382,12 +409,17 @@ Gym Picture
             </div>
             <div className="card_header">
                 <h2 style={{color: "red"}}>{gym.name}</h2>
-                <p>{gym.description}</p>
+                <p>Description:{gym.description}</p>
                 <p >Services :{gym.services}</p>
-                <p className="price">{gym.localisation}</p>
+                <p >Location :{gym.localisation}</p>
                 <p className="price">participant : {gym.participant}</p>
+                <p className="price">Days : {gym.days}</p>
+                <p className="price">Performance : {gym.performance}</p>
+                <div className="btn" onClick={() => GetPerformance(gym._id)}>Get performance</div>
                 <div className="btn" onClick={() => handleEdit(gym._id)} >Update</div>
                 <div className="btn" onClick={() => handleOffer(gym._id)}>Add Offer</div>
+                <div className="btn" onClick={() => HandleDeleteGym(gym._id)}>Delete</div>
+
 
             </div>
         </div>

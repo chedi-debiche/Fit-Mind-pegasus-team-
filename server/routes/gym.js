@@ -191,7 +191,7 @@ router.get("/:id",async (req, res) => {
 
 //delete
 
-router.delete("/:id", async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
 	try {
 	  const gym = await Gym.findById(req.params.id);
 	  if (!gym)
@@ -483,9 +483,49 @@ router.get('/searchBy/:searchBy/:term', async (req, res) => {
 });
   
   
+
+
+router.get('/gym-performance/:id',async (req, res) => {
+
+	const gym = await Gym.findById(req.params.id);
+
+  const creationDate = await gym.date ; 
+  const today = await new Date();
+
+  const numberOfParticipants = await gym.participant; 
   
-  
-    
+  const daysSinceCreation = await Math.round((today - creationDate) / (1000 * 60 * 60 * 24)); 
+
+  //let performance;
+  if ( daysSinceCreation > numberOfParticipants ) {
+    gym.performance = 'bad';
+	gym.days = daysSinceCreation;
+	gym.save();
+  } else if ( daysSinceCreation === numberOfParticipants ) {
+    gym.performance = 'normal';
+	gym.days = daysSinceCreation;
+	gym.save();
+  } else {
+    gym.performance = 'good'; 
+	gym.days = daysSinceCreation;
+	gym.save();
+  }
+
+
+  console.log(creationDate)
+  console.log(gym.performance)
+  res.json({
+    performance,
+    creationDate,
+    today,
+    numberOfParticipants,
+	daysSinceCreation,
+	
+  });
+});
+
+
+
 
 
 module.exports = router;

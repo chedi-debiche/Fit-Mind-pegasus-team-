@@ -161,7 +161,7 @@ const Reclamation = () => {
           console.log(formData) ;
           
          // console.log(formData);
-          await axios.patch(`http://localhost:5000/api/reclamations/update/${ReclamationId}`,formData);
+          await axios.patch(`http://localhost:5000/api/reclamations/updates/${ReclamationId}`,formData);
           setUpdate(true) ;
         } catch (error) {
           console.log(error);
