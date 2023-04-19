@@ -8,6 +8,9 @@ import requireAuth from '../authentification/requireAuth';
 // import SideNav from "../sharedBack/SideNav";
  import HeaderCoaches from "../shared/HeaderCoaches";
  import FooterFront from "../shared/FooterFront";
+ import { Card, Button, Col, Row } from 'react-bootstrap';
+ 
+
 
 
 
@@ -34,7 +37,7 @@ const Coaching = (props) => {
     getCoachings();
   }, []);
 
-  
+
 
   const getCoachings = async () => {
     try {
@@ -136,51 +139,48 @@ const Coaching = (props) => {
   </div>
 </div>
   <h1>Coachings List</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>nameCoaching</th>
-        <th>nameCoach</th>
-        <th>description</th>
-        <th>image</th>
-        <th>category</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {coachings.map((coaching) => (
-        <tr key={coaching._id}>
-          <td>{coaching.nameCoaching}</td>
-          <td>{coaching.nameCoach}</td>
-          <td>{coaching.description}</td>
-          <td>
-            <img
-        src={`http://localhost:5000/uploads/${coaching.image}`}
-//   alt={`Image of ${product.name}`}
-              width="100"
-            />
-          </td>
-          <td>{coaching.category}</td>
-          <td>
 
+  <div className="container">
+  <Row>
+    {coachings.map((coaching) => (
+      <Col key={coaching._id} sm={6} md={4}>
+        <Card className="mb-3">
+          <Card.Img variant="top" src={`http://localhost:5000/uploads/${coaching.image}`} style={{ width: '100%' , height: '100%' }} />
+          <Card.Body>
+          <Card.Title className="font-weight-bold text-center">{coaching.nameCoaching}</Card.Title>
+           
+            <Card.Text>{coaching.description}</Card.Text>
+            <Card.Text>Category: {coaching.category}</Card.Text>
+            <Card.Text>Periode: {new Date(coaching.start).toLocaleDateString()} - {new Date(coaching.end).toLocaleDateString()}</Card.Text>
+          
+            <Card.Subtitle className="mb-2 text-muted">{coaching.nameCoach}</Card.Subtitle>
+            <div className="d-flex justify-content-end">
+              <Button variant="outline-secondary" onClick={() => handleEdit(coaching._id)}>
+                <FontAwesomeIcon icon={faEdit} />
+              </Button>
+              <Button variant="outline-danger" onClick={() => handleDelete(coaching._id)} className="ml-2">
+                <FontAwesomeIcon icon={faTrash} />
+              </Button>
+            </div>
+          </Card.Body>
+        </Card>
+      </Col>
+    ))}
+  </Row>
+</div>
 
-               <button onClick={() => handleEdit(coaching._id)} className={styles.update}>
-    <FontAwesomeIcon icon={faEdit} />
-  </button> 
-  <button
-    className={styles.delete}
-    onClick={() => handleDelete(coaching._id)}>
-    <FontAwesomeIcon icon={faTrash} />
-  </button>
+  <section className="contact-section">
+    <div className="container">
+    
+      <div className="row">
+        <div className="col-12">
+          <h2 className="contact-title">{editing ? 'Edit Coaching' : 'Add Coaching'}</h2>
+        </div>
+        <div className="col-lg-8">
 
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-  <h2>{editing ? 'Edit Coaching' : 'Add Coaching'}</h2>
-  <form onSubmit={handleSubmit} encType="multipart/form-data" className={styles.formcontainer}>
-  <div>
+        <form onSubmit={handleSubmit} encType="multipart/form-data" className="form-contact contact_form"   id="contactForm">
+ 
+        <div className="col-12">
   <label htmlFor="category">Category:</label>
   <div>
     <input
@@ -210,41 +210,33 @@ const Coaching = (props) => {
   </div>
 </div>
 
-    <div>
-      <label htmlFor="nameCoaching">nameCoaching:</label>
-      <input
-        type="text"
+        <div className="col-12">
+                <div className="form-group">
+                  <input className="form-control valid"    type="text"
         id="nameCoaching"
         value={formValues.nameCoaching}
         onChange={(e) =>
           setFormValues({ ...formValues, nameCoaching: e.target.value })
-        }
-      />
-    </div>
-     {/* <div>
-      <label htmlFor="nameCoach">nameCoach:</label>
-      <input
-        type="text"
-        id="nameCoach"
-        value={formValues.nameCoach}
-        onChange={(e) =>
-          setFormValues({ ...formValues, nameCoach: e.target.value })
-        }
-      />
-    </div>   */}
-    <div>
-      <label htmlFor="description">Description:</label>
-      <textarea
-        id="description"
+        } placeholder="Enter your name coaching" />
+                </div>
+              </div>
+
+         <div className="col-12">
+                <div className="form-group">
+                  <textarea className="form-control w-100"   id="description"
         value={formValues.description}
         onChange={(e) =>
           setFormValues({ ...formValues, description: e.target.value })
-        }
-      />
-    </div>
-    <div>
-      <label htmlFor="start">start:</label>
-      <input
+        } cols={30} rows={9}  placeholder="Enter Description of coaching" defaultValue={""} />
+                </div>
+              </div> 
+
+              <div className="row">
+  <div className="col-sm-6">
+    <div className="form-group">
+      <label htmlFor="start" style={{ fontSize: "14px", color: "#999" }}>Start date</label>
+      <input 
+        className="form-control"
         type="date"
         id="start"
         value={formValues.start}
@@ -253,9 +245,12 @@ const Coaching = (props) => {
         }
       />
     </div>
-    <div>
-      <label htmlFor="end">end:</label>
-      <input
+  </div>
+  <div className="col-sm-6">
+    <div className="form-group">
+      <label htmlFor="end" style={{ fontSize: "14px", color: "#999" }}>End date</label>
+      <input 
+        className="form-control"
         type="date"
         id="end"
         value={formValues.end}
@@ -264,87 +259,66 @@ const Coaching = (props) => {
         }
       />
     </div>
-
-    {/* <div>
-  <label htmlFor="availabilityStart">Date de début:</label>
-  <input
-    type="date"
-    id="availabilityStart"
-    value={formValues.availability.start}
-    onChange={(e) =>
-      setFormValues({
-        ...formValues,
-        availability: {
-          ...formValues.availability,
-          start: e.target.value,
-        },
-      })
-    }
-  />
-</div>
-
-<div>
-  <label htmlFor="availabilityEnd">Date de fin:</label>
-  <input
-    type="date"
-    id="availabilityEnd"
-    value={formValues.availability.end}
-    onChange={(e) =>
-      setFormValues({
-        ...formValues,
-        availability: {
-          ...formValues.availability,
-          end: e.target.value,
-        },
-      })
-    }
-  />
-</div> */}
-
-
-    {/* <div>
-      <label htmlFor="start">start:</label>
-      <input
-        type="date"
-        id="start"
-        value={formValues.start}
-        onChange={(e) =>
-          setFormValues({ ...formValues, start: e.target.value })
-        }
-      />
-    </div>
-
-
-    <div>
-      <label htmlFor="end">end:</label>
-      <input
-        type="date"
-        id="end"
-        value={formValues.end}
-        onChange={(e) =>
-          setFormValues({ ...formValues, end: e.target.value })
-        }
-      />
-    </div> */}
-
-    <div>
-       <label htmlFor="image">upload product picture</label> 
+  </div>
+  
+  <div className="form-group">
+    <label htmlFor="image">Upload coaching image:</label>
+    <div className="custom-file">
       <input
         type="file"
         id="image"
-        className={styles.filedesign}
+        className="custom-file-input"
         onChange={(e) => {
           setFormValues({ ...formValues, image: e.target.files[0] });
         }}
       />
+      <label className="custom-file-label" htmlFor="image">
+choose file      </label>
     </div>
-    <button type="submit">{editing ? 'Update' : 'Add'}</button>
+  </div>
+</div>
+
+ {/* {error && <p className="error" style={{ color: 'red' }}>{error}</p>} */}
+
+
+<div className="form-group mt-3">
+<button type="submit" className="button button-contactForm boxed-btn">{editing ? 'Update' : 'Add'}</button>
+</div>
     {editing && (
-      <button type="button" onClick={() => setEditing(false)}>
-        Cancel
-      </button>
-    )}
-  </form>
+      <button type="button" className="button button-contactForm boxed-btn" onClick={() => setEditing(false)}>
+      Cancel
+    </button>
+  )}
+
+</form>
+        </div>
+        <div className="col-lg-3 offset-lg-1">
+          <div className="media contact-info">
+            <span className="contact-info__icon"><i className="ti-home" /></span>
+            <div className="media-body">
+              <h3>Buttonwood, California.</h3>
+              <p>Rosemead, CA 91770</p>
+            </div>
+          </div>
+          <div className="media contact-info">
+            <span className="contact-info__icon"><i className="ti-tablet" /></span>
+            <div className="media-body">
+              <h3>+1 253 565 2365</h3>
+              <p>Mon to Fri 9am to 6pm</p>
+            </div>
+          </div>
+          <div className="media contact-info">
+            <span className="contact-info__icon"><i className="ti-email" /></span>
+            <div className="media-body">
+              <h3>fit-mind@pegasus.tn</h3>
+              <p>Send us your query anytime!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
  < FooterFront/>
   {/* <Footer/> */}
 </div>

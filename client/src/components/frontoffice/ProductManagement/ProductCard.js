@@ -7,11 +7,22 @@ import StripeCheckout from 'react-stripe-checkout';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import Rating from 'react-rating-stars-component';
+// import { useDispatch } from "react-redux";
+import { increment } from "./redux/slices/cartSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 function ProductCard({ product, onAddToCart,props }) {
   const [showDetails, setShowDetails] = useState(false);
   const [productId, setProductId] = useState('');
   const [quantity, setQuantity] = useState('');
+  const dispatch = useDispatch();
+  
+  const addToCart = () => {
+    dispatch(increment(product));
+  };
+
+
+
   let priceForStripe;
 if (product.promotion > 0) {
   priceForStripe = (product.price * (1 - product.promotion / 100) );
@@ -19,7 +30,7 @@ if (product.promotion > 0) {
   priceForStripe = product.price ;
 }
 
-const publishableKey = 'pk_test_51MqQubH8gtFTSlJTmkJ77QzT7tJHebL75910DWD3ahqR46duS0bNe6rkqVrhJrTVBW3bkKXxWMYViErJB7mDUtFC00Rzb2caZ5'
+const publishableKey = 'pk_test_51MyLyTL3XZBpMzAUEuEw20uusBNq9YhOWRstxZPYCLCURgrQEJEP2LY4a5FyBoVUILAjBPjnMoxQwiSvl9Gxylzh006eAPsODR'
   // const { userId } = props;
   const MySwal = withReactContent(Swal);
   const [message, setMessage] = useState('');
@@ -33,9 +44,14 @@ const publishableKey = 'pk_test_51MqQubH8gtFTSlJTmkJ77QzT7tJHebL75910DWD3ahqR46d
 
 
 
+
+
   const handleShowDetails = () => {
     setShowDetails(true);
   };
+
+ 
+
 
 
   const handleSuccess = () => {
@@ -53,29 +69,38 @@ const publishableKey = 'pk_test_51MqQubH8gtFTSlJTmkJ77QzT7tJHebL75910DWD3ahqR46d
     });
   };
 
+
   const handleAddReview = async () => {
     try {
       const userId = localStorage.getItem('userId');
-      const response = await axios.post(
-        `http://localhost:5000/api/products/${product._id}/reviews`,
-        {
-          userId,
-          rating,
-          review,
-        }
-      );
-      console.log(response.data);
-      setShowMessage(true);
+      const existingReviews = product.reviews.map((review) => review.userId);
+      if (existingReviews.includes(userId)) {
+        // The user has already submitted a review for this product
+        setShowMessage(false);
+        setMessage('You have already submitted a review for this product.');
+      } else {
+        const response = await axios.post(
+          `http://localhost:5000/api/products/${product._id}/reviews`,
+          {
+            userId,
+            rating,
+            review,
+          }
+        );
+        console.log(response.data);
+        setShowMessage(true);
+      }
     } catch (error) {
       console.error(error);
       setMessage('Something went wrong. Please try again later.');
     }
-
   };
+  
+  
 
 
  
-
+ 
 
 
   const payNow = async token => {
@@ -134,17 +159,17 @@ const publishableKey = 'pk_test_51MqQubH8gtFTSlJTmkJ77QzT7tJHebL75910DWD3ahqR46d
     }
   };
 
-  const addToCart = async () => {
-    try {
-      const response = await axios.post('http://localhost:5000/api/cart/', {
-        productId: product.id,
-        quantity: 1
-      });
-      console.log(response.data); // Handle successful response from server
-    } catch (error) {
-      console.error(error); // Handle error from server
-    }
-  };
+  // const addToCart = async () => {
+  //   try {
+  //     const response = await axios.post('http://localhost:5000/api/cart/', {
+  //       productId: product.id,
+  //       quantity: 1
+  //     });
+  //     console.log(response.data); // Handle successful response from server
+  //   } catch (error) {
+  //     console.error(error); // Handle error from server
+  //   }
+  // };
 
   return (
     <div className="product-card" style={{ backgroundColor: 'white' }}>
@@ -180,7 +205,11 @@ const publishableKey = 'pk_test_51MqQubH8gtFTSlJTmkJ77QzT7tJHebL75910DWD3ahqR46d
             >
               Show Details
             </button>
-            <button className="btn btn-primary" onClick={handleAddToCart}>Add to cart</button>
+            {/* <Button variant="success" onClick={() => addToCart(props.product)}>
+                            ADD TO CART +
+                            </Button> */}
+
+            <button className="btn btn-primary" variant="success" onClick={() => addToCart(product.id)}>Add to cart</button>
 
           </div>
         )}

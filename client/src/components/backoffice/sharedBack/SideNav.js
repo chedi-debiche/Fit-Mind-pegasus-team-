@@ -33,42 +33,40 @@ const SideNav = () => {
                 <p>User management</p>
               </Link>
             </li>
-            {/* jawher module */}
-             <li className="nav-item">
+        {/* jawher module */}
+        <li className="nav-item">
             <Link to="/CoachList" className="nav-link active">
                 <i className="far fa-circle nav-icon" />
                 <p>Coach management</p>
                 </Link>
             </li> 
+            <li className="nav-item">
+            <Link to="/ReservationCoaching" className="nav-link active">
+                <i className="far fa-circle nav-icon" />
+                <p>Reservation Coaching</p>
+                </Link>
+            </li> 
             {/* end jawher module */}
 
-              {/* module chedi  */}
+                {/* module chedi  */}
 
-              <li className="nav-item">
+                <li className="nav-item">
 
-            <Link to="/productsd" className="nav-link active">
-                <i className="far fa-circle nav-icon" />
-                <p>products management</p>
-            </Link>
-           </li>
+<Link to="/productsd" className="nav-link active">
+    <i className="far fa-circle nav-icon" />
+    <p>products management</p>
+</Link>
+</li>
 
-           <li className="nav-item">
-
-        <Link to="/reclamations" className="nav-link active">
-              <i className="far fa-circle nav-icon" />
-              <p>Reclamation management</p>
-            </Link>
-          </li>
-
-  <li className="nav-item">
+<li className="nav-item">
 
 <Link to="/blogd" className="nav-link active">
-      <i className="far fa-circle nav-icon" />
-      <p>blog posts management</p>
-    </Link>
-  </li>
+<i className="far fa-circle nav-icon" />
+<p>blog posts management</p>
+</Link>
+</li>
 
-              {/* module chedi  */}
+  {/* module chedi  */}
 
           
           </ul>

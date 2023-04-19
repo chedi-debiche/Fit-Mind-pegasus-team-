@@ -7,7 +7,8 @@ import ReactPaginate from 'react-paginate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import Rating from 'react-rating-stars-component';
-import styles from './styles.css';
+import styles from "./styles.module.css";
+import CoachingCardCoach from './CoachingCardCoach';
 //  import i18n from "i18next";
 //  import { initReactI18next } from "react-i18next";
 
@@ -55,23 +56,23 @@ function Coachings() {
   const currentPageCoachings = sortedCoachings.slice(offset, offset + itemsPerPage);
   
 
-  async function handleRating(coachingId, rating) {
-    try {
-      const response = await fetch(`http://localhost:5000/api/coachings/${coachingId}/rating`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ rating })
-      });
-      const data = await response.json();
-      const newRatings = { ...ratings };
-      newRatings[coachingId] = rating;
-      setRatings(newRatings);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  // async function handleRating(coachingId, rating) {
+  //   try {
+  //     const response = await fetch(`http://localhost:5000/api/coachings/${coachingId}/rating`, {
+  //       method: 'PUT',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({ rating })
+  //     });
+  //     const data = await response.json();
+  //     const newRatings = { ...ratings };
+  //     newRatings[coachingId] = rating;
+  //     setRatings(newRatings);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
 
   function handlePageClick({ selected: selectedPage }) {
     setPageNumber(selectedPage);
@@ -86,7 +87,7 @@ function Coachings() {
     setDarkMode(!darkMode);
   }
   return (
-    
+    <main style={{ background: 'black' }}>
     <div className={darkMode ? 'dark-mode' : ''}>
     
       <HeaderCoaches />
@@ -105,31 +106,57 @@ function Coachings() {
           </div>
         </div>
       </div>
+      {/* <div className="section-tittle text-center mb-55 wow fadeInUp" data-wow-duration="1s" data-wow-delay=".1s">
+            <h2>Our Coachings</h2>
+          </div> */}
 
-      <div className="col-md-4 mb-4">
-        <div className="search-container">
-          <input
-            type="text"
-            placeholder="Search products by name"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="searchbar"
-          />
-          <i className="fa fa-search search-icon"></i>
-        </div>
-      </div>
-      <select value={selectedCategory} onChange={handleCategoryChange}>
-        <option value="">All categories</option>
-        <option value="sport">Sport </option>
-        <option value="psychologist">Psychologist</option>
-     </select>
+<div className="col-md-4 mb-4">
+  <div className="search-container" >
+    <input
+      type="text"
+      placeholder="Search coaching by coaching name"
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      className="searchbar"
+      style={{
+        width: "100%",
+        padding: "10px",
+        border: "none",
+        borderRadius: "30px",
+        boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.1)",
+        outline: "none",
+        fontSize: "16px"
+      }}
+      onFocus={(e) => (e.target.placeholder = "")}
+      onBlur={(e) =>
+        (e.target.placeholder = "Search coaching by coaching name")
+      }
+    />
+    <i
+      className="ti-search search-icon"
+      style={{ color: "red", position: "absolute", top: "50%", right: "10px", transform: "translateY(-50%)", fontSize: "20px" }}
+    ></i>
+  </div>
+</div>
+
+
+      <select className="genric-btn danger mt-3" value={selectedCategory} onChange={handleCategoryChange}
+        style={{
+          fontSize: "14px",
+          borderRadius: "50px",
+          padding: "0.9px 20px"
+        }}>
+  <option value="">All categories</option>
+  <option value="sport">Sport</option>
+  <option value="psychologist">Psychologist</option>
+</select>
 
 
       <div className="row">
         {currentPageCoachings.map((coaching) => (
           <div className="col-md-4 mb-4" key={coaching._id}>
-            <CoachingCard coaching={coaching} />
-            <Rating
+            <CoachingCardCoach coaching={coaching} />
+            {/* <Rating
           count={5}
           size={24}
           activeColor="#ffd700"
@@ -137,7 +164,7 @@ function Coachings() {
           onChange={(rating) => {
             handleRating(coaching._id, rating); // Pass the new rating value to the handleRating function
           }}
-        />
+        /> */}
 
           </div>
         ))}
@@ -157,11 +184,12 @@ function Coachings() {
   pageLinkClassName={'pagination-link'}
 />
 
-<button onClick={toggleDarkMode}>{darkMode ? 'Light Mode' : 'Dark Mode'}</button>
+{/* <button onClick={toggleDarkMode}>{darkMode ? 'Light Mode' : 'Dark Mode'}</button> */}
 
       <FooterFront />
      
     </div>
+    </main>
     
   );
 }

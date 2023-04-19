@@ -18,8 +18,6 @@ const signedin = () => {
      
         <>
         <HeaderCoaches/>
-        {/* <HeaderSignedInClient/> */}
-
 
         <HomeFront/>
 

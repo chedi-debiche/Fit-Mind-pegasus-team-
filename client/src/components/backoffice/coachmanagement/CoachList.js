@@ -1,33 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import styles from "./styles.module.css";
+import styles from './styles.module.css';
+import SideNav from '../sharedBack/SideNav';
+import Header from '../sharedBack/Header';
+import Footer from '../sharedBack/Footer';
+import { Bar } from 'react-chartjs-2';
+import requireAuth from '../../frontoffice/authentification/requireAuth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
-// import { Button } from '@material-ui/core';
-// import SideNav from "../sharedBack/SideNav";
- import SideNav from "../sharedBack/SideNav";
-import Header from "../sharedBack/Header";
-import Footer from "../sharedBack/Footer";
-
-
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const Coaching = () => {
   const [coachings, setCoachings] = useState([]);
-  const [formValues, setFormValues] = useState({
-    nameCoaching: '',
-    nameCoach: '',
-    description: '',
-    image: '',
-   // category:'',
-  });
-  const [editing, setEditing] = useState(false);
-  const [editId, setEditId] = useState(null);
 
   useEffect(() => {
     getCoachings();
   }, []);
-
-  
 
   const getCoachings = async () => {
     try {
@@ -38,36 +25,36 @@ const Coaching = () => {
     }
   };
 
-  
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const formData = new FormData();
-      formData.append('nameCoaching', formValues.nameCoaching);
-      formData.append('nameCoach', formValues.nameCoach);
-      formData.append('description', formValues.description);
-      formData.append('image', formValues.image);
-      formData.append('rating', 0);
-      formData.append('category', formValues.category);
-      
-      if (editing) {
-        await axios.patch(`http://localhost:5000/api/coachings/${editId}`, formData);
-        setEditing(false);
+  const getChartData = () => {
+    const data = {
+      labels: [], // les noms des nameCoachs
+      datasets: [
+        {
+          label: 'Nombre de coachings',
+          data: [], // le nombre de coachings pour chaque nameCoach
+          backgroundColor: 'rgba(75,192,192,0.4)',
+          borderColor: 'rgba(75,192,192,1)',
+          borderWidth: 1,
+        },
+      ],
+    };
+    // calculer le nombre de coachings pour chaque nameCoach
+    const coachingsByCoach = {};
+    coachings.forEach((coaching) => {
+      const { nameCoach } = coaching;
+      if (!coachingsByCoach[nameCoach]) {
+        coachingsByCoach[nameCoach] = 1;
       } else {
-        await axios.post('http://localhost:5000/api/coachings', formData);
+        coachingsByCoach[nameCoach]++;
       }
-      setFormValues({
-        nameCoaching: '',
-        nameCoach: '',
-        description: '',
-        image: '',
-       // category:'',
-      });
-      getCoachings();
-    } catch (error) {
-      console.error(error);
-    }
+    });
+    // mettre les données dans le format attendu par le graphique
+    Object.entries(coachingsByCoach).forEach(([nameCoach, count]) => {
+      data.labels.push(nameCoach);
+      data.datasets[0].data.push(count);
+    });
+
+    return data;
   };
 
   const handleDelete = async (id) => {
@@ -79,26 +66,19 @@ const Coaching = () => {
     }
   };
 
-  const handleEdit = async (id) => {
-    try {
-      const response = await axios.get(`http://localhost:5000/api/coachings/${id}`);
-      setFormValues(response.data);
-      setEditing(true);
-      setEditId(id);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <div className={styles.container}>
-         <Header/>
-        <SideNav/> 
-      {/* < HeaderCoaches/> */}
-  
+      <Header />
+      <SideNav />
 
 
-  <h1>Coachings List</h1>
+      <div>
+        <h2>Statistiques des coachings par coach</h2>
+        <Bar data={getChartData()} />
+      </div>
+
+      
+      <h1>Coachings List</h1>
   <table className={styles.table}>
     <thead>
       <tr>
@@ -107,6 +87,7 @@ const Coaching = () => {
         <th>description</th>
         <th>image</th>
         <th>category</th>
+        <th>periode</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -124,12 +105,10 @@ const Coaching = () => {
             />
           </td>
           <td>{coaching.category}</td>
+          <td>{new Date(coaching.start).toLocaleDateString()} - {new Date(coaching.end).toLocaleDateString()} </td>
           <td>
 
 
-               {/* <button onClick={() => handleEdit(coaching._id)} className={styles.update}>
-    <FontAwesomeIcon icon={faEdit} />
-  </button>  */}
   <button
     className={styles.delete}
     onClick={() => handleDelete(coaching._id)}>
@@ -141,14 +120,10 @@ const Coaching = () => {
       ))}
     </tbody>
   </table>
- 
- {/* < FooterFront/> */}
-  <Footer/> 
-</div>
-);
+
+      <Footer />
+    </div>
+  );
 };
 
-export default Coaching;
-
-
-
+export default requireAuth(Coaching) ;

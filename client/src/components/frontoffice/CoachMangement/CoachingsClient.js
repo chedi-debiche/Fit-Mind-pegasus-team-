@@ -79,7 +79,7 @@ function CoachingsClient() {
     setDarkMode(!darkMode);
   }
   return (
-    
+    <main style={{ background: 'black' }}>
     <div className={darkMode ? 'dark-mode' : ''}>
     
       <HeaderSignedInClient />
@@ -103,7 +103,7 @@ function CoachingsClient() {
         <div className="search-container">
           <input
             type="text"
-            placeholder="Search products by name"
+            placeholder="Search coaching by name"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="searchbar"
@@ -111,11 +111,16 @@ function CoachingsClient() {
           <i className="fa fa-search search-icon"></i>
         </div>
       </div>
-      <select value={selectedCategory} onChange={handleCategoryChange}>
-        <option value="">All categories</option>
-        <option value="sport">Sport </option>
-        <option value="psychologist">Psychologist</option>
-     </select>
+      <select className="genric-btn danger mt-3" value={selectedCategory} onChange={handleCategoryChange}
+        style={{
+          fontSize: "14px",
+          borderRadius: "50px",
+          padding: "0.9px 20px"
+        }}>
+  <option value="">All categories</option>
+  <option value="sport">Sport</option>
+  <option value="psychologist">Psychologist</option>
+</select>
 
 
       <div className="row">
@@ -150,12 +155,12 @@ function CoachingsClient() {
   pageLinkClassName={'pagination-link'}
 />
 
-<button onClick={toggleDarkMode}>{darkMode ? 'Light Mode' : 'Dark Mode'}</button>
+{/* <button onClick={toggleDarkMode}>{darkMode ? 'Light Mode' : 'Dark Mode'}</button> */}
 
       <FooterFront />
      
     </div>
-    
+    </main>
   );
 }
 

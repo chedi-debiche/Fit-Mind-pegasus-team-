@@ -88,6 +88,12 @@ const HeaderSignedInClient = () => {
     <ul id="navigation">
       <li><Link to="/">Home</Link></li>
       <li><Link to="/about">About</Link></li>
+      <li><Link to="/coaches">Coaches</Link>
+            <ul className="submenu">
+                 <li><Link to="/CoachingsClient">List of Coaches</Link></li>
+                 <li><Link to="/listreservation">Votre Réservation</Link></li>
+            </ul>
+     </li>
       <li>
         <Link to="/gyms">Gyms</Link>
         <ul className="submenu">
@@ -96,22 +102,22 @@ const HeaderSignedInClient = () => {
         </ul>
       </li>
       {  role === 'GymManager'    &&  (<li><Link to="/gymsmanagement">Gyms Management</Link></li>)  } 
-      <li><Link to="/coaches">Coaches</Link>
+      {/* <li><Link to="/coaches">Coaches</Link>
             <ul className="submenu">
                  <li><Link to="/CoachingsClient">List of Coaches</Link></li>
                  <li><Link to="/listreservation">Votre Réservation</Link></li>
             </ul>
-     </li>
+     </li> */}
       <li><Link to="/products">Products</Link></li>
 
-      <li>
-        <Link to="/listBlog">Blog</Link>
-        <ul className="submenu">
-          <li><Link to="/listBlog">Blogs</Link></li>
-          <li><Link to="/createblog">create a new blog post</Link></li>
-          {/* <li><Link to="/elements">Elements</Link></li> */}
-        </ul>
-      </li>
+<li>
+  <Link to="/listBlog">Blog</Link>
+  <ul className="submenu">
+    <li><Link to="/listBlog">Blogs</Link></li>
+    <li><Link to="/createblog">create a new blog post</Link></li>
+    {/* <li><Link to="/elements">Elements</Link></li> */}
+  </ul>
+</li>
 
       <li><Link to="/contact">Contact</Link></li>
       <li><Link to="/reclame">Reclame</Link></li>

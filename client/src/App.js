@@ -39,14 +39,17 @@ import HeaderCoaches from "./components/frontoffice/shared/HeaderCoaches";
  import CoachingsClient from "./components/frontoffice/CoachMangement/CoachingsClient";
  import CoachList from "./components/backoffice/coachmanagement/CoachList";
  import ReservationC from "./components/frontoffice/CoachMangement/ReservationC";
-import ListReservation from "./components/frontoffice/CoachMangement/ListReservation";
-//end jawher imports
+ import ListReservation from "./components/frontoffice/CoachMangement/ListReservation";
+ import ReservationCoaching from "./components/backoffice/listreservationmanagement/ReservationCoaching";
+ import CoachingAffRes from "./components/frontoffice/CoachMangement/CoachingAffRes";
+ import CoachingDetails from "./components/frontoffice/CoachMangement/CoachingDetails";
+ import CoachingCardCoach from "./components/frontoffice/CoachMangement/CoachingCardCoach";//end jawher imports
 
 //chedi imports : 
 import ProductList from "./components/backoffice/productmanagement/ProductList";
 import Products from "./components/frontoffice/ProductManagement/Products";
 import ProductCard from "./components/frontoffice/ProductManagement/ProductCard";
-import Cart from "./components/frontoffice/ProductManagement/Cart"
+// import Cart from "./components/frontoffice/ProductManagement/Cart"
 import Dictaphone from "./components/frontoffice/ProductManagement/Dictaphone";
 import BlogList from "./components/frontoffice/blogManagement/BlogList";
 import CreateBlogPost from "./components/frontoffice/blogManagement/createBlog";
@@ -55,9 +58,16 @@ import Blogdashboard from "./components/backoffice/blogmanagement/BlogList";
 import BlogPost from "./components/frontoffice/blogManagement/BlogPost"
 import CommentForm from "./components/frontoffice/blogManagement/commentForm";
 import CommentsList from "./components/frontoffice/blogManagement/CommentsList";
-import ReclamationList from "./components/backoffice/reclamationManagement/reclamationList";
+import Cart from "./components/frontoffice/ProductManagement/Cart";
+import NotFound from "./components/frontoffice/shared/NotFound";
+import CommentsListd from "./components/backoffice/blogmanagement/CommentList";
+
+
 //end chedi imports
- 
+
+//naaan dirrr 
+import ReclamationList from "./components/backoffice/reclamationManagement/reclamationList";
+
 
 
 
@@ -81,24 +91,33 @@ function App() {
 
 
 
-           <Route path="/signedin" element={<Signedin/>} />
+          {/* jawhar routes */}
+
+          <Route path="/signedin" element={<Signedin/>} />
            <Route path="/signedinUser" element={<SignedinUser/>} /> 
            <Route path="/test" element={<HeaderSignedInClient/>} />
            <Route path="/testt" element={<HeaderCoaches/>} />
            <Route path="/user" element={<User/>} />
            <Route path="/CoachList" element={<CoachList/>} /> 
+           <Route path="/ReservationCoaching" element={<ReservationCoaching/>} /> 
 
 
 
            <Route path="/Coaching" element={<Coaching/>} /> 
            <Route path="/CoachingCard" element={<CoachingCard/>} />
+           <Route path="/CoachingCardCoach" element={<CoachingCardCoach/>} />
            <Route path="/Coachings" element={<Coachings/>} />
            <Route path="/CoachingsClient" element={<CoachingsClient/>} />
+           <Route path="/CoachingAffRes" element={<CoachingAffRes/>} />
+           {/* <Route path="/coaching/:id" element={<CoachingDetails/>} /> */}
+           <Route path="/coaching/:coachingId" element={<CoachingDetails/>}/>
 
            <Route path="/Reservationc/:coachingId" element={<ReservationC/>} />
            {/* <Route path="/Reservationc" element={<ReservationC/>} /> */}
 
            <Route path="/listreservation" element={<ListReservation/>} />
+{/* jawhar routes */}
+
 
 
 
@@ -131,13 +150,12 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
 		      <Route path="/password-reset/:id/:token" element={<PasswordReset />} />
 
-    
-{/* chedi routes react */}
+ {/* chedi routes react */}
 
 <Route path="/productsd" element={<ProductList/>} />
           <Route path="/Products" element={<Products/>} />
           <Route path="/productcard" element={<ProductCard/>} />
-          <Route path="/cart" element={<Cart/>} />
+          {/* <Route path="/cart" element={<Cart/>} /> */}
           <Route path="/voice" element={<Dictaphone/>} />
 
           <Route path="/blogd" element={<Blogdashboard/>} />
@@ -147,6 +165,9 @@ function App() {
           <Route path="/blogpost/:id" element={<BlogPost/>} />
           <Route path="/comment" element={<CommentForm/>} />
           <Route path="/commentList" element={<CommentsList/>} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/commentListd" element={<CommentsListd/>} />
+          <Route path="/*" element={<NotFound />} />
 
 {/* end chedi routes */}
 

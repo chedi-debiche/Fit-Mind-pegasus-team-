@@ -11,6 +11,12 @@ import { Link } from 'react-router-dom';
 import WelcomeMessage from './WelcomeMessage';
 import Dictaphone from './Dictaphone';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import { useSelector } from 'react-redux';
+import { selectCountAll } from "./redux/slices/cartSlice";
+import { NavLink } from "react-router-dom";
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+
+
 // import DarkMode from "./DarkMode"
 function Products() {
   const [products, setProducts] = useState([]);
@@ -19,7 +25,11 @@ function Products() {
   const [maxPrice, setMaxPrice] = useState(1000);
   const [pageNumber, setPageNumber] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(9);
-  
+  const CartNumber = useSelector(selectCountAll);
+  const active = {
+      textDecoration:'none'
+  };
+
 
   useEffect(() => {
     async function fetchProducts() {
@@ -96,6 +106,13 @@ function Products() {
       <div className="col-md-4 mb-4">
         <div className="price-range-container">
             <h2>Filter by price : </h2>
+            <Link to="/cart" style={{ textDecoration: 'none', color: 'black' }}>
+      <FontAwesomeIcon icon={faShoppingCart} style={{ fontSize: '32px' }} />
+      ({CartNumber})
+    </Link>
+
+   
+
           <input
             type="range"
             min={0}

@@ -9,11 +9,14 @@ import Header from "../sharedBack/Header";
 import Footer from "../sharedBack/Footer";
 import requireAuth from '../../frontoffice/authentification/requireAuth';
 import Form from 'react-bootstrap/Form';
+import { Pie } from 'react-chartjs-2';
+import 'chart.js/auto';
 
 
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
+  const [stats, setStats] = useState([]);
   const [formValues, setFormValues] = useState({
     name: '',
     description: '',
@@ -38,6 +41,7 @@ const ProductList = () => {
 
   useEffect(() => {
     getProducts();
+    getStats();
   }, []);
 
   
@@ -46,6 +50,16 @@ const ProductList = () => {
     try {
       const response = await axios.get('http://localhost:5000/api/products');
       setProducts(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+  const getStats = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/products/statsp');
+      setStats(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -163,6 +177,43 @@ const ProductList = () => {
         <Header/>
         <SideNav/>
         <div className='container'>
+          
+      {stats.length > 0 && (
+  <div>
+    <h2>Statistiques quantité par produit</h2>
+    <Pie
+      data={{
+        labels: stats.map((stat) => stat.name),
+        datasets: [
+          {
+            data: stats.map((stat) => stat.count),
+            backgroundColor: [
+              '#FF6384',
+              '#36A2EB',
+              '#FFCE56',
+              '#1abc9c',
+              '#3498db',
+              '#f1c40f',
+              '#8e44ad',
+            ],
+            hoverBackgroundColor: [
+              '#FF6384',
+              '#36A2EB',
+              '#FFCE56',
+              '#1abc9c',
+              '#3498db',
+              '#f1c40f',
+              '#8e44ad',
+            ],
+          },
+        ],
+      }}
+      options={{
+        aspectRatio: 3.5
+      }}
+    />
+  </div>
+)}
   <h1>Product List</h1>
   <div className='container'>
   <table>

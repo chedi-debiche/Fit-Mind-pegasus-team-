@@ -11,6 +11,8 @@ const ReservationcSchema = new mongoose.Schema({
   },
    emailuser: { type: String, required: true },
    phoneuser : {type : String , required : true},
+   coachingName : {type : String , required : true},
+   coachName : {type : String , required : false},
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

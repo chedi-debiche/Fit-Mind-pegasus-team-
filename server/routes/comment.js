@@ -31,6 +31,17 @@ router.post('/', async (req, res) => {
     }
   });
 
+// Get all comments 
+
+  router.get('/', async (req, res) => {
+    try {
+      const comments = await Comment.find();
+      res.json(comments);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+
 // // Get all comments for a blog post
 router.get('/:id/', async (req, res) => {
   try {
@@ -40,6 +51,25 @@ router.get('/:id/', async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
+//delete a comment
+router.delete('/:id', async (req, res) => {
+  try {
+    const comment = await Comment.findById(req.params.id);
+    try {
+      await comment.delete();
+      res.status(200).json("comment deleted");
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//display all the comments
+
+
 
 // Get comments for a specific blog post
 // router.get('/blog/:blogId/comments', async (req, res) => {

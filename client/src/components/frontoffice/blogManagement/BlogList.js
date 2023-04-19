@@ -33,9 +33,21 @@ function BlogList() {
       console.error(err);
     }
   }
+  const [searchTerm, setSearchTerm] = useState("");
+
+  function handleSearchChange(event) {
+    setSearchTerm(event.target.value);
+  }
+
+  const filteredBlogPosts = blogPosts.filter((post) =>
+  post.title.toLowerCase().includes(searchTerm.toLowerCase())
+);
+
 
   return (
+
     <div >
+      
       <HeaderSignedInClient />
       <div className="slider-area2">
         <div className="slider-height2 d-flex align-items-center">
@@ -50,7 +62,12 @@ function BlogList() {
           </div>
         </div>
       </div>
-      <div className="container">
+      <main style={{ background: 'black' }}>
+
+      <div className="container" >
+
+ 
+
 
       <div class="row">
 
@@ -64,14 +81,43 @@ function BlogList() {
 
 
 
+
       <section class="blog_area section-padding">
       <FontAwesomeIcon icon="fa-solid fa-blog" />      
-        <h1 class="mb-4">LIST OF POSTS</h1>
+      <div class="row justify-content-center">
+                <div class="col-lg-7 col-md-9 col-sm-10">
+                    <div class="section-tittle text-center mb-100 wow fadeInUp" data-wow-duration="2s" data-wow-delay=".2s">
+                        <h2>blog posts </h2>
+                    </div>
+                </div>
+            </div>
         <div class="container">
           <div class="row">
             <div class="col-lg-8 mb-5 mb-lg-0">
               <div class="blog_left_sidebar">
-                {blogPosts.map((post) => (
+
+              <div class="col-lg-12">
+                    <div class="blog_right_sidebar">
+
+<aside className="single_sidebar_widget search_widget">
+  <form action="#">
+    <div className="form-group">
+      <div className="input-group mb-3">
+        <input type="text" className="form-control" value={searchTerm}   onChange={handleSearchChange}
+ placeholder="Search ..." onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Keyword'" />
+        <div className="input-group-append">
+          <button className="btns" type="button"><i className="ti-search" /></button>
+        </div>
+      </div>
+    </div>
+    {/* <button className="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn" type="">Search</button> */}
+  </form>
+</aside>
+</div>
+</div>
+     
+
+                {filteredBlogPosts.map((post) => (
                   <div key={post._id} class="card mb-3">
                                                               <Link to={`/blogpost/${post._id}`}>
 
@@ -90,21 +136,7 @@ function BlogList() {
                       <br/>
                           </Link>
 
-                      {/* <p class="card-text">
-                      {post.content.length > 100 ? (
-                      <>
-                      {post.content.slice(0, 100)}
-                      <span id="dots">...</span>
-                      <span id="more" style={{ display: 'none' }}>{post.content.slice(100)}</span>
-                      <button onClick={() => {
-                      document.getElementById("dots").style.display = "none";
-                      document.getElementById("more").style.display = "inline";
-                      }} className="btn btn-primary btn-lg active">Show more</button>
-                      </>
-                      ) : (
-                      post.content
-                      )}
-                      </p> */}
+                 
                       <ul class="list-unstyled d-flex mb-0">
                       <li class="mr-3"><i class="fa fa-user"></i> {post.author}</li>
                       <br/>
@@ -140,11 +172,10 @@ function BlogList() {
                       <BlogRightBar/> */}
                           </div>
                           </div>
+                          </main>
+
+
                           </div>
                         );
                       }
                       export default requireAuth (BlogList);
-                      
-                      
-                      
-                      

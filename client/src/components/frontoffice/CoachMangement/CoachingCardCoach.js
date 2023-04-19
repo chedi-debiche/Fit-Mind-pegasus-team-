@@ -33,25 +33,30 @@ function CoachingCard({ coaching }) {
   </Card.Body>
   </Card> 
   {!showDetails && (
-    <Link
-      to={`/coaching/${coaching._id}`}
-      className="genric-btn danger mt-3" // button button-contactForm boxed-btn //genric-btn danger mt-3
-      style={{ fontSize: "16px" }}
-    > 
-     View Courses
-    </Link>
-  )}
+          <button
+            className="genric-btn danger mt-3"
+            style={{
+              fontSize: '15px',
+              padding: '5px 10px',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+            onClick={handleShowDetails}
+          >
+            Show Details
+          </button>
+        )}
 
+{showDetails && (
+  <div style={{ color: 'white' }}>
+    <h5 style={{ color: 'red' }}>Details</h5>
+    <p style={{ color: 'white' }}>{`Description: ${coaching.description}`}</p>
+    <p style={{ color: 'white' }}>{`Disponibilité: ${new Date(coaching.start).toLocaleDateString()} - ${new Date(coaching.end).toLocaleDateString()}`}</p>
+    <h4 style={{ color: 'white' }}>{`Name of the coach: ${coaching.nameCoach}`}</h4>
+    {/* <a href={`/Reservationc/${coaching._id}`} className="reservation-link">Réserver</a> */}
+  </div>
+)}
 
-      {showDetails && (
-        <div>
-          <h5>Details</h5>
-          <p>{`Description: ${coaching.description}`}</p>
-          <p>{`Disponibilité: ${new Date(coaching.start).toLocaleDateString()} - ${new Date(coaching.end).toLocaleDateString()}`}</p>
-          <h5>{`Name of the coach: ${coaching.nameCoach}`}</h5>
-          <a href={`/Reservationc/${coaching._id}`} className="reservation-link">Réserver</a>
-        </div>
-      )}
    
  
 </div>

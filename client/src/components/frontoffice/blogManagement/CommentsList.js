@@ -2,13 +2,17 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import requireAuth from '../authentification/requireAuth';
-
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function CommentsList(props) {
   
   const [comments, setComments] = useState([]);
   const [username, setUsername] = useState('');
   const [blogpostId, setBlogPostId] = useState(props.blogpostId);
+  const userId = localStorage.getItem("userId");
+  const [showOptions, setShowOptions] = useState(false);
+
   const addComment = (comment) => {
     setComments([...comments, comment]);
   }
@@ -32,6 +36,24 @@ function CommentsList(props) {
   }, [blogpostId]);
 
 
+  const handleDeleteComment = async (commentId) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/commentaire/${commentId}`);
+      console.log('Comment deleted:', commentId);
+      
+      // Update the state by filtering out the deleted comment
+      setComments((prevComments) => {
+        if (prevComments) {
+          return prevComments.filter((comment) => comment._id !== commentId);
+        }
+        return [];
+      });
+    } catch (error) {
+      console.error('Error deleting comment:', error);
+    }
+  };
+  
+
 
   return (
     
@@ -53,6 +75,12 @@ function CommentsList(props) {
           <p className="comment">
           {comment.comment}
           </p>
+          { userId === comment.user && (
+
+<i variant="danger" onClick={() => handleDeleteComment(comment._id)} class="ml-3" style={{color: 'red'}}><i class="fas fa-trash"></i></i>
+                      )}
+
+
           <div className="d-flex justify-content-between">
             <div className="d-flex align-items-center">
               <h5>

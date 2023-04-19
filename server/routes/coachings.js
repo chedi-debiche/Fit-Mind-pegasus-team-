@@ -17,9 +17,21 @@ const upload = multer({ storage: storage });
 
 const Coaching = require('../models/coachings');
 const User = require('../models/user');
+//const Reservation = require('../models/ReservationC');
 
 // Get all coachings for a specific user
 
+// router.get('/:coachingId', async (req, res) => {
+//   try {
+//     const coaching = await Coaching.findById(req.params.coachingId);
+//     if (!coaching) {
+//       return res.status(404).json({ message: 'Coaching not found' });
+//     }
+//     res.json(coaching);
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// });
 
 
 
@@ -79,6 +91,9 @@ router.get('/spesific', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+
+
 // Get a single coaching
 router.get('/:id', getCoaching, (req, res) => {
   res.json(res.coaching);

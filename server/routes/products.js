@@ -46,7 +46,20 @@ router.post('/', upload.single('image'), async (req, res) => {
   });
 
 
-
+  router.get('/statsp', async (req, res) => {
+    try {
+      const stats = await Product.aggregate([
+        { $group: { _id: '$name', count: { $sum: '$quantity' } } },
+        { $sort: { count: -1 } },
+        { $project: { _id: 0, name: '$_id', count: 1 } },
+      ]);
+      res.json(stats);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Erreur lors de la récupération des statistiques de achat de produits.' });
+    }
+  });
+  
   
 
 // Get all products

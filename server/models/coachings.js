@@ -34,8 +34,13 @@ const CoachingSchema = new mongoose.Schema({
     required:true
   },
   
-      start: { type: Date, required: true },
-      end: { type: Date, required: true }
+   start: { type: Date, required: true },
+   end: { type: Date, required: true },
+
+      reservation: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ReservationC'
+      }
 
 });
 
