@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from "./styles.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,7 +8,7 @@ import requireAuth from '../authentification/requireAuth';
 // import SideNav from "../sharedBack/SideNav";
  import HeaderCoaches from "../shared/HeaderCoaches";
  import FooterFront from "../shared/FooterFront";
-
+//djo
 
 
 const Coaching = (props) => {
