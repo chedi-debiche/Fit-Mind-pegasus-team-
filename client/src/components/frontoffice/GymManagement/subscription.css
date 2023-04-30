@@ -79,7 +79,7 @@ td:last-child {
   
 
   .container {
-    max-width: 1000px; /* adjust this value as needed */
+    max-width: 1000px; 
     margin: auto;
   }
   

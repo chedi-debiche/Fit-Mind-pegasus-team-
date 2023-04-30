@@ -86,7 +86,7 @@ const HeaderSignedInClient = () => {
             <div className="main-menu f-right d-none d-lg-block">
   <nav>
     <ul id="navigation">
-      <li><Link to="/">Home</Link></li>
+      <li><Link to="/homec">Home</Link></li>
       <li><Link to="/about">About</Link></li>
       <li><Link to="/coaches">Coaches</Link>
             <ul className="submenu">
@@ -101,7 +101,7 @@ const HeaderSignedInClient = () => {
           <li><Link to={`/subscriptions/${id}`}>Subscriptions</Link></li>
         </ul>
       </li>
-      {  role === 'GymManager'    &&  (<li><Link to="/gymsmanagement">Gyms Management</Link></li>)  } 
+      {  role === 'GymManager'    &&  (<li><Link to="/gymsmanagement">Gym management</Link></li>)  } 
       {/* <li><Link to="/coaches">Coaches</Link>
             <ul className="submenu">
                  <li><Link to="/CoachingsClient">List of Coaches</Link></li>
@@ -109,7 +109,7 @@ const HeaderSignedInClient = () => {
             </ul>
      </li> */}
       <li><Link to="/products">Products</Link></li>
-      {  role === 'GymManager'    &&  (<li><Link to="/dashboard">Dashboard</Link></li>)  } 
+            {  role === 'GymManager'    &&  (<li><Link to="/dashboard">Dashboard</Link></li>)  } 
 
 <li>
   <Link to="/listBlog">Blog</Link>
@@ -119,9 +119,15 @@ const HeaderSignedInClient = () => {
     {/* <li><Link to="/elements">Elements</Link></li> */}
   </ul>
 </li>
-
-      <li><Link to="/contact">Contact</Link></li>
-      <li><Link to="/reclame">Reclame</Link></li>
+      <li><Link to="/reclame">Contact</Link></li>
+      <li>
+  <Link to="/d">Other</Link>
+  <ul className="submenu">
+    <li><Link to="/food">Food Recipes</Link></li>
+    <li><Link to="/bmicalculator">BMI Calculator</Link></li>
+    {/* <li><Link to="/elements">Elements</Link></li> */}
+  </ul>
+</li>
       <li>
         <Link to="/blog">Profile</Link>
         <ul className="submenu">
@@ -129,6 +135,8 @@ const HeaderSignedInClient = () => {
           <li><Link to="/signin" onClick={handleLogout}>Logout</Link></li>
         </ul>
       </li>
+
+  
     </ul>
   </nav>
 </div>

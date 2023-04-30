@@ -191,7 +191,7 @@ router.get("/:id",async (req, res) => {
 
 //delete
 
-router.delete("/delete/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
 	try {
 	  const gym = await Gym.findById(req.params.id);
 	  if (!gym)
@@ -481,9 +481,6 @@ router.get('/searchBy/:searchBy/:term', async (req, res) => {
 	  res.status(500).send('Server error');
 	}
 });
-  
-  
-
 
 router.get('/gym-performance/:id',async (req, res) => {
 
@@ -524,8 +521,11 @@ router.get('/gym-performance/:id',async (req, res) => {
   });
 });
 
-
-
+  
+  
+  
+  
+    
 
 
 module.exports = router;

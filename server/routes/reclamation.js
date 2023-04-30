@@ -64,7 +64,22 @@ router.delete('/delete/:id', async (req, res) => {
 });
 
 // Update a reclamation by id
-
+// router.patch('/update/:id', async (req, res) => {
+//   try {
+//     const { error } = validate(req.body);
+// 		if (error)
+// 			return res.status(400).send({ message: error.details[0].message });
+//     const reclamation = await Reclamation.findById(req.params.id);
+//     if (!reclamation) {
+//       return res.status(404).json({ message: 'Reclamation not found' });
+//     }
+//     Object.assign(reclamation, req.body);
+//     await reclamation.save();
+//     res.json(reclamation);
+//   } catch (error) {
+//     res.status(400).json({ message: error.message });
+//   }
+// }); 
 
 
 
@@ -91,12 +106,12 @@ router.post('/rating/:idu', async (req, res) => {
   });
 
 
-  router.patch('/updates/:id', async (req, res) => {
+  router.patch('/update/:id', async (req, res) => {
     try {
       const newData = {
         description: req.body.description,
         type:req.body.type,
-        comments:req.body.comments,
+        comments:req.body.comments
       }
 
       const { error } = validate(newData);

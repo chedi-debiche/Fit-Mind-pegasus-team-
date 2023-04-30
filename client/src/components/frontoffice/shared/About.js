@@ -2,11 +2,11 @@ import React from 'react'
 import HeaderFront from './HeaderFront'
 import FooterFront from './FooterFront'
 import IMCCalculator from '../IMCCalculator'
-
+import HeaderSignedInClient from './HeaderSignedInClient'
 const About = () => {
   return (
     <div>
-<HeaderFront/>
+<HeaderSignedInClient/>
 <main style={{ background: 'black' }}>
   {/*? Hero Start */}
   <div className="slider-area2">

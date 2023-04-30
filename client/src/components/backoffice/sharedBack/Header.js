@@ -4,7 +4,7 @@ const Header = () => {
   return (
    <div>
   <nav className="main-header navbar navbar-expand navbar-white navbar-light">
-  <a href="/" className="navbar-brand">
+  <a href="/homec" className="navbar-brand">
           <img src="bleulogo.png" alt="Logo" style={{ height: '65px' }} />
         </a>
     {/* Left navbar links */}

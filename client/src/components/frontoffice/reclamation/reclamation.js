@@ -8,6 +8,7 @@ import styles from "./styles.module.css";
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Rating from "react-rating-stars-component";
+import HeaderSignedInClient from '../shared/HeaderSignedInClient';
 
 
 
@@ -161,7 +162,7 @@ const Reclamation = () => {
           console.log(formData) ;
           
          // console.log(formData);
-          await axios.patch(`http://localhost:5000/api/reclamations/updates/${ReclamationId}`,formData);
+          await axios.patch(`http://localhost:5000/api/reclamations/update/${ReclamationId}`,formData);
           setUpdate(true) ;
         } catch (error) {
           console.log(error);
@@ -183,7 +184,7 @@ const Reclamation = () => {
 
   return (
     <div>
-<HeaderFront/>
+<HeaderSignedInClient/>
 <main>
   {/*? Hero Start */}
   <div className="slider-area2">

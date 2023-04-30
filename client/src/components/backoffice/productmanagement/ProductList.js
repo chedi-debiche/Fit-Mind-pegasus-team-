@@ -180,7 +180,7 @@ const ProductList = () => {
           
       {stats.length > 0 && (
   <div>
-    <h2>Statistiques quantité par produit</h2>
+    <h2>Stats of quantity per product</h2>
     <Pie
       data={{
         labels: stats.map((stat) => stat.name),

@@ -68,15 +68,23 @@ const headerCoaches = () => {
   <nav>
     <ul id="navigation">
       {/* <li><Link to="/">Home</Link></li> */}
+      <li><Link to="/homec">Home</Link></li>
       <li><Link to="/about">About</Link></li>
-      <li><Link to="/gyms">Gyms</Link></li>
+
+
+      
+      {/* <li><Link to="/about">About</Link></li> */}
       <li><Link to="/coaches">Coaches</Link>
             <ul className="submenu">
                  <li><Link to="/coaching">Coaching</Link></li>
                  <li><Link to="/Coachings">List of Coaches</Link></li>
-                 <li><Link to="/elements">Elements</Link></li>
+                 <li><Link to="/CoachingAffRes">List Of Reservation</Link></li>
+                 <li><Link to="/room">Create online session</Link></li>
+
             </ul>
      </li>
+      <li><Link to="/gyms">Gyms</Link></li>
+    
       <li><Link to="/products">Products</Link></li>
 
       <li>
@@ -88,6 +96,14 @@ const headerCoaches = () => {
         </ul>
       </li>
       <li><Link to="/contact">Contact</Link></li>
+      <li>
+  <Link to="/listBlog">Other</Link>
+  <ul className="submenu">
+    <li><Link to="/food">Food Recipes</Link></li>
+    <li><Link to="/bmicalculator">BMI Calculator</Link></li>
+    {/* <li><Link to="/elements">Elements</Link></li> */}
+  </ul>
+</li>
       <li>
         <Link to="/blog">Profile</Link>
         <ul className="submenu">

@@ -1,11 +1,12 @@
 import React from 'react'
 import FooterFront from '../shared/FooterFront'
 import HeaderFront from '../shared/HeaderFront'
+import HeaderSignedInClient from '../shared/HeaderSignedInClient'
 
 const Contact = () => {
   return (
     <div>
-<HeaderFront/>
+<HeaderSignedInClient/>
 <main>
   {/*? Hero Start */}
   <div className="slider-area2">

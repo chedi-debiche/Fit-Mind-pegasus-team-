@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "./App.css";
@@ -33,7 +31,7 @@ function Dashboard() {
 
   const token=localStorage.getItem('token');
   const idu = localStorage.getItem('userId') ;
-  
+
 
   useEffect(() => {
     async function fetchGyms() {
@@ -41,16 +39,16 @@ function Dashboard() {
       const data = await response.json();
       setGyms(data);
       setCount(data.length);
-  
+
       const countByLocation = data.reduce((acc, gym) => {
         acc[gym.localisation] = (acc[gym.localisation] || 0) + 1;
         return acc;
       }, {});
-  
+
       setCountgym(countByLocation['desired_location'] || 0);
       console.log(token);
     }
-  
+
     fetchGyms();
   }, []);
 
@@ -68,14 +66,14 @@ function Dashboard() {
     Participant: gym.participant,
     localisation: gym.localisation,
     offer:gym.offers
-  
-    
-    
-   
+
+
+
+
     }
     });
 
-   
+
 const getPath = (x, y, width, height) => {
   return `M${x},${y + height}C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3}
   ${x + width / 2}, ${y}
@@ -90,10 +88,10 @@ const TriangleBar = (props) => {
 };
   return (
     <div class="dashboard-main" >
-    
+
     <HeaderSignedInClient/>
-    
-     
+
+
 
 <main > 
 
@@ -118,19 +116,19 @@ const TriangleBar = (props) => {
                 <div class="h2 font-weight-bold text-danger text-uppercase mb-1">
                 Gyms added by you <h1>{count} </h1>
                 </div>
-                
-              </div> </div>
-                
-                </div>
-               
- 
 
-                
-  
-  
- 
- 
-  
+              </div> </div>
+
+                </div>
+
+
+
+
+
+
+
+
+
     </div>
     <div class="container-fluid">
   <div class="row justify-content-between">
@@ -143,7 +141,7 @@ const TriangleBar = (props) => {
                 <div class="h2 font-weight-bold text-danger text-uppercase mb-1">
                 <>  THE NUMBER OF PARTICIPANT OF YOUR GYM </>
                 </div>
-                
+
               </div>
             </div>
           </div>
@@ -151,7 +149,7 @@ const TriangleBar = (props) => {
       </div>
     </div>
 
-    
+
 
     <div class="col-xl-4 col-md-4 mb-4">
       <div class="card bg-white shadow h-80 py-1">
@@ -162,7 +160,7 @@ const TriangleBar = (props) => {
                 <div class="h2 font-weight-bold text-danger text-uppercase mb-1">
                 Check your gym rating
                 </div>
-                
+
               </div>
             </div>
           </div>
@@ -171,25 +169,25 @@ const TriangleBar = (props) => {
     </div>
   </div>
 </div>
-                                    
-                                 
-   
-   <div style={{ textAlign: "center" }}>
-    
-     
-     
-     <div className="card-container">
-     
- 
-    
- 
-       
 
-        
+
+
+   <div style={{ textAlign: "center" }}>
+
+
+
+     <div className="card-container">
+
+
+
+
+
+
+
         <div className="chart-card">
-      
-         
-        
+
+
+
         <BarChart
           width={500}
           height={300}
@@ -201,7 +199,7 @@ const TriangleBar = (props) => {
             bottom: 5,
           }}
           barSize={20}
-          
+
         >
           <XAxis
             dataKey="name"
@@ -214,9 +212,9 @@ const TriangleBar = (props) => {
           <CartesianGrid strokeDasharray="3 3" />
           <Bar dataKey="Participant" fill="#8884d8" background={{ fill: "#eee" }} />
         </BarChart>
-        
+
         </div>
-        
+
         <div className="chart-card"> <BarChart
       width={500}
       height={300}
@@ -243,18 +241,18 @@ const TriangleBar = (props) => {
       </Bar>
     </BarChart>
 </div>
-       
-        
 
 
-        
+
+
+
       </div>
     </div>
     <FooterFront/>
     </div>
   );  
 }
-        
-  
+
+
 
 export default Dashboard;

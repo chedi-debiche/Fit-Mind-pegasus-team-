@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Form, FormGroup, Label, Input, Button , Row , Col, Alert } from "reactstrap";
 import { Card, CardBody, CardTitle, CardText } from "reactstrap";
-
+import HeaderSignedInClient from "./shared/HeaderSignedInClient";
 
 const IMCCalculator = () => {
   const [height, setHeight] = useState();
@@ -39,10 +39,27 @@ const IMCCalculator = () => {
   };
 
   return (
-    <Container>
+    <main style={{ background: 'black' }}>
+
+    <HeaderSignedInClient/>
+  {/*? Hero Start */}
+  <div className="slider-area2">
+    <div className="slider-height2 d-flex align-items-center">
+      <div className="container">
+        <div className="row">
+          <div className="col-xl-12">
+            <div className="hero-cap hero-cap2 pt-70">
+              <h2>BMI Calculator</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    {/* <main style={{ background: 'black' }}> */}
       {/* informations :  */}
-
-
+  <iframe  width="560" height="315" src="https://www.youtube.com/embed/NJiw11hIKKM?start=24" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     <Form>
   <h2 className="text-center mb-4"style={{ color: "white", fontSize: "6rem" }}>BMI Calculator</h2>
   <Row form>
@@ -176,7 +193,7 @@ const IMCCalculator = () => {
 </Card>
 
 
-    </Container>
+    </main>
   );
 };
 

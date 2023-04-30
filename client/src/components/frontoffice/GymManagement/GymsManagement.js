@@ -16,12 +16,14 @@ const GymsManagement=()=>{
   const [Offers, setOffers] = useState([]);
   const [postuling, setPostuling] = useState(false);
   const [postuleId, setPostuleId] = useState(null);
-  const [deleteGym,setDeletedGymId ]= useState(null);
-  const[ performance,setPrfomance]= useState(null);
 
     const [showForm, setShowForm] = useState(false);
     const [editing, setEditing] = useState(false);
     const [editId, setEditId] = useState(null);
+    const [deleteGym,setDeletedGymId ]= useState(null);
+    const[ performance,setPrfomance]= useState(null);
+
+
     const [formValues, setFormValues] = useState({
       name: '',
       description: '',
@@ -55,6 +57,17 @@ const GymsManagement=()=>{
       }
     };
 
+    const HandleDeleteGym = async (id) => {
+     
+      try {
+       await axios.delete(`http://localhost:5000/api/gyms/${id}`);
+       setDeletedGymId(id);
+  
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     const handleVisible = async () => {
   setShowForm(!showForm) ;
     }
@@ -62,7 +75,8 @@ const GymsManagement=()=>{
 
     useEffect(() => {
       getGyms();
-    }, [deleteGym,performance]);
+    }, [deleteGym,performance]
+    );
 
     const getGyms = async () => {
      
@@ -73,6 +87,19 @@ const GymsManagement=()=>{
         console.error(error);
       }
     };
+
+
+    const GetPerformance = async (id) => {
+     
+      try {
+          await axios.get(`http://localhost:5000/api/gyms/gym-performance/${id}`);
+        setPrfomance(performance+1);
+        //console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
 
 
     const AddGyms =async (e)=>{
@@ -152,32 +179,7 @@ console.log(editing);
   
 
 
-
-
-
-
-  const HandleDeleteGym = async (id) => {
-     
-    try {
-     await axios.delete(`http://localhost:5000/api/gyms/delete/${id}`);
-     setDeletedGymId(id);
-
-    } catch (error) {
-      console.error(error);
-    }
-  };
  
-
-  const GetPerformance = async (id) => {
-     
-    try {
-        await axios.get(`http://localhost:5000/api/gyms/gym-performance/${id}`);
-      setPrfomance(performance+1);
-      //console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
 
 
@@ -399,26 +401,29 @@ Gym Picture
    { <div className="main_content">
 
     {gyms.map((gym) =>
-        <div className="card" key={gym.id}>
-            <div className="card_img">
+        <div className="card1
+      " key={gym.id}>
+            <div className="card1_img">
             <img
         src={`http://localhost:5000/uploads/${gym.photo[0]}`}
 //   alt={`Image of ${product.name}`}
               width="400"
             />
             </div>
-            <div className="card_header">
+            <div className="card1_header">
                 <h2 style={{color: "red"}}>{gym.name}</h2>
-                <p>Description:{gym.description}</p>
+                <p>{gym.description}</p>
                 <p >Services :{gym.services}</p>
-                <p >Location :{gym.localisation}</p>
+                <p >{gym.localisation}</p>
                 <p className="price">participant : {gym.participant}</p>
                 <p className="price">Days : {gym.days}</p>
                 <p className="price">Performance : {gym.performance}</p>
-                <div className="btn" onClick={() => GetPerformance(gym._id)}>Get performance</div>
-                <div className="btn" onClick={() => handleEdit(gym._id)} >Update</div>
-                <div className="btn" onClick={() => handleOffer(gym._id)}>Add Offer</div>
-                <div className="btn" onClick={() => HandleDeleteGym(gym._id)}>Delete</div>
+
+                <div className="btn1" onClick={() => handleEdit(gym._id)} >Update</div>
+                <div className="btn1" onClick={() => handleOffer(gym._id)}>Add Offer</div>
+                <div className="btn1" onClick={() => HandleDeleteGym(gym._id)}>Delete</div>
+                <div className="btn1" onClick={() => GetPerformance(gym._id)}>Get performance</div>
+
 
 
             </div>

@@ -5,6 +5,7 @@ import FooterFront from './FooterFront'
 import HeaderSignedInClient from './HeaderSignedInClient'
 import CheckUser from '../authentification/CheckUser'
 import HeaderCoaches from './HeaderCoaches'
+import HomeConnected from '../HomeConnected'
 
 
 
@@ -19,7 +20,9 @@ const signedinUser = () => {
         <>
         <HeaderSignedInClient/>
 
-        <HomeFront/>
+        <HomeConnected/>
+
+        {/* <HomeFront/> */}
 
         <FooterFront/>
         </>

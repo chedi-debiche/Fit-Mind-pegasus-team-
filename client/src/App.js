@@ -61,13 +61,19 @@ import CommentsList from "./components/frontoffice/blogManagement/CommentsList";
 import Cart from "./components/frontoffice/ProductManagement/Cart";
 import NotFound from "./components/frontoffice/shared/NotFound";
 import CommentsListd from "./components/backoffice/blogmanagement/CommentList";
+import HomeConnected from "./components/frontoffice/HomeConnected";
 import Dashboard from "./components/frontoffice/Dash/index";
 
+import MeetHomePage from "./components/frontoffice/Meet/Home";
+import RoomPage from "./components/frontoffice/Meet/Room";
+import Food from "./components/frontoffice/food/food";
+import ChatBot from "./components/frontoffice/chatbot/Chatbot";
+import IMCCalculator from "./components/frontoffice/IMCCalculator";
 
 //end chedi imports
 
-//naaan dirrr 
 import ReclamationList from "./components/backoffice/reclamationManagement/reclamationList";
+// import NutritionInfo from "./components/frontoffice/foodList/NutritionInfo";
 
 
 
@@ -89,6 +95,7 @@ function App() {
            <Route path="/signup" element={<Signup/>} />
            <Route path="/showdetails/:id" element={<Profile/>} />
            <Route path="/update/:id" element={<UpdateUser/>} />
+           <Route path="/homec" element={<HomeConnected/>} />
 
 
 
@@ -124,11 +131,10 @@ function App() {
 
 
 
-<Route path="/dashboard" element={<Dashboard/>} />
-
 
           <Route path="/gyms" element={<Gyms/>} />
           <Route path="/gymf" element={<GymFront/>} />
+          <Route path="/dashboard" element={<Dashboard/>} />
           <Route path="/gymDetails/:id" element={<GymDetails/>} />
           <Route path="/subscribe" element={<GymSubscribe/>} />
           <Route path="/subscribeGym/:idg/:idu/:amount/:ido" element={<StripeContainer/>} />
@@ -172,8 +178,18 @@ function App() {
           <Route path="/commentListd" element={<CommentsListd/>} />
           <Route path="/*" element={<NotFound />} />
 
-{/* end chedi routes */}
+            {/* meet routes */}
+            <Route path="/room" element={<MeetHomePage/>} />
+            <Route path="/room/:roomId" element={<RoomPage/>} />
+            {/* <Route path="/nutritioninfo" element={<NutritionInfo/>} /> */}
+            <Route path="/food" element={<Food/>} />
+            <Route path="/chatbot" element={<ChatBot/>} />
+            <Route path="/bmicalculator" element={<IMCCalculator/>} />
 
+
+
+
+{/* end chedi routes */}
 
 
         {/* Add more routes for other components */}

@@ -249,6 +249,7 @@ const publishableKey = 'pk_test_51MyLyTL3XZBpMzAUEuEw20uusBNq9YhOWRstxZPYCLCURgr
         onChange={(newRating) => setRating(newRating)}
       />
       <div>
+        
 </div>
 
 <textarea

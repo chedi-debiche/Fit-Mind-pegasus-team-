@@ -32,22 +32,6 @@ const GymSchema = new mongoose.Schema({
     required : true
     
   },
-
-  performance: { 
-    type: String, 
-    enum: ['bad', 'normal', 'good'], 
-    default: 'normal' 
-    },
-    days: {
-      type: Number,
-      default: 0,
-      
-  
-    },
-    date: {
-      type: Date,
-      default: Date.now 
-      },
  
   localisation: {
     type: String,
@@ -74,7 +58,23 @@ const GymSchema = new mongoose.Schema({
   offers: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Offer'
-  }]
+  }],
+
+  performance: { 
+    type: String, 
+    enum: ['bad', 'normal', 'good'], 
+    default: 'normal' 
+    },
+    days: {
+      type: Number,
+      default: 0,
+      
+  
+    },
+    date: {
+      type: Date,
+      default: Date.now 
+      },
  
 });
 
