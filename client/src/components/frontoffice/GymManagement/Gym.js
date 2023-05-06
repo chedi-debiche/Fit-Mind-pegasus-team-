@@ -35,6 +35,38 @@ function Gyms() {
   const [gyms, setGyms] = useState([]);
   const token=localStorage.getItem('token');
 
+  const [textInput, setTextInput] = useState('');
+
+
+  const handleTextInputRecommendation = (event) => {
+    setTextInput(event.target.value);
+  };
+
+
+  const handleRecommendationWithText = async (event) => {
+    event.preventDefault();
+    try {
+      // Make an HTTP POST request to the server
+      const response = await fetch('http://localhost:5000/api/gyms/recommendation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ text: textInput })
+      });
+
+      // Parse the response as JSON
+      const data = await response.json();
+
+      // Update the state with the recommended gyms
+      setGyms(data.gyms);
+      console.log(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+
   useEffect(() => {
     async function fetchGyms() {
       const response = await fetch('http://localhost:5000/api/gyms/getAll');
@@ -253,13 +285,112 @@ function Gyms() {
         </section>
         </Navbar.Collapse>
       </Navbar>
-      
-
-  
-  
-      
 
 
+
+
+
+      <div className="row">
+      {/* <div className='col-4 lg-4 md-4 sm-4' style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
+  <form onSubmit={handleRecommendation}>
+    <input
+      type="text"
+      placeholder="Localisation"
+      value={recLoc}
+      onChange={handleLocChange}
+      style={{
+        border: "1px solid #ccc",
+        borderRadius: "5px",
+        backgroundColor: "#f5f5f5",
+        padding: "10px",
+        marginBottom: "10px",
+        width: "calc(50% - 10px)",
+      }}
+    />
+
+    <input
+      type="text"
+      placeholder="Service wanted"
+      value={recSer}
+      onChange={handleSerChange}
+      style={{
+        border: "1px solid #ccc",
+        borderRadius: "5px",
+        backgroundColor: "#f5f5f5",
+        padding: "10px",
+        marginBottom: "10px",
+        width: "calc(50% - 10px)"
+      }}
+    />
+
+    <div>
+      <Rating
+        name="min-rating"
+        count={5}
+        size={24}
+        activeColor="#ffd700"
+        onChange={(newRating) => setRecRat(newRating)}
+      />
+    </div>
+
+    <button
+      type="submit"
+      style={{
+        backgroundColor: "red",
+        color: "white",
+        fontSize: "20px",
+        padding: "5px 20px",
+        borderRadius: "5px",
+        border: "none",
+      }}
+    >
+      Get recommended
+    </button>
+  </form>
+</div> */}
+
+
+
+
+
+
+<div className='row' style={{ display: "flex", alignItems: "flex-start" }}>
+  <div className='col-6 lg-6 md-6 sm-6' />
+  <div className='col-6 lg-6 md-6 sm-6' style={{ display: "flex", justifyContent: "flex-end" }}>
+    <form onSubmit={handleRecommendationWithText} className="form-contact contact_form">
+      <div className="col-12">
+        <div className="form-group">
+          <textarea
+            className="form-control w-100"
+            name="description"
+            id="description"
+            cols={40}
+            rows={5}
+            placeholder="Enter Description"
+            onChange={handleTextInputRecommendation}
+            value={textInput}
+          />
+        </div>
+      </div>
+      <button
+        type="submit"
+        style={{
+          backgroundColor: "red",
+          color: "white",
+          fontSize: "20px",
+          padding: "5px 20px",
+          borderRadius: "5px",
+          border: "none",
+        }}
+      >
+        Get recommended
+      </button>
+    </form>
+  </div>
+</div>
+
+        
+      </div>
 
       
 

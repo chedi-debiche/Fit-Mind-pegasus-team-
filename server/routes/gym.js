@@ -522,6 +522,389 @@ router.get('/gym-performance/:id',async (req, res) => {
 });
 
   
+// router.get('/recommend/:loc/:ser/:rat', async (req, res) => {
+// 	const { loc,ser,rat } = req.params;
+  
+// 	try {
+		
+// 			const gyms = await Gym.find(
+// 				{
+// 					 localisation: { $regex: new RegExp(loc, 'i') },
+// 					 services: { $regex: new RegExp(ser, 'i') },
+// 					 rating: { $gte: rat }
+// 				 }
+// 			);
+// 			res.json(gyms);
+		
+	 
+// 	} catch (error) {
+// 	  console.error(error);
+// 	  res.status(500).send('Server error');
+// 	}
+// });
+
+
+
+
+
+// Define route for gym recommendations
+router.get('/recommend/:loc/:ser/:rat', async (req, res) => {
+	const { loc, ser, rat } = req.params;
+  
+	try {
+	  // Query the gyms data from the database
+	  const gyms = await Gym.find();
+  
+	  // Preprocess the data using the user input
+	  const gymData = preprocessGyms(gyms, loc, ser, rat);
+  
+	  // Build and train a recommendation model using the preprocessed data
+	  // Content-based filtering example:
+	  const cbModel = new ContentBasedFiltering();
+	  cbModel.fit(gymData);
+  
+	  // Generate recommendations for the user based on their input
+	  const recommendations = cbModel.predict();
+  
+	  // Send the recommendations back to the client-side
+	  res.json(recommendations);
+	} catch (error) {
+	  console.error(error.message);
+	  res.status(500).send('Server error');
+	}
+  });
+  
+  // Define function to preprocess gym data
+  function preprocessGyms(gyms, userLocation, userService, userRating) {
+	// Filter gyms by location
+	gyms = gyms.filter(gym => gym.localisation === userLocation);
+  
+	// Filter gyms by services
+	gyms = gyms.filter(gym => gym.services.includes(userService));
+  
+	// Filter gyms by rating
+	gyms = gyms.filter(gym => gym.rating >= userRating);
+  
+	// Transform gyms into a suitable format for modeling
+	const gymData = gyms.map(gym => ({
+	  name: gym.name,
+	  services: gym.services.join(','),
+	  rating: gym.rating
+	}));
+  
+	return gymData;
+  }
+  
+  class ContentBasedFiltering {
+	constructor() {
+	  this.gymData = [];
+	  this.recommendations = {};
+	}
+  
+	// Fit the recommendation model using the preprocessed data
+	fit(gymData) {
+	  this.gymData = gymData;
+	}
+  
+	// Generate recommendations for the user based on their input
+	predict() {
+	  // Extract the user input
+	  const userInput = {
+		localisation:req.params.loc.split(' '),
+		services: req.params.ser.split(','),
+		rating: parseInt(req.params.rat)
+	  };
+  
+	  // Compute the similarity scores between each gym and the user input
+	  const similarityScores = {};
+	  this.gymData.forEach(gym => {
+		let score = 0;
+		let weight = 0;
+		Object.keys(userInput).forEach(key => {
+		  if (gym[key]) {
+			score += gym[key] * userInput[key];
+			weight += userInput[key];
+		  }
+		});
+		similarityScores[gym.name] = weight > 0 ? score / weight : 0;
+	  });
+  
+	  //Sort the gyms by their similarity scores
+  
+	  // Sort the gyms by their similarity scores
+	  const sortedGyms = Object.keys(similarityScores)
+		.sort((a, b) => similarityScores[b] - similarityScores[a])
+		.slice(0, 10);
+  
+	  // Create a dictionary of recommendations
+	  sortedGyms.forEach(gymName => {
+		const gym = this.gymData.find(gym => gym.name === gymName);
+		if (gym) {
+		  this.recommendations[gymName] = gym;
+		}
+	  });
+  
+	  return this.recommendations;
+	}
+  }
+
+
+
+router.get('/popular/pop', async (req, res) => {
+	try {
+	  const gyms = await Gym.find().sort('-visits').limit(3);
+  
+	  res.json(gyms);
+	} catch (error) {
+	  console.error(error);
+	  res.status(500).send('Server error');
+	}
+  });
+  
+  
+
+
+
+  
+  // Preprocess the user input
+  const preprocess = (text) => {
+	// Convert the text to lowercase
+	text = text.toLowerCase();
+  
+	// Remove punctuation marks and numbers //.replace(/\d+/g, '') for numbers
+	text = text.replace(/[^\w\s]/gi, '');
+	
+  
+	// Remove stop words
+	const stopWords = ['the', 'a', 'an', 'and', 'or', 'of', 'to', 'in', 'on', 'for', 'with', 'is', 'are', 'am'];
+	text = text.split(' ').filter((word) => !stopWords.includes(word)).join(' ');
+  
+	
+	return text;
+  };
+  // Extract named entities and key phrases from the preprocessed text
+  const extractEntitiesAndPhrases = (preprocessedText) => {
+	// Define regular expressions to match gym services, locations, and ratings
+	const serviceRegex = /(musculation|natation|cardio|yoga|pilates|spinning|crossfit|weightlifting|zumbie|dance|salsa|body-building|coaching)/g;
+	const locationRegex = /(bardo|tunis|ariana|manouba|ben arous|bizerte|nabeul|beja|siliana|gasserine|jendouba|kef|kairaouen|sidi bouzid|sfax|gafsa|mednine|tataouin|jerba|tozeur|ben guerdan|sousse|monastir|mahdia|mourouj|megrine)/g;
+	const ratingRegex = /\d+(\.\d+)?/g;
+
+  
+	// Match the regular expressions against the preprocessed text
+	const services = preprocessedText.match(serviceRegex) || [];
+	const location = preprocessedText.match(locationRegex) || [];
+	const ratingMatch = preprocessedText.match(ratingRegex);
+	const rating = ratingMatch ? parseFloat(ratingMatch[0]) : null;
+  
+	return { services, location, rating };
+  };
+  
+  
+  
+
+  const recommendGyms = async (services, locations, rating) => {
+	// Create a regular expression for the services and locations
+	const servicesRegex = new RegExp(services.join('|'), 'i');
+	const locationsRegex = new RegExp(locations.join('|'), 'i');
+  
+	// Define the query conditions
+	const conditions = [
+	  { localisation: { $regex: locationsRegex } },
+	  { services: { $regex: servicesRegex } },
+	];
+  
+	// Add the rating condition if a rating was specified
+	if (rating !== null) {
+	  conditions.push({ rating: { $gte: rating } });
+	}
+  
+	// Search for gyms that match the query
+	const gyms = await Gym.find({ $and: conditions }).sort({ rating: -1 });
+
+	// Create a message based on the search criteria
+	let message = `Recommended gyms for services: ${services.join(', ')}, locations: ${locations.join(', ')}`;
+	if (rating !== null) {
+	  message += `, and rating >= ${rating}`;
+	}
+	
+  
+	// Return the recommended gyms
+	return {message,gyms};
+  };
+  
+  
+  
+  // Create an endpoint for gym recommendation
+  router.post('/recommendation', async (req, res) => {
+	try {
+	  // Get the user input from the request body
+	  const { text } = req.body;
+  
+	  // Preprocess the input
+	  const preprocessedText = preprocess(text);
+  
+
+		// Extract services and location from the user input
+		const { services, location,rating } = extractEntitiesAndPhrases (preprocessedText);
+
+		// Recommend gyms based on the services and location
+		const recommendedGyms = await recommendGyms(services, location,rating);
+
+
+		// recommendedGyms.gyms.forEach(gym => gym.recommend++);
+
+
+		// Return the recommended gyms as a response
+		res.json(recommendedGyms);
+			} catch (err) {
+			console.error(err);
+			res.status(500).send(err.message);
+			}
+  });
+  
+///////////////////////////////////////////////////////////////////
+
+
+// Train the NLP model
+// manager.addDocument('en', 'I\'m looking for a gym with a musculation and natation near Bardo with rating 2', 'search');
+// manager.addDocument('en', 'I\'m looking for a gym with a musculation and natation near Bardo', 'search');
+// manager.addDocument('en', 'I\'m looking for a gym with a musculation and natation', 'search');
+// manager.addDocument('en', 'I\'m looking for a gym near Bardo with rating 4', 'search');
+// manager.addDocument('en', 'I\'m looking for a gym near Bardo', 'search');
+// manager.addDocument('en', 'I\'m looking for a gym with rating 4', 'search');
+// manager.addDocument('en', 'I\'m looking for a gym', 'search');
+// manager.addDocument('en', 'What are the gyms near Bardo with musculation and natation?', 'search');
+// manager.addDocument('en', 'What are the gyms near Bardo?', 'search');
+// manager.addDocument('en', 'What are the gyms with musculation and natation?', 'search');
+// manager.addDocument('en', 'What are the gyms?', 'search');
+
+// manager.addDocument('en', 'musculation', 'service');
+// manager.addDocument('en', 'natation', 'service');
+// manager.addDocument('en', 'cardio', 'service');
+// manager.addDocument('en', 'yoga', 'service');
+// manager.addDocument('en', 'pilates', 'service');
+// manager.addDocument('en', 'spinning', 'service');
+// manager.addDocument('en', 'crossfit', 'service');
+// manager.addDocument('en', 'weightlifting', 'service');
+// manager.addDocument('en', 'zumbie', 'service');
+// manager.addDocument('en', 'dance', 'service');
+// manager.addDocument('en', 'salsa', 'service');
+// manager.addDocument('en', 'body-building', 'service');
+// manager.addDocument('en', 'coaching', 'service');
+
+// manager.addDocument('en', 'Bardo', 'location');
+// manager.addDocument('en', 'Tunis', 'location');
+// manager.addDocument('en', 'Ariana', 'location');
+// manager.addDocument('en', 'Manouba', 'location');
+// manager.addDocument('en', 'Ben Arous', 'location');
+// manager.addDocument('en', 'What is the rating of the gym?', 'rating');
+// manager.addDocument('en', 'What are the ratings of the gyms near Bardo?', 'rating');
+// manager.addDocument('en', '1', 'rating');
+// manager.addDocument('en', '2', 'rating');
+// manager.addDocument('en', '3', 'rating');
+// manager.addDocument('en', '4', 'rating');
+// manager.addDocument('en', '5', 'rating');
+
+// Add entities to the manager
+// manager.addNamedEntityText('service', 'musculation', ['en'], ['musculation']);
+// manager.addNamedEntityText('service', 'natation', ['en'], ['natation']);
+// manager.addNamedEntityText('location', 'Bardo', ['en'], ['Bardo']);
+// manager.addNamedEntityText('location', 'Tunis', ['en'], ['Tunis']);
+// manager.addNamedEntityText('location', 'Ariana', ['en'], ['Ariana']);
+// manager.addNamedEntityText('location', 'Manouba', ['en'], ['Manouba']);
+// manager.addNamedEntityText('location', 'Ben Arous', ['en'], ['Ben Arous']);
+// manager.addNamedEntityText('rating', '1', ['en'], ['1']);
+// manager.addNamedEntityText('rating', '2', ['en'], ['2']);
+// manager.addNamedEntityText('rating', '3', ['en'], ['3']);
+// manager.addNamedEntityText('rating', '4', ['en'], ['4']);
+// manager.addNamedEntityText('rating', '5', ['en'], ['5']);
+
+
+
+// (async () => {
+// 	await manager.train();
+// 	// manager.save('model.nlp');
+	
+//   })();
+
+ 
+
+
+// Define API endpoint for handling POST requests
+// router.post('/nlp', async (req, res) => {
+// 	try {
+
+// 	  const response = await manager.process('en', req.body.message);
+	 
+	 
+	  
+//     //   console.log(entities);
+// 	//   res.json(response);
+	   
+// 		// const { location, services, rating } = response.entities;
+
+//   // search for gyms based on the extracted information
+// //   const gyms = await Gym.find();
+// //   const results = gyms.filter(gym => {
+// //     if (location && !gym.location.includes(location.value)) return false;
+// //     if (services && !services.some(service => gym.services.includes(service.value))) return false;
+// //     if (rating && gym.rating < rating.value) return false;
+// //     return true;
+// //   });
+
+//   // return the list of recommended gyms in the response
+//   res.send(response);
+// 	} catch (err) {
+// 	  console.error(err);
+// 	  res.status(500).send(err.message);
+// 	}
+//   });
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+// router.post('/emotion-detection', async (req, res) => {
+// 	try {
+// 		const options = {
+// 			method: 'POST',
+// 			url: 'https://emotion-detection2.p.rapidapi.com/emotion-detection',
+// 			headers: {
+// 			  'content-type': 'application/json',
+// 			  'X-RapidAPI-Key': '2bb533d755msh6703454301f93efp125d13jsn79c286c442a8',
+// 			  'X-RapidAPI-Host': 'emotion-detection2.p.rapidapi.com'
+// 			},
+// 			data: {
+// 			  url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=668&q=80'
+// 			}
+// 		  };
+		  
+		  
+// 			  const response = await axios.request(options);
+// 			  res.send(response.data);
+// 	} catch (err) {
+// 	  console.error(err);
+// 	  res.status(500).send(err.message);
+// 	}
+//   });
+
+// router.get('/exercice', async (req, res) => {
+// 	try {
+// 		const options = {
+// 			method: 'GET',
+// 			url: 'https://exerciseapi3.p.rapidapi.com/search/muscles/',
+// 			headers: {
+// 			  'X-RapidAPI-Key': '2bb533d755msh6703454301f93efp125d13jsn79c286c442a8',
+// 			  'X-RapidAPI-Host': 'exerciseapi3.p.rapidapi.com'
+// 			}
+// 		  };
+		  
+		 
+// 			  const response = await axios.request(options);
+// 			  res.send(response.data);
+// 	} catch (err) {
+// 	  console.error(err);
+// 	  res.status(500).send(err.message);
+// 	}
+//   });
+
   
   
   
