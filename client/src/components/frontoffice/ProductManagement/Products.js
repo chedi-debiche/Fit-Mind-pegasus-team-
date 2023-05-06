@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux';
 import { selectCountAll } from "./redux/slices/cartSlice";
 import { NavLink } from "react-router-dom";
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+// import MessengerCustomerChat from 'react-messenger-customer-chat';
 
 
 // import DarkMode from "./DarkMode"
@@ -158,6 +159,10 @@ function Products() {
 
 
 
+  {/* <MessengerCustomerChat
+    pageId="100092494894919"
+    appId="754126816117214"
+  />, */}
 
 
 
