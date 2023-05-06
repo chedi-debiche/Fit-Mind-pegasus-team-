@@ -109,7 +109,7 @@ const HeaderSignedInClient = () => {
             </ul>
      </li> */}
       <li><Link to="/products">Products</Link></li>
-            {  role === 'GymManager'    &&  (<li><Link to="/dashboard">Dashboard</Link></li>)  } 
+            
 
 <li>
   <Link to="/listBlog">Blog</Link>
@@ -119,12 +119,16 @@ const HeaderSignedInClient = () => {
     {/* <li><Link to="/elements">Elements</Link></li> */}
   </ul>
 </li>
+{  role === 'GymManager'    &&  (<li><Link to="/dashboard">Dashboard</Link></li>)  } 
+
       <li><Link to="/reclame">Contact</Link></li>
       <li>
   <Link to="/d">Other</Link>
   <ul className="submenu">
     <li><Link to="/food">Food Recipes</Link></li>
+    
     <li><Link to="/bmicalculator">BMI Calculator</Link></li>
+    <li><Link to="/recommendation">recommendation</Link></li>
     {/* <li><Link to="/elements">Elements</Link></li> */}
   </ul>
 </li>

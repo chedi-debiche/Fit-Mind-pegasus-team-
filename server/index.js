@@ -28,6 +28,10 @@ const twilio = require('twilio');
 
 
 
+const scRoutes = require("./routes/scraping"); // 
+
+
+
 
 
 // Définir le chemin pour les fichiers statiques, y compris les images
@@ -91,6 +95,9 @@ app.use("/api/reclamations",reclamationRoutes);
 
 
 
+
+
+app.use("/api/sc",scRoutes);
 const port = process.env.PORT || 5000;
 /** POST: http://localhost:8080/uploads  */
 //  app.post("/uploads", async (req, res) => {

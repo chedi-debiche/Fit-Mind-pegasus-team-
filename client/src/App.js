@@ -75,7 +75,7 @@ import IMCCalculator from "./components/frontoffice/IMCCalculator";
 import ReclamationList from "./components/backoffice/reclamationManagement/reclamationList";
 // import NutritionInfo from "./components/frontoffice/foodList/NutritionInfo";
 
-
+import Webp from "./components/frontoffice/webProduct/product";
 
 
 
@@ -143,6 +143,10 @@ function App() {
 
           <Route path="/reclame" element={<Reclamation/>} />
           <Route path="/reclamations" element={<ReclamationList/>} />
+
+          <Route path="/recommendation" element={<Webp/>} />
+
+
 
 
 
