@@ -76,9 +76,10 @@ import ReclamationList from "./components/backoffice/reclamationManagement/recla
 // import NutritionInfo from "./components/frontoffice/foodList/NutritionInfo";
 
 import Webp from "./components/frontoffice/webProduct/product";
+import Map from "./components/frontoffice/Map/Map";
 
 
-
+import GYYM from "./components/backoffice/gymmanagement/GymList";
 
 function App() {
 
@@ -189,6 +190,10 @@ function App() {
             <Route path="/food" element={<Food/>} />
             <Route path="/chatbot" element={<ChatBot/>} />
             <Route path="/bmicalculator" element={<IMCCalculator/>} />
+            <Route path="/GYYM" element={<GYYM/>} />
+            <Route path="/Map" element={<Map/>} />
+
+
 
 
 

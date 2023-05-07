@@ -64,6 +64,14 @@ const SideNav = () => {
 </Link>
 </li>
 
+
+<li className="nav-item">
+                <Link to="/GYYM" className="nav-link active">
+                <i className="far fa-circle nav-icon" />
+                <p>gym management</p>
+              </Link>
+            </li>
+
 <li className="nav-item">
 
 <Link to="/blogd" className="nav-link active">
