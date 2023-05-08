@@ -61,6 +61,25 @@ const ReclamationList = () => {
   const handleUndoDelete = () => {
     setDeletedRecId(null);
   };
+  const handleTreatReclamation = async (recId) => {
+    try {
+      const response = await axios.patch(`http://localhost:5000/api/reclamations/rec/${recId}`);
+      
+      console.log(response.data.message); // Afficher la valeur de "message"
+    } catch (error) {
+      console.log(error);
+    }
+  };
+// PUT /reclamation/:userId
+async function fetchReclamations() {
+  try {
+    const response = await fetch('/reclamations/getAll');
+    const reclamations = await response.json();
+    return reclamations;
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 
 
@@ -118,7 +137,8 @@ const ReclamationList = () => {
     <FontAwesomeIcon icon={faTrash} />
   </Button> </th>
 
-  
+    
+  <Button onClick={() => handleTreatReclamation(reclamation._id)}> Treat </Button>
 
 
 </tr>

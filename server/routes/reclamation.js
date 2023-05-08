@@ -4,6 +4,29 @@ const {Reclamation,validate} = require('../models/reclamation');
 const {Evaluation} = require('../models/evaluation');
 
 
+router.patch('/rec/:recid', async (req, res) => {
+  try {
+     
+    const recId = req.params.recid;
+    const reclamation = await Reclamation.findById(recId); 
+
+    console.log(reclamation.responsedd);
+    if (!reclamation) {
+      return res.status(404).json({ message: "Reclamation not found" });
+    }
+
+    if (reclamation.responsedd) {
+      return res.status(403).json({ message: "Already approved" });
+    }
+
+    reclamation.responsedd = true; // Mettre à jour la propriété "responsedd" à true
+    await reclamation.save(); // Enregistrer les modifications dans la base de données
+
+    return res.status(200).send({ message: "Reclamation approved successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 // Add a new reclamation
 router.post('/add/:userId', async (req, res) => {

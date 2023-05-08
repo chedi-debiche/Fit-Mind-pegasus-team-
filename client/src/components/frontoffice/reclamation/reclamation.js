@@ -316,6 +316,7 @@ const Reclamation = () => {
           <th>Date</th>
           <th>Comments</th>
           <th>Actions</th>
+          <th>Claim Treated</th>
         </tr>
       </thead>
       <tbody>
@@ -326,6 +327,7 @@ const Reclamation = () => {
             <td>{reclamation.status}</td>
             <td>{reclamation.date}</td>
             <td>{reclamation.comments}</td>
+            
             <td>
               <Button className={styles.delete} onClick={() => handleDeleteReclamation(reclamation._id)}>
                 <FontAwesomeIcon icon={faTrash} />
@@ -334,6 +336,7 @@ const Reclamation = () => {
                 <FontAwesomeIcon icon={faEdit}  />
               </Button>
             </td>
+            <td>{reclamation.responsedd.toString()}</td>
           </tr>
         ))}
       </tbody>
