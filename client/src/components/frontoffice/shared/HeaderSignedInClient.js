@@ -125,6 +125,7 @@ const HeaderSignedInClient = () => {
       <li>
   <Link to="/d">Other</Link>
   <ul className="submenu">
+  <li><Link to="/training">fitmind_AI</Link></li>
     <li><Link to="/food">Food Recipes</Link></li>
     <li><Link to="/Map">Map</Link></li>
     

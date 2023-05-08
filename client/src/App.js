@@ -80,6 +80,7 @@ import Map from "./components/frontoffice/Map/Map";
 
 
 import GYYM from "./components/backoffice/gymmanagement/GymList";
+import Training from "./components/frontoffice/Training/Training" ;
 
 function App() {
 
@@ -146,6 +147,7 @@ function App() {
           <Route path="/reclamations" element={<ReclamationList/>} />
 
           <Route path="/recommendation" element={<Webp/>} />
+          <Route path="/training" element={<Training/>} />
 
 
 
