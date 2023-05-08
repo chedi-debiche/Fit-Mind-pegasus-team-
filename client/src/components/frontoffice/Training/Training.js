@@ -12,6 +12,7 @@ import myImage3 from '../Training/yoga12.jpg'
 import myImage4 from '../Training/yoga19.jpg'
 import myImage5 from '../Training/yoga24.jpg'
 import myImage6 from '../Training/yoga15.jpg'
+import myImage7 from '../Training/work.gif'
 
 
 
@@ -28,6 +29,16 @@ const Training=()=>{
      
     try {
        await axios.get(`http://localhost:5001/train/${img}`);
+     // setGyms(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const position = async () => {
+     
+    try {
+       await axios.post('http://localhost:5002/muscle');
      // setGyms(response.data);
     } catch (error) {
       console.error(error);
@@ -56,7 +67,9 @@ const Training=()=>{
         </div>
       </div>
     </main>
-    
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '20vh' }}>
+    <h1 style={{ fontSize: '9rem', color: '#750000'}}>Yoga</h1>
+    </div>
     <div>
       <ul>
         <li>
@@ -88,6 +101,18 @@ const Training=()=>{
       </ul>
       
     </div>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '20vh' }}>
+    <h1 style={{ fontSize: '9rem',color: '#750000' }}>Musculation</h1>
+    </div>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+  <img src={myImage7} alt="My Image" width="300" height="300" />
+  <Button onClick={position} size="lg">Train</Button>
+
+</div>
+ 
+   
+
+
   
 
     

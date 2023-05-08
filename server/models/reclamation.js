@@ -11,6 +11,7 @@ const ReclamationSchema = new mongoose.Schema({
     type: Date,
     default: Date.now 
     },
+
   status: { 
     type: String, 
     enum: ['pending', 'resolved', 'rejected'], 
