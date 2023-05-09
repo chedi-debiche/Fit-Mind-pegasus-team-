@@ -1,9 +1,8 @@
 import React, { useState, useEffect, Fragment } from "react";
 import FooterFront from '../shared/FooterFront';
 import HeaderSignedInClient from '../shared/HeaderSignedInClient';
-import './styles.css';
 import axios from "axios";
-
+import "./stylesproduct.css"
 
 
 
@@ -67,7 +66,7 @@ const Products = () => {
                       onChange={(e) => setSearchTerm(e.target.value)}
                       style={{ width: "300px", padding: "10px" }}
                     />
-                    <button className="fetch-btn" onClick={fetchProductList}>Fetch Products</button>
+                    <button className="fetch-btn buttonp" onClick={fetchProductList}>Fetch Products</button>
                   </div>
                 </div>
               </div>

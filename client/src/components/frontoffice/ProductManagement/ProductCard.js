@@ -235,8 +235,7 @@ const publishableKey = 'pk_test_51MyLyTL3XZBpMzAUEuEw20uusBNq9YhOWRstxZPYCLCURgr
         amount={priceForStripe}
         description={`Your total is  ${priceForStripe} Dt`}
        token={payNow}
-       
-             />
+       />
              <br/>
             <h4>rating :  </h4>
 

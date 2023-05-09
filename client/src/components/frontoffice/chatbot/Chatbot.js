@@ -2,8 +2,9 @@ import { useState } from 'react'
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from '@chatscope/chat-ui-kit-react';
 import openai from 'openai';
+import './chatbot.css';
 
-const API_KEY = "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";
+const API_KEY = "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";
 
 const systemMessage = {
   "role": "system", "content": "Explain things like you're talking to a software professional with 2 years of experience."
@@ -76,8 +77,8 @@ function Chatbot() {
 
   return (
     <div className="Chatbot">
-      <div style={{ position:"relative", height: "800px", width: "700px"  }}>
-        <MainContainer>
+      <div style={{ position:"relative", height: "600px", width: "400px"  }}>
+      <MainContainer style={{fontSize: "18px", border: "1px solid black" ,  borderRadius: "15px"}}>
           <ChatContainer>       
             <MessageList 
               scrollBehavior="smooth" 
@@ -97,5 +98,3 @@ function Chatbot() {
 }
 
 export default Chatbot;
-
-

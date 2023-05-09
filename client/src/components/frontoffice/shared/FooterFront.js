@@ -1,4 +1,6 @@
 import React from 'react'
+import './chatbot-modal.css';
+
 
 const FooterFront = () => {
   return (
@@ -67,9 +69,16 @@ const FooterFront = () => {
     {/* Footer End*/}
   </footer>
   {/* Scroll Up */}
+  
+
+
   <div id="back-top">
-    <a title="Go to Top" href="#"> <i className="fas fa-level-up-alt" /></a>
-  </div>
+  <a href="/chatbot">
+    <i className="fas fa-robot" title="Cliquez ici" />
+  </a>
+</div>
+
+
 </div>
 
     </div>

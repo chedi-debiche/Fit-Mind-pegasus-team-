@@ -81,6 +81,7 @@ import Map from "./components/frontoffice/Map/Map";
 
 import GYYM from "./components/backoffice/gymmanagement/GymList";
 import Training from "./components/frontoffice/Training/Training" ;
+import Chat from "./components/frontoffice/chat/WebSocketChat";
 
 function App() {
 
@@ -148,6 +149,9 @@ function App() {
 
           <Route path="/recommendation" element={<Webp/>} />
           <Route path="/training" element={<Training/>} />
+
+
+          <Route path="/chat" element={<Chat/>} />
 
 
 
